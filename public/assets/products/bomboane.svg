@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Cutie bomboane">
+  <rect width="400" height="300" fill="#F3DCE4"/>
+  <g transform="translate(200 152)" stroke="#3B2E3A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <rect x="-78" y="-48" width="156" height="96" rx="10" fill="#fff"/>
+    <path d="M-78 -18 h156"/>
+    <circle cx="-44" cy="18" r="15" fill="#EFB6C8"/>
+    <circle cx="0" cy="18" r="15" fill="#CBBCEC"/>
+    <circle cx="44" cy="18" r="15" fill="#F6C99A"/>
+  </g>
+</svg>

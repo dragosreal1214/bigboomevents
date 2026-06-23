@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Șampanie">
+  <rect width="400" height="300" fill="#E7E0F5"/>
+  <g transform="translate(200 150)" stroke="#3B2E3A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M-16 -78 h32 v34 c0 14 8 20 8 40 v62 c0 6 -4 10 -10 10 h-36 c-6 0 -10 -4 -10 -10 v-62 c0 -20 8 -26 8 -40 z" fill="#fff"/>
+    <path d="M-16 -52 h32" stroke="#F6C99A"/>
+    <path d="M-22 6 h44" stroke="#CBBCEC"/>
+  </g>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Aranjament floral">
+  <rect width="400" height="300" fill="#F7DCE5"/>
+  <g transform="translate(200 165)" fill="none" stroke="#3B2E3A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="0" cy="-30" r="22" fill="#fff"/>
+    <circle cx="0" cy="-30" r="7" fill="#F6C99A" stroke="none"/>
+    <path d="M0 -8 C 0 30 0 60 0 90" />
+    <circle cx="-46" cy="-12" r="18" fill="#EFB6C8"/>
+    <circle cx="-46" cy="-12" r="5" fill="#fff" stroke="none"/>
+    <circle cx="46" cy="-12" r="18" fill="#CBBCEC"/>
+    <circle cx="46" cy="-12" r="5" fill="#fff" stroke="none"/>
+    <path d="M0 40 C -24 30 -40 44 -52 30" />
+    <path d="M0 56 C 24 46 40 60 52 46" />
+  </g>
+  <path d="M150 255 h100 l-12 30 h-76 z" fill="#fff" stroke="#3B2E3A" stroke-width="3"/>
+</svg>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Shop — BigBoomEvents</title>
+<meta name="description" content="Magazin BigBoomEvents: florărie, baloane și accesorii de petrecere. Filtrează după categorie, preț, ocazie și culoare." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body data-page="shop">
+
+<div data-include="nav"></div>
+
+<main class="wrap">
+  <div class="crumb"><a href="/">Acasă</a> · Shop</div>
+
+  <div class="section-head" style="margin:6px auto 30px">
+    <span class="eyebrow">Shop</span>
+    <h2>Alege din colecții</h2>
+    <p>Filtrează după categorie, preț, ocazie sau culoare. Comandă online sau cere o ofertă.</p>
+  </div>
+
+  <div class="shop-layout">
+    <!-- SIDEBAR FILTERS -->
+    <aside class="sidebar collapsed" data-sidebar>
+      <div class="filter-group">
+        <h4>Categorie</h4>
+        <div data-filter-categories></div>
+      </div>
+      <div class="filter-group">
+        <h4>Preț (lei)</h4>
+        <div class="range-row">
+          <input type="number" class="input" min="0" placeholder="min" data-min-price style="padding:8px" />
+          <span>—</span>
+          <input type="number" class="input" min="0" placeholder="max" data-max-price style="padding:8px" />
+        </div>
+        <input type="range" min="0" max="500" step="10" value="500" data-price-slider style="margin-top:12px" />
+        <div class="muted" style="font-size:13px">până la <span data-price-slider-label>500</span> lei</div>
+      </div>
+      <div class="filter-group">
+        <h4>Ocazie</h4>
+        <div data-filter-occasions></div>
+      </div>
+      <div class="filter-group">
+        <h4>Culoare</h4>
+        <div data-filter-colors></div>
+      </div>
+      <div class="filter-group">
+        <label class="checkline"><input type="checkbox" data-in-stock /> Doar în stoc</label>
+      </div>
+      <button class="btn btn-ghost btn-sm btn-block" data-clear-filters>Resetează filtrele</button>
+    </aside>
+
+    <!-- RESULTS -->
+    <div>
+      <div class="shop-toolbar">
+        <div class="search-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="search" placeholder="Caută produse…" data-search aria-label="Caută" />
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <button class="btn btn-ghost btn-sm filter-toggle" data-toggle-filters>Filtre</button>
+          <select class="select" data-sort aria-label="Sortează">
+            <option value="nou">Cele mai noi</option>
+            <option value="pret-asc">Preț crescător</option>
+            <option value="pret-desc">Preț descrescător</option>
+            <option value="nume">Alfabetic</option>
+          </select>
+        </div>
+      </div>
+      <p class="count" data-count></p>
+      <div class="grid" data-grid></div>
+      <div class="center" style="margin-top:30px"><button class="btn btn-dark" data-load-more hidden>Încarcă mai multe</button></div>
+    </div>
+  </div>
+</main>
+
+<div data-include="footer"></div>
+
+<script src="/js/app.js"></script>
+<script src="/js/cards.js"></script>
+<script src="/js/shop.js"></script>
+</body>
+</html>

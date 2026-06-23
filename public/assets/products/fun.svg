@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Accesorii petrecere">
+  <rect width="400" height="300" fill="#E4DBF7"/>
+  <g transform="translate(200 150)" stroke="#3B2E3A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M-60 60 L0 -60 L60 60 Z" fill="#fff"/>
+    <path d="M-60 60 L60 60" />
+    <circle cx="0" cy="-60" r="8" fill="#F6C99A" stroke="none"/>
+  </g>
+  <g fill="none" stroke="#3B2E3A" stroke-width="2">
+    <circle cx="90" cy="80" r="6" fill="#EFB6C8"/>
+    <circle cx="310" cy="100" r="6" fill="#A8CDE9"/>
+    <rect x="120" y="220" width="12" height="12" fill="#CBBCEC" transform="rotate(20 126 226)"/>
+    <rect x="270" y="210" width="12" height="12" fill="#F6C99A" transform="rotate(-15 276 216)"/>
+  </g>
+</svg>

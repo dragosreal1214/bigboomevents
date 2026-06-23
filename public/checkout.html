@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Finalizare comandă — BigBoomEvents</title>
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body data-page="shop">
+
+<div data-include="nav"></div>
+
+<main class="wrap">
+  <div class="crumb"><a href="/">Acasă</a> · <a href="/shop">Shop</a> · Finalizare comandă</div>
+  <div class="section-head" style="margin:6px 0 26px;text-align:left"><h2>Finalizează comanda</h2></div>
+
+  <div data-empty hidden>
+    <div class="empty-state">
+      <p>Coșul tău este gol.</p>
+      <a href="/shop" class="btn btn-primary">Mergi la shop</a>
+    </div>
+  </div>
+
+  <form class="checkout-layout" data-checkout-form hidden novalidate>
+    <div>
+      <div class="notice err" data-form-error hidden></div>
+
+      <div class="card-block">
+        <h3>Date de contact</h3>
+        <div class="field">
+          <label>Nume complet <span class="req">*</span></label>
+          <input class="input" name="name" autocomplete="name" required />
+          <div class="field-error" data-err="customer.name"></div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Email <span class="req">*</span></label>
+            <input class="input" type="email" name="email" autocomplete="email" required />
+            <div class="field-error" data-err="customer.email"></div>
+          </div>
+          <div class="field">
+            <label>Telefon <span class="req">*</span></label>
+            <input class="input" type="tel" name="phone" autocomplete="tel" required />
+            <div class="field-error" data-err="customer.phone"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-block">
+        <h3>Livrare</h3>
+        <div class="form-row">
+          <div class="field">
+            <label>Județ <span class="req">*</span></label>
+            <input class="input" name="county" autocomplete="address-level1" required />
+            <div class="field-error" data-err="shipping.county"></div>
+          </div>
+          <div class="field">
+            <label>Oraș / localitate <span class="req">*</span></label>
+            <input class="input" name="city" autocomplete="address-level2" required />
+            <div class="field-error" data-err="shipping.city"></div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Adresă (stradă, număr, bloc) <span class="req">*</span></label>
+          <input class="input" name="address" autocomplete="street-address" required />
+          <div class="field-error" data-err="shipping.address"></div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Cod poștal</label>
+            <input class="input" name="postcode" autocomplete="postal-code" />
+          </div>
+          <div></div>
+        </div>
+        <div class="field">
+          <label>Mențiuni (opțional)</label>
+          <textarea class="textarea" name="notes" placeholder="Ex: livrare după ora 17, interfon etc."></textarea>
+        </div>
+      </div>
+
+      <div class="card-block">
+        <h3>Felicitare &amp; livrare</h3>
+        <div class="field">
+          <label>Text pentru felicitare (opțional)</label>
+          <textarea class="textarea" name="giftMessage" maxlength="300" placeholder="Mesajul scris pe felicitarea care însoțește buchetul…"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Data livrării</label>
+            <input class="input" type="date" name="deliveryDate" />
+          </div>
+          <div class="field">
+            <label>Interval orar</label>
+            <select class="input" name="deliverySlot">
+              <option value="">Selectează ora</option>
+              <option>09:00 – 12:00</option>
+              <option>12:00 – 15:00</option>
+              <option>15:00 – 18:00</option>
+              <option>18:00 – 21:00</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-block">
+        <h3>Plată</h3>
+        <label class="radio-card sel" data-pay-option>
+          <input type="radio" name="paymentMethod" value="cod" checked />
+          <div><div class="t">Ramburs (la livrare)</div><div class="d">Plătești curierului la primirea coletului.</div></div>
+        </label>
+        <label class="radio-card" data-pay-option>
+          <input type="radio" name="paymentMethod" value="card" />
+          <div><div class="t">Card online</div><div class="d">Plată securizată prin Netopia. Ești redirecționat după plasarea comenzii.</div></div>
+        </label>
+      </div>
+
+      <div class="card-block">
+        <label class="checkline" style="align-items:flex-start">
+          <input type="checkbox" name="acceptTerms" required style="margin-top:4px" />
+          <span>Am citit și sunt de acord cu <a href="/termeni" target="_blank">Termenii și condițiile</a> și <a href="/confidentialitate" target="_blank">Politica de confidențialitate</a>. <span class="req">*</span></span>
+        </label>
+        <div class="field-error" data-err="acceptTerms"></div>
+        <!-- honeypot -->
+        <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block" data-submit>Plasează comanda</button>
+    </div>
+
+    <!-- SUMMARY -->
+    <aside class="summary">
+      <h3>Sumar comandă</h3>
+      <div data-summary-lines></div>
+      <div class="totals">
+        <div class="row"><span>Subtotal</span><span data-subtotal>0 lei</span></div>
+        <div class="row"><span>Livrare</span><span data-shipping>—</span></div>
+        <div class="row grand"><span>Total</span><span data-grand>0 lei</span></div>
+      </div>
+      <p class="note">Livrare gratuită peste 250 lei.</p>
+    </aside>
+  </form>
+</main>
+
+<div data-include="footer"></div>
+
+<script src="/js/app.js"></script>
+<script src="/js/checkout.js"></script>
+</body>
+</html>

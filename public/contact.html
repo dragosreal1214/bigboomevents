@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Contact — BigBoomEvents</title>
+<meta name="description" content="Contactează BigBoomEvents pentru comenzi, evenimente și oferte personalizate. Iași." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body data-page="contact">
+
+<div data-include="nav"></div>
+
+<main class="wrap">
+  <div class="crumb"><a href="/">Acasă</a> · Contact</div>
+
+  <div class="lead-grid" style="padding:10px 0 60px">
+    <div>
+      <span class="eyebrow">Contact</span>
+      <h1 style="font-size:clamp(30px,5vw,46px);margin:10px 0 16px">Hai să vorbim</h1>
+      <p class="muted">Pentru comenzi, evenimente sau orice întrebare — scrie-ne sau sună-ne. Răspundem repede.</p>
+
+      <div style="margin-top:26px;display:grid;gap:16px">
+        <div class="card-block" style="margin:0">
+          <h3 style="font-size:16px;margin-bottom:6px">📞 Telefon</h3>
+          <a href="tel:+40" class="muted">de completat</a>
+        </div>
+        <div class="card-block" style="margin:0">
+          <h3 style="font-size:16px;margin-bottom:6px">✉️ Email</h3>
+          <a href="mailto:contact@bigboomevents.ro" class="muted">contact@bigboomevents.ro</a>
+        </div>
+        <div class="card-block" style="margin:0">
+          <h3 style="font-size:16px;margin-bottom:6px">📍 Zonă</h3>
+          <p class="muted" style="margin:0">Iași și împrejurimi · livrări și montaj la locație.</p>
+        </div>
+        <div class="card-block" style="margin:0">
+          <h3 style="font-size:16px;margin-bottom:6px">📷 Social</h3>
+          <a href="#" class="muted">Instagram · de completat</a>
+        </div>
+      </div>
+    </div>
+
+    <form class="card-block" data-lead-form novalidate>
+      <h3 style="margin-bottom:14px">Scrie-ne un mesaj</h3>
+      <div class="notice ok" data-lead-ok hidden>Mulțumim! Am primit mesajul tău și revenim curând. 🎈</div>
+      <div class="notice err" data-lead-error hidden></div>
+      <div class="field">
+        <label>Nume <span class="req">*</span></label>
+        <input class="input" name="name" required />
+        <div class="field-error" data-err="name"></div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label>Email <span class="req">*</span></label>
+          <input class="input" type="email" name="email" required />
+          <div class="field-error" data-err="email"></div>
+        </div>
+        <div class="field">
+          <label>Telefon</label>
+          <input class="input" type="tel" name="phone" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Mesaj</label>
+        <textarea class="textarea" name="message" placeholder="Cu ce te putem ajuta?"></textarea>
+      </div>
+      <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <button type="submit" class="btn btn-primary btn-block" data-lead-submit>Trimite mesajul</button>
+    </form>
+  </div>
+</main>
+
+<div data-include="footer"></div>
+
+<script src="/js/app.js"></script>
+<script src="/js/leadform.js"></script>
+</body>
+</html>

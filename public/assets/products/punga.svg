@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Pungă cadou">
+  <rect width="400" height="300" fill="#DCEFE3"/>
+  <g transform="translate(200 152)" stroke="#3B2E3A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M-58 -36 h116 v92 c0 6 -4 10 -10 10 h-96 c-6 0 -10 -4 -10 -10 z" fill="#fff"/>
+    <path d="M-34 -36 c0 -24 68 -24 68 0" stroke="#C2E2D2"/>
+    <path d="M-58 -10 h116" />
+  </g>
+</svg>

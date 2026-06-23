@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BigBoomEvents — Flori, baloane și evenimente</title>
+<meta name="description" content="BigBoomEvents: aranjamente florale, arcade de baloane și decor de eveniment. Sărbători gândite simplu, livrate cu grijă. Iași." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body data-page="index">
+
+<!-- Ecranul de start (overlay) — logica în js/portal.js. `hidden` din start:
+     îl afișează JS doar la prima vizită; fără JS, homepage-ul apare normal.
+     Linkurile sunt relative ca fallback; portal.js le rescrie cu BBE.urls
+     (corecte cross-subdomeniu în producție). -->
+<div class="portal" id="portal" role="dialog" aria-modal="true" aria-labelledby="portalTitle" hidden>
+  <div class="portal-inner">
+    <span class="eyebrow">Bine ai venit</span>
+    <h1 id="portalTitle">Bine ai venit la Big<span class="boom">Boom</span></h1>
+    <p class="portal-sub">Unde vrei să mergi? Alege o direcție și te ducem direct acolo.</p>
+
+    <div class="choices">
+      <!-- Nuntă → evenimente (site principal) -->
+      <a class="choice c-nunta" href="/evenimente" data-dest="nunta">
+        <span class="ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3B2E3A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21h14M6 21V9l6-5 6 5v12M9.5 21v-5h5v5"/></svg>
+        </span>
+        <div class="text">
+          <h2>Nuntă</h2>
+          <span class="desc">Wedding planner — concept, decor, montaj și demontaj.</span>
+        </div>
+        <span class="go">Intră <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+
+      <!-- Florărie → shop?category=florarie -->
+      <a class="choice c-florarie" href="/shop?category=florarie" data-dest="florarie">
+        <span class="ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3B2E3A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="3"/><path d="M12 9c0-4 3-6 5-5-1 4-3 5-5 5zM12 9c0-4-3-6-5-5 1 4 3 5 5 5zM12 12v9"/></svg>
+        </span>
+        <div class="text">
+          <h2>Florărie</h2>
+          <span class="desc">Buchete și aranjamente proaspete, pentru orice ocazie.</span>
+        </div>
+        <span class="go">Intră <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+
+      <!-- Baloane → shop?category=baloane -->
+      <a class="choice c-baloane" href="/shop?category=baloane" data-dest="baloane">
+        <span class="ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3B2E3A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="8" rx="5" ry="6"/><path d="M12 14v3m-2 4l2-4 2 4"/></svg>
+        </span>
+        <div class="text">
+          <h2>Baloane</h2>
+          <span class="desc">Arcade organice și compoziții pe culorile și tema ta.</span>
+        </div>
+        <span class="go">Intră <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+
+      <!-- Shop (tot magazinul) → shop -->
+      <a class="choice c-shop" href="/shop" data-dest="shop">
+        <span class="ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3B2E3A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8zM9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        </span>
+        <div class="text">
+          <h2>Shop</h2>
+          <span class="desc">Tot magazinul — flori, baloane și cadouri într-un loc.</span>
+        </div>
+        <span class="go">Intră <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </div>
+
+    <button class="portal-skip" id="portalSkip" type="button">Mergi direct la site →</button>
+  </div>
+</div>
+
+<div data-include="nav"></div>
+
+<main>
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-arch" aria-hidden="true"></div>
+    <div class="balloon b1" aria-hidden="true"></div>
+    <div class="balloon b2" aria-hidden="true"></div>
+    <div class="balloon b3" aria-hidden="true"></div>
+    <div class="balloon b4" aria-hidden="true"></div>
+    <div class="wrap hero-content">
+      <span class="eyebrow">Evenimente · Florărie · Baloane</span>
+      <h1>Sărbători care fac <span class="boom">boom</span>.</h1>
+      <p class="lead">Aranjamente florale, arcade de baloane și decor de eveniment — gândite simplu, livrate cu grijă.</p>
+      <div class="hero-cta">
+        <a href="/shop" class="btn btn-primary">Vezi shopul</a>
+        <a href="/evenimente" class="btn btn-ghost">Cere o ofertă</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- DIRECTIONS -->
+  <section class="section" id="directii">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Ce facem</span>
+        <h2>Trei direcții, o singură grijă</h2>
+        <p>De la decorul complet al unui eveniment până la un singur buchet — ne ocupăm de partea frumoasă.</p>
+      </div>
+      <div class="dirs">
+        <a class="dir" href="/evenimente">
+          <div class="ic"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#3B2E3A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21h14M6 21V9l6-5 6 5v12M9.5 21v-5h5v5"/></svg></div>
+          <h3>Evenimente</h3>
+          <p>Decor complet pentru botezuri, nunți și petreceri — concept, montaj, demontaj.</p>
+        </a>
+        <a class="dir" href="/shop?category=florarie">
+          <div class="ic"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#3B2E3A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="3"/><path d="M12 9c0-4 3-6 5-5-1 4-3 5-5 5zM12 9c0-4-3-6-5-5 1 4 3 5 5 5zM12 12v9"/></svg></div>
+          <h3>Florărie</h3>
+          <p>Buchete și aranjamente proaspete, pentru orice ocazie sau pur și simplu așa.</p>
+        </a>
+        <a class="dir" href="/shop?category=baloane">
+          <div class="ic"><svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#3B2E3A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="8" rx="5" ry="6"/><path d="M12 14v3m-2 4l2-4 2 4"/></svg></div>
+          <h3>Baloane</h3>
+          <p>Arcade organice și compoziții din baloane, pe culorile și tema ta.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED -->
+  <section class="section shop" id="populare" style="background:linear-gradient(180deg, transparent, color-mix(in srgb, var(--rose) 10%, transparent))">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Shop</span>
+        <h2>Alegerile populare</h2>
+        <p>Cele mai cerute produse din magazin. Comandă online sau cere o ofertă personalizată.</p>
+      </div>
+      <div class="grid" id="featured" data-featured></div>
+      <div class="center" style="margin-top:34px">
+        <a href="/shop" class="btn btn-dark">Vezi tot magazinul</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTS CTA -->
+  <section class="section-sm">
+    <div class="wrap">
+      <div class="cta-band">
+        <h2>Plănuiești un eveniment?</h2>
+        <p>Botez, nuntă, aniversare sau eveniment corporate — construim conceptul, ne ocupăm de montaj și demontaj.</p>
+        <a href="/evenimente" class="btn btn-primary">Cere o ofertă</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-include="footer"></div>
+
+<script src="/js/app.js"></script>
+<script src="/js/cards.js"></script>
+<script src="/js/home.js"></script>
+<script src="/js/portal.js"></script>
+</body>
+</html>

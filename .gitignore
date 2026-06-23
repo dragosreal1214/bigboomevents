@@ -1,0 +1,14 @@
+node_modules/
+.env
+.env.local
+*.log
+npm-debug.log*
+.DS_Store
+coverage/
+dist/
+pids/
+*.pid
+*.seed
+.pm2/
+public/assets/uploads/*
+!public/assets/uploads/.gitkeep

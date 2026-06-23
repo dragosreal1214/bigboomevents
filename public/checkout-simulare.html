@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Simulare plată — BigBoomEvents</title>
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body data-page="shop">
+
+<div data-include="nav"></div>
+
+<main class="wrap">
+  <div class="legal" style="max-width:520px;text-align:center">
+    <div class="notice" style="background:#fff5e6;border:1px solid var(--butter);color:var(--ink)">
+      <strong>Mod simulare plată</strong><br>
+      Netopia nu este încă configurat (lipsesc cheile API). Aceasta e o pagină de test
+      care îți permite să verifici tot fluxul de checkout fără bani reali.
+    </div>
+    <h1>Plată card · simulare</h1>
+    <p class="muted">Comanda <strong data-order></strong></p>
+    <div style="display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap">
+      <button class="btn btn-primary" data-pay-success>Simulează plată reușită</button>
+      <button class="btn btn-ghost" data-pay-fail>Simulează plată eșuată</button>
+    </div>
+    <p class="note" style="margin-top:20px">În producție, această pagină este înlocuită de pagina securizată Netopia.</p>
+  </div>
+</main>
+
+<div data-include="footer"></div>
+
+<script src="/js/app.js"></script>
+<script src="/js/simulare.js"></script>
+</body>
+</html>

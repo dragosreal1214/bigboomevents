@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Baloane">
+  <rect width="400" height="300" fill="#D4E8F6"/>
+  <g stroke="#3B2E3A" stroke-width="2.5" fill="none" stroke-linecap="round">
+    <g transform="translate(150 120)">
+      <ellipse cx="0" cy="0" rx="40" ry="48" fill="#EFB6C8"/>
+      <path d="M0 48 q6 8 0 16 q-6 8 0 16"/>
+    </g>
+    <g transform="translate(232 100)">
+      <ellipse cx="0" cy="0" rx="34" ry="42" fill="#CBBCEC"/>
+      <path d="M0 42 q6 8 0 16 q-6 8 0 16"/>
+    </g>
+    <g transform="translate(200 165)">
+      <ellipse cx="0" cy="0" rx="30" ry="37" fill="#F6C99A"/>
+      <path d="M0 37 q6 8 0 16 q-6 8 0 16"/>
+    </g>
+  </g>
+</svg>
