@@ -3,9 +3,9 @@ window.DECOR_EVENTS = [
  {
   "name": "Nuntă",
   "slug": "nunta",
-  "description": "Fiecare nunta spune o poveste, iar noi o transformam intr-un decor spectaculos. Realizam decoruri complete pentru ceremonie si petrecere: prezidiu, mese invitati, foto corner, arcade florale, lumanari, buchete si aranjamente florale naturale. La The Big Boom Events, fiecare proiect este personalizat pentru a crea un eveniment elegant si memorabil.",
+  "description": "Fiecare nuntă spune o poveste, iar noi o transformăm într-un decor spectaculos. Realizăm decoruri complete pentru ceremonie și petrecere: prezidiu, mese invitați, foto corner, arcade florale, lumânări, buchete și aranjamente florale naturale. La The Big Boom Events, fiecare proiect este personalizat pentru a crea un eveniment elegant și memorabil.",
   "seoTitle": "Decor Nuntă Iași — Aranjamente florale & foto corner | The Big Boom Events",
-  "seoKeywords": "decor nunta Iasi, aranjamente florale nunta, foto corner nunta, wedding decor Iasi, flori naturale nunta.",
+  "seoKeywords": "decor nunta Iași, aranjamente florale nunta, foto corner nunta, wedding decor Iași, flori naturale nunta.",
   "hero": "/assets/decoratiuni/nunta-photo-corner-02.webp",
   "categories": [
    {
@@ -14,22 +14,22 @@ window.DECOR_EVENTS = [
      {
       "img": "/assets/decoratiuni/nunta-photo-corner-01.webp",
       "alt": "Litere luminoase LOVE cu mirii la dansul de seara, fotografie alb-negru",
-      "desc": "Litere luminoase supradimensionate LOVE, surprinse noaptea in gradina, cu silueta mirilor imbratisati in prim-plan, intr-o fotografie alb-negru romantica."
+      "desc": "Litere luminoase supradimensionate LOVE, surprinse noaptea în grădină, cu silueta mirilor îmbrățișați în prim-plan, într-o fotografie alb-negru romantică."
      },
      {
       "img": "/assets/decoratiuni/nunta-photo-corner-02.webp",
-      "alt": "Arcada de nunta cu inele albe si drapaje, langa lac la apus",
-      "desc": "Arcada decorativa din trei inele albe, drapata in voal alb si impodobita cu trandafiri, amplasata pe un ponton langa lac, in lumina calda a apusului."
+      "alt": "Arcadă de nuntă cu inele albe și drapaje, lângă lac la apus",
+      "desc": "Arcadă decorativă din trei inele albe, drapată în voal alb și împodobită cu trandafiri, amplasată pe un ponton lângă lac, în lumina caldă a apusului."
      },
      {
       "img": "/assets/decoratiuni/nunta-photo-corner-03.webp",
-      "alt": "Litere luminoase LOVE cu arcada de baloane verzi si albe",
-      "desc": "Litere luminoase LOVE incadrate de o arcada de baloane in nuante de verde salvie si alb, cu baloane personalizate cu initialele mirilor, la intrarea in locatie."
+      "alt": "Litere luminoase LOVE cu arcadă de baloane verzi și albe",
+      "desc": "Litere luminoase LOVE încadrate de o arcadă de baloane în nuanțe de verde salvie și alb, cu baloane personalizate cu inițialele mirilor, la intrarea în locație."
      },
      {
       "img": "/assets/decoratiuni/nunta-photo-corner-04.webp",
-      "alt": "Decor ceremonie de nunta cu arcada alba, scaune transparente si culoar cu flori, langa lac",
-      "desc": "Set-up complet de ceremonie langa lac, cu arcada alba din inele drapata in voal, scaune transparente si un culoar marcat de buchete generoase de trandafiri albi."
+      "alt": "Decor ceremonie de nuntă cu arcadă albă, scaune transparente și culoar cu flori, lângă lac",
+      "desc": "Set-up complet de ceremonie lângă lac, cu arcadă albă din inele drapată în voal, scaune transparente și un culoar marcat de buchete generoase de trandafiri albi."
      }
     ]
    },
@@ -38,98 +38,98 @@ window.DECOR_EVENTS = [
     "items": [
      {
       "img": "/assets/decoratiuni/nunta-aranjamente-florale-01.webp",
-      "alt": "Aranjament floral cu cale albe si decoratiune inimioare argintii pe masa de nunta",
-      "desc": "Buchet elegant de cale albe intr-o vaza de sticla, alaturi de o decoratiune metalica in forma de doua inimioare, detaliu rafinat de pe masa mirilor."
+      "alt": "Aranjament floral cu cale albe și decorațiune inimioare argintii pe masa de nuntă",
+      "desc": "Buchet elegant de cale albe într-o vază de sticlă, alături de o decorațiune metalică în formă de două inimioare, detaliu rafinat de pe masa mirilor."
      },
      {
       "img": "/assets/decoratiuni/nunta-aranjamente-florale-02.webp",
-      "alt": "Traseu floral pe masa de nunta cu flori albe si lumanari pe runner verde salvie",
-      "desc": "Aranjament floral tip traseu, din trandafiri, lisianthus si crizanteme albe cu verdeata, asezat pe un runner vaporos verde salvie de-a lungul mesei festive."
+      "alt": "Traseu floral pe masa de nuntă cu flori albe și lumânări pe runner verde salvie",
+      "desc": "Aranjament floral tip traseu, din trandafiri, lisianthus și crizanteme albe cu verdeață, așezat pe un runner vaporos verde salvie de-a lungul mesei festive."
      },
      {
       "img": "/assets/decoratiuni/nunta-aranjamente-florale-03.webp",
       "alt": "Aranjamente cu floarea miresei pe stative aurii pe culoarul bisericii",
-      "desc": "Aranjamente pufoase din floarea-miresei si trandafiri albi, asezate pe stative aurii inalte de-a lungul culoarului bisericii, pentru ceremonia religioasa."
+      "desc": "Aranjamente pufoase din floarea-miresei și trandafiri albi, așezate pe stative aurii înalte de-a lungul culoarului bisericii, pentru ceremonia religioasă."
      }
     ]
    },
    {
-    "name": "Decor sala",
+    "name": "Decor sală",
     "items": [
      {
       "img": "/assets/decoratiuni/nunta-decor-sala-01.webp",
-      "alt": "Prezidiu de nunta cu decor din aripi translucide si flori, vedere la lac",
-      "desc": "Masa prezidiala decorata cu un panou sculptural din aripi translucide, aranjamente de trandafiri pudrati si albi si lumanari, cu vedere panoramica spre lac la apus."
+      "alt": "Prezidiu de nuntă cu decor din aripi translucide și flori, vedere la lac",
+      "desc": "Masa prezidială decorată cu un panou sculptural din aripi translucide, aranjamente de trandafiri pudrați și albi și lumânări, cu vedere panoramică spre lac la apus."
      },
      {
       "img": "/assets/decoratiuni/nunta-decor-sala-02.webp",
-      "alt": "Masa festiva de nunta cu trandafiri albi si vedere panoramica la apus",
-      "desc": "Masa lunga aranjata elegant pentru nunta, cu vesela fina, pahare de cristal si aranjamente de trandafiri albi, intr-o sala cu pereti de sticla si vedere spre lac."
+      "alt": "Masa festivă de nuntă cu trandafiri albi și vedere panoramică la apus",
+      "desc": "Masa lungă aranjată elegant pentru nuntă, cu veselă fină, pahare de cristal și aranjamente de trandafiri albi, într-o sală cu pereți de sticlă și vedere spre lac."
      },
      {
       "img": "/assets/decoratiuni/nunta-decor-sala-03.webp",
-      "alt": "Masa lunga de nunta cu trandafiri albi si roz-pal si marturii aurii",
-      "desc": "Masa lunga de invitati cu trandafiri albi si roz-pal in vaze aurii, meniuri personalizate si marturii delicate cu funda aurie la fiecare loc."
+      "alt": "Masa lungă de nuntă cu trandafiri albi și roz-pal și mărturii aurii",
+      "desc": "Masa lungă de invitați cu trandafiri albi și roz-pal în vaze aurii, meniuri personalizate și mărturii delicate cu funda aurie la fiecare loc."
      },
      {
       "img": "/assets/decoratiuni/nunta-decor-sala-04.webp",
-      "alt": "Sala de nunta cu mese rotunde si lungi, aranjamente albe si tavan decorat floral",
-      "desc": "Vedere de ansamblu a salii de nunta, cu mese rotunde si lungi imbracate in alb, scaune din lemn, aranjamente florale albe si roz-pal si tavan decorat floral."
+      "alt": "Sala de nuntă cu mese rotunde și lungi, aranjamente albe și tavan decorat floral",
+      "desc": "Vedere de ansamblu a sălii de nuntă, cu mese rotunde și lungi îmbrăcate în alb, scaune din lemn, aranjamente florale albe și roz-pal și tavan decorat floral."
      },
      {
       "img": "/assets/decoratiuni/nunta-decor-sala-05.webp",
-      "alt": "Numar de masa de nunta in stil oglinda aurie cu trandafiri crem",
-      "desc": "Card numar de masa in stil oglinda aurie, cu inscriptia Table 3, incadrat de trandafiri crem, detaliu decorativ de pe masa invitatilor."
+      "alt": "Număr de masă de nuntă în stil oglinda aurie cu trandafiri crem",
+      "desc": "Card număr de masă în stil oglinda aurie, cu inscripția Table 3, încadrat de trandafiri crem, detaliu decorativ de pe masa invitaților."
      },
      {
       "img": "/assets/decoratiuni/nunta-decor-sala-06.webp",
-      "alt": "Numar de masa de nunta oglinda aurie Table 10 cu flori roz-pal",
-      "desc": "Card numar de masa in stil oglinda aurie, cu inscriptia Table 10, asezat langa un aranjament delicat de flori roz-pal, pe masa invitatilor."
+      "alt": "Număr de masă de nuntă oglinda aurie Table 10 cu flori roz-pal",
+      "desc": "Card număr de masă în stil oglinda aurie, cu inscripția Table 10, așezat lângă un aranjament delicat de flori roz-pal, pe masa invitaților."
      }
     ]
    },
    {
-    "name": "Buchete si lumanari",
+    "name": "Buchete și lumânări",
     "items": [
      {
       "img": "/assets/decoratiuni/nunta-buchete-lumanari-01.webp",
-      "alt": "Buchet de mireasa cu trandafiri albi si fir de mireasa, la poarta bisericii",
-      "desc": "Buchet de mireasa rotund, din trandafiri albi, lisianthus si fir de mireasa, cu funda de satin alba, surprins in fata portii bisericii."
+      "alt": "Buchet de mireasă cu trandafiri albi și fir de mireasă, la poarta bisericii",
+      "desc": "Buchet de mireasă rotund, din trandafiri albi, lisianthus și fir de mireasă, cu funda de satin albă, surprins în fața porții bisericii."
      },
      {
       "img": "/assets/decoratiuni/nunta-buchete-lumanari-02.webp",
-      "alt": "Lumanari de cununie cu trandafiri albi si fir de mireasa in biserica",
-      "desc": "Pereche de lumanari de cununie decorate cu trandafiri albi, frezii si fir de mireasa, fotografiate pe altarul bisericii, pe fata de masa traditionala brodata."
+      "alt": "Lumânări de cununie cu trandafiri albi și fir de mireasă în biserică",
+      "desc": "Pereche de lumânări de cununie decorate cu trandafiri albi, frezii și fir de mireasă, fotografiate pe altarul bisericii, pe fața de masă tradițională brodată."
      },
      {
       "img": "/assets/decoratiuni/nunta-buchete-lumanari-03.webp",
-      "alt": "Lumanari de cununie cu cale albe, in biserica ortodoxa",
-      "desc": "Pereche de lumanari de cununie impodobite cu flori de cala alba si funde din organza, fotografiate in interiorul pictat al bisericii ortodoxe."
+      "alt": "Lumânări de cununie cu cale albe, în biserică ortodoxă",
+      "desc": "Pereche de lumânări de cununie împodobite cu flori de cală albă și funde din organza, fotografiate în interiorul pictat al bisericii ortodoxe."
      },
      {
       "img": "/assets/decoratiuni/nunta-buchete-lumanari-04.webp",
-      "alt": "Buchet de mireasa cu bujori albi si trandafiri roz",
-      "desc": "Buchet de mireasa amplu, din bujori albi, lisianthus si trandafiri roz, legat cu panglica de satin, asezat intr-o vaza de sticla."
+      "alt": "Buchet de mireasă cu bujori albi și trandafiri roz",
+      "desc": "Buchet de mireasă amplu, din bujori albi, lisianthus și trandafiri roz, legat cu panglică de satin, așezat într-o vază de sticlă."
      },
      {
       "img": "/assets/decoratiuni/nunta-buchete-lumanari-05.webp",
-      "alt": "Lumanare de cununie cu trandafiri albi si fir de mireasa, in gradina",
-      "desc": "Lumanare de cununie decorata cu trandafiri albi, lisianthus si fir de mireasa, cu panglica alba de satin, fotografiata pe fundal de verdeata."
+      "alt": "Lumânare de cununie cu trandafiri albi și fir de mireasă, în grădină",
+      "desc": "Lumânare de cununie decorată cu trandafiri albi, lisianthus și fir de mireasă, cu panglică albă de satin, fotografiată pe fundal de verdeață."
      },
      {
       "img": "/assets/decoratiuni/nunta-buchete-lumanari-06.webp",
-      "alt": "Masa de cununie la altar cu cruce, cununii si buchete de cale albe",
-      "desc": "Masa de cununie pregatita la altar, cu crucea, cununiile aurii, lumanarile decorate cu cale albe si carticelele de cununie, pe fata de masa alba."
+      "alt": "Masa de cununie la altar cu cruce, cununii și buchete de cale albe",
+      "desc": "Masa de cununie pregătită la altar, cu crucea, cununiile aurii, lumânările decorate cu cale albe și cărticelele de cununie, pe fața de masă albă."
      }
     ]
    },
    {
-    "name": "Servicii nunta",
+    "name": "Servicii nuntă",
     "items": [
      {
       "img": "/assets/decoratiuni/nunta-servicii-nunta-01.webp",
-      "alt": "Efect de fum greu si baloane cazatoare la dansul mirilor",
-      "desc": "Moment special din timpul dansului mirilor, cu efect de fum greu (dry ice) pe ringul de dans, baloane albe si lila coborand din tavan si lumini scenice."
+      "alt": "Efect de fum greu și baloane căzătoare la dansul mirilor",
+      "desc": "Moment special din timpul dansului mirilor, cu efect de fum greu (dry ice) pe ringul de dans, baloane albe și lila coborând din tavan și lumini scenice."
      }
     ]
    },
@@ -138,8 +138,8 @@ window.DECOR_EVENTS = [
     "items": [
      {
       "img": "/assets/decoratiuni/nunta-decor-camera-miresei-01.webp",
-      "alt": "Decor camera miresei cu baloane albe si litere BRIDE argintii",
-      "desc": "Decor pentru camera miresei cu baloane albe suspendate de candelabru si litere gonflabile argintii formand cuvantul BRIDE, deasupra unui pat imbracat in alb."
+      "alt": "Decor camera miresei cu baloane albe și litere BRIDE argintii",
+      "desc": "Decor pentru camera miresei cu baloane albe suspendate de candelabru și litere gonflabile argintii formând cuvântul BRIDE, deasupra unui pat îmbrăcat în alb."
      }
     ]
    }
@@ -148,35 +148,35 @@ window.DECOR_EVENTS = [
  {
   "name": "Botez",
   "slug": "botez",
-  "description": "Transformam botezul intr-un eveniment plin de emotie si rafinament. Realizam decoruri personalizate cu flori naturale, baloane si elemente decorative adaptate tematicii alese. Oferim servicii complete pentru biserica si restaurant, astfel incat fiecare detaliu sa fie perfect.",
+  "description": "Transformăm botezul într-un eveniment plin de emoție și rafinament. Realizăm decoruri personalizate cu flori naturale, baloane și elemente decorative adaptate tematicii alese. Oferim servicii complete pentru biserica și restaurant, astfel încât fiecare detaliu să fie perfect.",
   "seoTitle": "Decor Botez Iași — Aranjamente florale & baloane | The Big Boom Events",
-  "seoKeywords": "decor botez Iasi, baloane botez, aranjamente florale botez, decor restaurant botez, flori naturale.",
+  "seoKeywords": "decor botez Iași, baloane botez, aranjamente florale botez, decor restaurant botez, flori naturale.",
   "hero": "/assets/decoratiuni/botez-lumanari-01.webp",
   "categories": [
    {
-    "name": "Lumanari Botez",
+    "name": "Lumânări Botez",
     "items": [
      {
       "img": "/assets/decoratiuni/botez-lumanari-01.webp",
-      "alt": "Lumanare de botez pentru baietel, cu ursulet si flori albe si albastre",
-      "desc": "Lumanare de botez pentru baietel, in nuante de alb si albastru: hortensii, trandafiri si lisianthus albi, frezii si orhidee albastru-mov, cu un ursulet plusat. Aranjament delicat, potrivit pentru cel mai important moment.",
+      "alt": "Lumânare de botez pentru băiețel, cu ursuleț și flori albe și albastre",
+      "desc": "Lumânare de botez pentru băiețel, în nuanțe de alb și albastru: hortensii, trandafiri și lisianthus albi, frezii și orhidee albastru-mov, cu un ursuleț plușat. Aranjament delicat, potrivit pentru cel mai important moment.",
       "portrait": true
      },
      {
       "img": "/assets/decoratiuni/botez-lumanari-02.webp",
-      "alt": "Lumanare de botez baiat, decorata cu hortensie alba, lisianthus, orhidee cymbidium albastre si ursulet de plus",
-      "desc": "Lumanare de botez pentru baiat, cu aranjament bogat de hortensie alba, lisianthus, frezii si orhidee cymbidium in nuante de albastru, completat de un ursulet de plus alb.",
+      "alt": "Lumânare de botez băiat, decorată cu hortensie albă, lisianthus, orhidee cymbidium albastre și ursuleț de plus",
+      "desc": "Lumânare de botez pentru băiat, cu aranjament bogat de hortensie albă, lisianthus, frezii și orhidee cymbidium în nuanțe de albastru, completat de un ursuleț de plus alb.",
       "portrait": true
      }
     ]
    },
    {
-    "name": "Cristelnita",
+    "name": "Cristelniță",
     "items": [
      {
       "img": "/assets/decoratiuni/botez-cristelnita-01.webp",
-      "alt": "Cristelnita drapata in voal verde salvie cu buchet de trandafiri albi",
-      "desc": "Cristelnita metalica drapata elegant cu voal verde salvie, decorata cu un buchet amplu de trandafiri albi, lisianthus si frezii, in interiorul bisericii."
+      "alt": "Cristelniță drapată în voal verde salvie cu buchet de trandafiri albi",
+      "desc": "Cristelniță metalică drapată elegant cu voal verde salvie, decorată cu un buchet amplu de trandafiri albi, lisianthus și frezii, în interiorul bisericii."
      }
     ]
    },
@@ -185,54 +185,54 @@ window.DECOR_EVENTS = [
     "items": [
      {
       "img": "/assets/decoratiuni/botez-photo-corner-01.webp",
-      "alt": "Photo corner botez cu baloane verzi si aurii si cutii Baby",
-      "desc": "Colt foto pentru botez cu arcada de baloane in nuante de verde si auriu, baloane cu model animal print, cutii decorative cu litere BABY si panou personalizat cu numele copilului."
+      "alt": "Photo corner botez cu baloane verzi și aurii și cutii Baby",
+      "desc": "Colț foto pentru botez cu arcadă de baloane în nuanțe de verde și auriu, baloane cu model animal print, cutii decorative cu litere BABY și panou personalizat cu numele copilului."
      },
      {
       "img": "/assets/decoratiuni/botez-photo-corner-02.webp",
-      "alt": "Photo corner botez cu baloane verde-piersica-auriu si ursulet de plus",
-      "desc": "Colt foto pentru botez cu arcada de baloane in nuante de verde, piersica si auriu, ursulet de plus decorativ, cosuri impletite si panou luminos personalizat Let's Party."
+      "alt": "Photo corner botez cu baloane verde-piersică-auriu și ursuleț de plus",
+      "desc": "Colț foto pentru botez cu arcadă de baloane în nuanțe de verde, piersică și auriu, ursuleț de plus decorativ, coșuri împletite și panou luminos personalizat Let's Party."
      }
     ]
    },
    {
-    "name": "Decor sala",
+    "name": "Decor sală",
     "items": [
      {
       "img": "/assets/decoratiuni/botez-decor-sala-01.webp",
-      "alt": "Masa de deserturi personalizata pentru botez",
-      "desc": "Masa de deserturi cu prajituri, cupcakes si cake pops personalizate cu tematica ursulet, decorata cu trandafiri albi si fotografii ale bebelusului."
+      "alt": "Masa de deserturi personalizată pentru botez",
+      "desc": "Masa de deserturi cu prăjituri, cupcakes și cake pops personalizate cu tematică ursuleț, decorată cu trandafiri albi și fotografii ale bebelușului."
      },
      {
       "img": "/assets/decoratiuni/botez-decor-sala-02.webp",
-      "alt": "Decor sala restaurant botez cu flori albe si fete de masa verde petrol",
-      "desc": "Aranjament de sala pentru botez la restaurant, cu mese imbracate elegant, flori albe naturale, lumanari plutitoare si fete de masa verde petrol."
+      "alt": "Decor sală restaurant botez cu flori albe și fețe de masă verde petrol",
+      "desc": "Aranjament de sală pentru botez la restaurant, cu mese îmbrăcate elegant, flori albe naturale, lumânări plutitoare și fețe de masă verde petrol."
      },
      {
       "img": "/assets/decoratiuni/botez-decor-sala-03.webp",
-      "alt": "Amenajare sala evenimente botez cu masa festiva si masa de deserturi",
-      "desc": "Vedere generala a salii de evenimente amenajate pentru botez, cu masa festiva decorata si masa de deserturi in plan secundar."
+      "alt": "Amenajare sală evenimente botez cu masa festivă și masa de deserturi",
+      "desc": "Vedere generală a sălii de evenimente amenajate pentru botez, cu masa festivă decorată și masa de deserturi în plan secundar."
      },
      {
       "img": "/assets/decoratiuni/botez-decor-sala-04.webp",
-      "alt": "Sala de evenimente pentru botez cu mese aranjate si iluminat ambiental",
-      "desc": "Sala spatioasa de evenimente cu mese aranjate pentru botez, lustre suspendate si lumina naturala din ferestrele mari."
+      "alt": "Sala de evenimente pentru botez cu mese aranjate și iluminat ambiental",
+      "desc": "Sala spațioasă de evenimente cu mese aranjate pentru botez, lustre suspendate și lumina naturală din ferestrele mari."
      },
      {
       "img": "/assets/decoratiuni/botez-decor-sala-05.webp",
-      "alt": "Detaliu masa botez cu trandafiri albi si lumanari plutitoare",
-      "desc": "Detaliu al unei mese festive de botez, cu trandafiri albi in vaze aurii, lumanari plutitoare si fata de masa verde petrol drapata."
+      "alt": "Detaliu masă botez cu trandafiri albi și lumânări plutitoare",
+      "desc": "Detaliu al unei mese festive de botez, cu trandafiri albi în vaze aurii, lumânări plutitoare și fața de masă verde petrol drapată."
      },
      {
       "img": "/assets/decoratiuni/botez-decor-sala-06.webp",
-      "alt": "Masa de botez cu decor bleumarin si auriu, baloane, meniuri personalizate si litere volumetrice pe fundal",
-      "desc": "Masa invitatilor in tema bleumarin cu auriu: baloane asortate, felinar de cristal, meniuri si place card-uri personalizate, cu litere volumetrice si ecran LED in fundal.",
+      "alt": "Masa de botez cu decor bleumarin și auriu, baloane, meniuri personalizate și litere volumetrice pe fundal",
+      "desc": "Masa invitaților în tema bleumarin cu auriu: baloane asortate, felinar de cristal, meniuri și place card-uri personalizate, cu litere volumetrice și ecran LED în fundal.",
       "portrait": true
      },
      {
       "img": "/assets/decoratiuni/botez-decor-sala-07.webp",
-      "alt": "Arcada organica de baloane bleumarin, auriu si alb, cu litere volumetrice iluminate si ecran LED",
-      "desc": "Arcada organica de baloane in bleumarin, auriu si alb, construita in jurul literelor volumetrice cu numele sarbatoritului si al ecranului LED de pe ringul de dans.",
+      "alt": "Arcadă organică de baloane bleumarin, auriu și alb, cu litere volumetrice iluminate și ecran LED",
+      "desc": "Arcadă organică de baloane în bleumarin, auriu și alb, construită în jurul literelor volumetrice cu numele sărbătoritului și al ecranului LED de pe ringul de dans.",
       "portrait": false
      }
     ]
@@ -242,9 +242,9 @@ window.DECOR_EVENTS = [
  {
   "name": "Gender Reveal",
   "slug": "gender-reveal",
-  "description": "Organizam decoruri personalizate pentru petreceri Gender Reveal, cu baloane, panouri foto, flori si elemente decorative premium. Fiecare proiect este creat pentru a transforma momentul dezvaluirii intr-o experienta memorabila pentru familie si invitati.",
+  "description": "Organizăm decoruri personalizate pentru petreceri Gender Reveal, cu baloane, panouri foto, flori și elemente decorative premium. Fiecare proiect este creat pentru a transforma momentul dezvăluirii într-o experiență memorabilă pentru familie și invitați.",
   "seoTitle": "Decor Gender Reveal Iași — Baloane & photo corner | The Big Boom Events",
-  "seoKeywords": "gender reveal Iasi, decor gender reveal, baloane gender reveal, party gender reveal, decor evenimente Iasi.",
+  "seoKeywords": "gender reveal Iași, decor gender reveal, baloane gender reveal, party gender reveal, decor evenimente Iași.",
   "hero": "/assets/decoratiuni/gender-reveal-photo-corner-01.webp",
   "categories": [
    {
@@ -252,63 +252,63 @@ window.DECOR_EVENTS = [
     "items": [
      {
       "img": "/assets/decoratiuni/gender-reveal-photo-corner-01.webp",
-      "alt": "Litere luminoase BABY cu baloane albe si vedere spre Palatul Culturii din Iasi",
-      "desc": "Colt foto pentru gender reveal cu litere luminoase supradimensionate BABY, incadrate de baloane albe organice si neonul Biutiful, pe o terasa cu vedere spre Palatul Culturii din Iasi."
+      "alt": "Litere luminoase BABY cu baloane albe și vedere spre Palatul Culturii din Iași",
+      "desc": "Colț foto pentru gender reveal cu litere luminoase supradimensionate BABY, încadrate de baloane albe organice și neonul Biutiful, pe o terasă cu vedere spre Palatul Culturii din Iași."
      },
      {
       "img": "/assets/decoratiuni/gender-reveal-photo-corner-02.webp",
-      "alt": "Arcada de baloane albe cu cuburi BABY si baloane Girl or Boy",
-      "desc": "Decor foto pentru gender reveal, cu arcada ampla din baloane albe organice, cuburi decorative cu litere BABY si doua baloane negre inscriptionate Girl or Boy, sub candelabre de cristal."
+      "alt": "Arcadă de baloane albe cu cuburi BABY și baloane Girl or Boy",
+      "desc": "Decor foto pentru gender reveal, cu arcadă amplă din baloane albe organice, cuburi decorative cu litere BABY și două baloane negre inscripționate Girl or Boy, sub candelabre de cristal."
      },
      {
       "img": "/assets/decoratiuni/gender-reveal-photo-corner-03.webp",
-      "alt": "Arcada de baloane piersica si crem cu floarea miresei si panou personalizat Ilinca",
-      "desc": "Colt foto pentru gender reveal cu arcada de baloane in nuante de piersica si crem, accente din floarea-miresei si un panou personalizat cu numele Ilinca pe drapaj alb."
+      "alt": "Arcadă de baloane piersică și crem cu floarea miresei și panou personalizat Ilinca",
+      "desc": "Colț foto pentru gender reveal cu arcadă de baloane în nuanțe de piersică și crem, accente din floarea-miresei și un panou personalizat cu numele Ilinca pe drapaj alb."
      }
     ]
    },
    {
-    "name": "Tort si Baloane Personalizate",
+    "name": "Tort și Baloane Personalizate",
     "items": [
      {
       "img": "/assets/decoratiuni/gender-reveal-tort-baloane-01.webp",
-      "alt": "Tort gender reveal He or She cu balon It's a Girl si baloane roz",
-      "desc": "Tort personalizat pentru gender reveal cu mesajul He or She? Can't wait to see!, alaturi de un balon transparent It's a Girl si baloane roz cu buline aurii."
+      "alt": "Tort gender reveal He or She cu balon It's a Girl și baloane roz",
+      "desc": "Tort personalizat pentru gender reveal cu mesajul He or She? Can't wait to see!, alături de un balon transparent It's a Girl și baloane roz cu buline aurii."
      },
      {
       "img": "/assets/decoratiuni/gender-reveal-tort-baloane-02.webp",
-      "alt": "Tort gender reveal cu balon It's a Boy si baloane albastre cu buline aurii",
-      "desc": "Acelasi tort gender reveal, fotografiat alaturi de un balon transparent It's a Boy si un buchet de baloane albastre cu buline aurii, pentru varianta baietel."
+      "alt": "Tort gender reveal cu balon It's a Boy și baloane albastre cu buline aurii",
+      "desc": "Același tort gender reveal, fotografiat alături de un balon transparent It's a Boy și un buchet de baloane albastre cu buline aurii, pentru varianta băiețel."
      },
      {
       "img": "/assets/decoratiuni/gender-reveal-tort-baloane-03.webp",
-      "alt": "Baloane negre Girl or Boy tinute in maini la petrecerea gender reveal",
-      "desc": "Doua baloane negre supradimensionate, inscriptionate Girl or Boy?, tinute de invitati in momentul de dezvaluire a genului bebelusului."
+      "alt": "Baloane negre Girl or Boy ținute în mâini la petrecerea gender reveal",
+      "desc": "Două baloane negre supradimensionate, inscripționate Girl or Boy?, ținute de invitați în momentul de dezvăluire a genului bebelușului."
      },
      {
       "img": "/assets/decoratiuni/gender-reveal-tort-baloane-04.webp",
       "alt": "Buchet de baloane roz personalizat MIRA cu balon A New Little Princess",
-      "desc": "Buchet generos de baloane in nuante de roz, argintiu si alb, cu un balon personalizat MIRA, un balon luna si un balon A New Little Princess, pentru o fetita."
+      "desc": "Buchet generos de baloane în nuanțe de roz, argintiu și alb, cu un balon personalizat MIRA, un balon luna și un balon A New Little Princess, pentru o fetiță."
      }
     ]
    },
    {
-    "name": "Decor Masa Dulciuri",
+    "name": "Decor Masă Dulciuri",
     "items": [
      {
       "img": "/assets/decoratiuni/gender-reveal-decor-masa-dulciuri-01.webp",
-      "alt": "Masa de dulciuri gender reveal cu baloane roz si albastre si banner Boy or Girl",
-      "desc": "Masa de dulciuri pentru petrecerea gender reveal, cu tort personalizat, prajituri, baloane roz si albastre It's a Girl si It's a Boy si un banner Boy or Girl."
+      "alt": "Masa de dulciuri gender reveal cu baloane roz și albastre și banner Boy or Girl",
+      "desc": "Masa de dulciuri pentru petrecerea gender reveal, cu tort personalizat, prăjituri, baloane roz și albastre It's a Girl și It's a Boy și un banner Boy or Girl."
      }
     ]
    },
    {
-    "name": "Aranjamente Florale si Baloane Tematice",
+    "name": "Aranjamente Florale și Baloane Tematice",
     "items": [
      {
       "img": "/assets/decoratiuni/gender-reveal-aranjamente-florale-01.webp",
-      "alt": "Aranjament cu hortensii albastre si baloane tematice Baby Boy",
-      "desc": "Aranjament floral generos din hortensii albastre, completat de baloane bej si bleu, un balon in forma de carucior Baby Boy si un panou cu ursuleti si nume personalizat."
+      "alt": "Aranjament cu hortensii albastre și baloane tematice Baby Boy",
+      "desc": "Aranjament floral generos din hortensii albastre, completat de baloane bej și bleu, un balon în formă de cărucior Baby Boy și un panou cu ursuleți și nume personalizat."
      }
     ]
    },
@@ -317,13 +317,13 @@ window.DECOR_EVENTS = [
     "items": [
      {
       "img": "/assets/decoratiuni/gender-reveal-decor-camera-baby-01.webp",
-      "alt": "Camera bebelusului decorata cu baloane roz si albe si litere luminoase BABY",
-      "desc": "Camera bebelusului decorata integral cu baloane roz si albe suspendate de tavan, litere luminoase BABY, un balon personalizat Baby Eden, un leagan alb si un buchet de flori proaspete."
+      "alt": "Camera bebelușului decorată cu baloane roz și albe și litere luminoase BABY",
+      "desc": "Camera bebelușului decorată integral cu baloane roz și albe suspendate de tavan, litere luminoase BABY, un balon personalizat Baby Eden, un leagăn alb și un buchet de flori proaspete."
      },
      {
       "img": "/assets/decoratiuni/gender-reveal-decor-camera-baby-02.webp",
-      "alt": "Detaliu decor camera bebelus cu balon personalizat Baby si baloane roz",
-      "desc": "Detaliu din camera bebelusului, cu un balon bubble personalizat Baby, baloane roz si baloane norisori bej, in fata unei draperii roz-pudra."
+      "alt": "Detaliu decor camera bebeluș cu balon personalizat Baby și baloane roz",
+      "desc": "Detaliu din camera bebelușului, cu un balon bubble personalizat Baby, baloane roz și baloane norișori bej, în fața unei draperii roz-pudră."
      }
     ]
    }
@@ -332,9 +332,9 @@ window.DECOR_EVENTS = [
  {
   "name": "Majorat",
   "slug": "majorat",
-  "description": "Fiecare majorat merita un decor spectaculos. Realizam decoruri personalizate cu baloane, flori naturale, panouri foto si accesorii premium, adaptate stilului si preferintelor sarbatoritului. Ne ocupam de fiecare detaliu pentru ca petrecerea sa fie exact asa cum ai visat.",
+  "description": "Fiecare majorat merită un decor spectaculos. Realizăm decoruri personalizate cu baloane, flori naturale, panouri foto și accesorii premium, adaptate stilului și preferințelor sărbătoritului. Ne ocupăm de fiecare detaliu pentru ca petrecerea să fie exact așa cum ai visat.",
   "seoTitle": "Decor Majorat Iași — Baloane & panouri personalizate | The Big Boom Events",
-  "seoKeywords": "decor majorat Iasi, baloane majorat, decor petrecere 18 ani, foto corner majorat, party decor Iasi.",
+  "seoKeywords": "decor majorat Iași, baloane majorat, decor petrecere 18 ani, foto corner majorat, party decor Iași.",
   "hero": "/assets/decoratiuni/majorat-panou-personalizat-01.webp",
   "categories": [
    {
@@ -342,18 +342,18 @@ window.DECOR_EVENTS = [
     "items": [
      {
       "img": "/assets/decoratiuni/majorat-panou-personalizat-01.webp",
-      "alt": "Decor majorat 18 ani cu perete de paiete auriu, panou Silvia Maria si buchet de trandafiri rosii",
-      "desc": "Decor glam pentru majorat, cu perete de paiete auriu-negru, panoul personalizat Silvia Maria 18, arcada de baloane albe, rosii si aurii, cifre luminoase 18 si un buchet de trandafiri rosii."
+      "alt": "Decor majorat 18 ani cu perete de paiete auriu, panou Silvia Maria și buchet de trandafiri roșii",
+      "desc": "Decor glam pentru majorat, cu perete de paiete auriu-negru, panoul personalizat Silvia Maria 18, arcadă de baloane albe, roșii și aurii, cifre luminoase 18 și un buchet de trandafiri roșii."
      },
      {
       "img": "/assets/decoratiuni/majorat-panou-personalizat-02.webp",
       "alt": "Decor majorat 18 ani verde-auriu cu panou personalizat Dragos",
-      "desc": "Decor de majorat in nuante de verde inchis, auriu si argintiu, cu stelute metalice decorative, numele Dragos pe fundal, arcada de baloane si cifrele luminoase 18."
+      "desc": "Decor de majorat în nuanțe de verde închis, auriu și argintiu, cu steluțe metalice decorative, numele Dragos pe fundal, arcadă de baloane și cifrele luminoase 18."
      },
      {
       "img": "/assets/decoratiuni/majorat-panou-personalizat-03.webp",
       "alt": "Decor majorat 18 ani negru-auriu cu panou personalizat Mario",
-      "desc": "Decor de majorat in tonuri de negru, auriu si alb, cu stelute argintii, numele Mario pe fundal arcuit, arcada de baloane si cifrele luminoase 18."
+      "desc": "Decor de majorat în tonuri de negru, auriu și alb, cu steluțe argintii, numele Mario pe fundal arcuit, arcadă de baloane și cifrele luminoase 18."
      }
     ]
    },
@@ -362,23 +362,23 @@ window.DECOR_EVENTS = [
     "items": [
      {
       "img": "/assets/decoratiuni/majorat-happy-birthday-neon-01.webp",
-      "alt": "Decor majorat 18 ani verde-auriu cu neon Happy Birthday si cifre luminoase",
-      "desc": "Decor elegant pentru majorat, in nuante de verde salvie, auriu si crem, cu neon Happy Birthday, arcada de baloane organice, frunze aurii si cifrele luminoase 18."
+      "alt": "Decor majorat 18 ani verde-auriu cu neon Happy Birthday și cifre luminoase",
+      "desc": "Decor elegant pentru majorat, în nuanțe de verde salvie, auriu și crem, cu neon Happy Birthday, arcadă de baloane organice, frunze aurii și cifrele luminoase 18."
      },
      {
       "img": "/assets/decoratiuni/majorat-happy-birthday-neon-02.webp",
-      "alt": "Decor majorat 18 ani negru-auriu cu Happy Birthday si cifre luminoase, sala cu vinuri",
-      "desc": "Decor de majorat in tonuri de negru, auriu si alb, cu arcada Happy Birthday, stelute argintii, baloane si cifrele luminoase 18, intr-o sala eleganta cu rafturi de vinuri."
+      "alt": "Decor majorat 18 ani negru-auriu cu Happy Birthday și cifre luminoase, sală cu vinuri",
+      "desc": "Decor de majorat în tonuri de negru, auriu și alb, cu arcadă Happy Birthday, steluțe argintii, baloane și cifrele luminoase 18, într-o sală elegantă cu rafturi de vinuri."
      },
      {
       "img": "/assets/decoratiuni/majorat-happy-birthday-neon-03.webp",
-      "alt": "Decor majorat 18 ani in nuante crem cu cifre 18 si balon Happy Birthday Radu",
-      "desc": "Decor rafinat de majorat in nuante crem si nude, cu cifrele 18 din folie, buchete de baloane crem, plante verzi si un balon personalizat Happy Birthday Radu."
+      "alt": "Decor majorat 18 ani în nuanțe crem cu cifre 18 și balon Happy Birthday Radu",
+      "desc": "Decor rafinat de majorat în nuanțe crem și nude, cu cifrele 18 din folie, buchete de baloane crem, plante verzi și un balon personalizat Happy Birthday Radu."
      },
      {
       "img": "/assets/decoratiuni/majorat-happy-birthday-neon-04.webp",
-      "alt": "Coloana de baloane pentru majorat cu cifrele 18 rose-gold",
-      "desc": "Coloana decorativa de baloane in nuante de bordo, argintiu si rose-gold, cu cifrele 18 din folie rose-gold in varf, realizata pentru un majorat."
+      "alt": "Coloană de baloane pentru majorat cu cifrele 18 rose-gold",
+      "desc": "Coloană decorativă de baloane în nuanțe de bordo, argintiu și rose-gold, cu cifrele 18 din folie rose-gold în vârf, realizată pentru un majorat."
      }
     ]
    }
@@ -387,88 +387,88 @@ window.DECOR_EVENTS = [
  {
   "name": "Corporate",
   "slug": "corporate",
-  "description": "Realizam decoruri profesionale pentru conferinte, lansari de produs, gale, petreceri corporate si evenimente private. Folosim flori naturale si elemente decorative premium pentru a crea un ambient elegant, care reflecta imaginea si valorile companiei.",
+  "description": "Realizăm decoruri profesionale pentru conferințe, lansări de produs, gale, petreceri corporate și evenimente private. Folosim flori naturale și elemente decorative premium pentru a crea un ambient elegant, care reflectă imaginea și valorile companiei.",
   "seoTitle": "Decor Evenimente Corporate Iași | The Big Boom Events",
-  "seoKeywords": "decor corporate Iasi, evenimente corporate Iasi, aranjamente florale corporate, decor conferinte, lansari de produs.",
+  "seoKeywords": "decor corporate Iași, evenimente corporate Iași, aranjamente florale corporate, decor conferințe, lansări de produs.",
   "hero": "/assets/decoratiuni/corporate-casino-01.webp",
   "categories": [
    {
-    "name": "Decor Petrecere Tematica Casino",
+    "name": "Decor Petrecere Tematică Casino",
     "items": [
      {
       "img": "/assets/decoratiuni/corporate-casino-01.webp",
-      "alt": "Decor petrecere tematica casino cu carti de joc suspendate si lumini neon",
-      "desc": "Sala de club amenajata in tematica casino, cu carti de joc supradimensionate si jetoane de poker suspendate de tavan, globuri luminoase si lumini neon albastre si rosii."
+      "alt": "Decor petrecere tematică casino cu cărți de joc suspendate și lumini neon",
+      "desc": "Sala de club amenajată în tematică casino, cu cărți de joc supradimensionate și jetoane de poker suspendate de tavan, globuri luminoase și lumini neon albastre și roșii."
      },
      {
       "img": "/assets/decoratiuni/corporate-casino-02.webp",
-      "alt": "Detaliu decor casino - carte de joc Regina si jeton de poker suspendate",
-      "desc": "Detaliu al decorului tematic casino, cu o carte de joc Regina de pica supradimensionata si un jeton de poker suspendate deasupra ringului, in lumina difuza a evenimentului."
+      "alt": "Detaliu decor casino - carte de joc Regina și jeton de poker suspendate",
+      "desc": "Detaliu al decorului tematic casino, cu o carte de joc Regina de pică supradimensionată și un jeton de poker suspendate deasupra ringului, în lumina difuză a evenimentului."
      }
     ]
    },
    {
-    "name": "Decor Gala si Revelion Corporate",
+    "name": "Decor Gala și Revelion Corporate",
     "items": [
      {
       "img": "/assets/decoratiuni/corporate-revelion-gala-01.webp",
-      "alt": "Centru de masa corporate cu pene rosii de strut si trandafiri rosii",
-      "desc": "Centru de masa spectaculos pentru gala corporate, cu pene rosii de strut inalte pe suport de cristal, trandafiri rosii, crengute de brad si lumanari cu funde din catifea rosie."
+      "alt": "Centru de masă corporate cu pene roșii de strut și trandafiri roșii",
+      "desc": "Centru de masă spectaculos pentru gala corporate, cu pene roșii de strut înalte pe suport de cristal, trandafiri roșii, crenguțe de brad și lumânări cu funde din catifea roșie."
      },
      {
       "img": "/assets/decoratiuni/corporate-revelion-gala-02.webp",
-      "alt": "Centru de masa Revelion corporate cu pene rosii si mesajul Happy New Year",
-      "desc": "Aranjament festiv de Revelion, cu pene rosii de strut, trandafiri rosii si crengute de brad, pe o masa eleganta cu mesajul Happy New Year."
+      "alt": "Centru de masă Revelion corporate cu pene roșii și mesajul Happy New Year",
+      "desc": "Aranjament festiv de Revelion, cu pene roșii de strut, trandafiri roșii și crenguțe de brad, pe o masă elegantă cu mesajul Happy New Year."
      },
      {
       "img": "/assets/decoratiuni/corporate-revelion-gala-03.webp",
-      "alt": "Masa festiva de Craciun cu fata de masa verde, lumanari visinii si brad cu funda rosie",
-      "desc": "Masa festiva de Craciun corporate, cu fata de masa verde catifelata, lumanari visinii, aranjamente de brad cu funde rosii si un brad decorat cu globuri rosii si funda mare de catifea."
+      "alt": "Masa festivă de Crăciun cu fața de masă verde, lumânări vișinii și brad cu funda roșie",
+      "desc": "Masa festivă de Crăciun corporate, cu fața de masă verde catifelată, lumânări vișinii, aranjamente de brad cu funde roșii și un brad decorat cu globuri roșii și funda mare de catifea."
      },
      {
       "img": "/assets/decoratiuni/corporate-revelion-gala-04.webp",
-      "alt": "Petrecere corporate de Revelion cu invitati, stele decorative si lumini rosii",
-      "desc": "Atmosfera de petrecere corporate de Revelion intr-un club plin de invitati, cu decor suspendat din stele metalice rosii si argintii, baloane si lumini scenice calde."
+      "alt": "Petrecere corporate de Revelion cu invitați, stele decorative și lumini roșii",
+      "desc": "Atmosfera de petrecere corporate de Revelion într-un club plin de invitați, cu decor suspendat din stele metalice roșii și argintii, baloane și lumini scenice calde."
      },
      {
       "img": "/assets/decoratiuni/corporate-revelion-gala-05.webp",
-      "alt": "Photo corner corporate cu draperii rosii de catifea si pene rosii",
-      "desc": "Colt foto pentru gala corporate, cu draperii de catifea rosie, sigla evenimentului iluminata, lumanari subtiri si aranjamente inalte din pene rosii de strut."
+      "alt": "Photo corner corporate cu draperii roșii de catifea și pene roșii",
+      "desc": "Colț foto pentru gala corporate, cu draperii de catifea roșie, sigla evenimentului iluminată, lumânări subțiri și aranjamente înalte din pene roșii de strut."
      }
     ]
    },
    {
-    "name": "Decor Petrecere Tematica Anii 90",
+    "name": "Decor Petrecere Tematică Anii 90",
     "items": [
      {
       "img": "/assets/decoratiuni/corporate-petrecere-90-01.webp",
-      "alt": "Decor petrecere anii 90 cu baloane disco argintii, globuri si accesorii neon",
-      "desc": "Colt tematic pentru petrecere anii '90, cu baloane argintii, globuri disco si stelute metalice, alaturi de un platou plin cu ochelari neon si betisoare luminoase pentru invitati."
+      "alt": "Decor petrecere anii 90 cu baloane disco argintii, globuri și accesorii neon",
+      "desc": "Colț tematic pentru petrecere anii '90, cu baloane argintii, globuri disco și steluțe metalice, alături de un platou plin cu ochelari neon și bețișoare luminoase pentru invitați."
      },
      {
       "img": "/assets/decoratiuni/corporate-petrecere-90-02.webp",
-      "alt": "Photo corner petrecere Back to the 90's cu baloane disco si rame foto",
-      "desc": "Decor foto complet Back to the 90's, cu arcada de baloane argintii si aurii, globuri disco, stelute metalizate, banner tematic si rame foto personalizate."
+      "alt": "Photo corner petrecere Back to the 90's cu baloane disco și rame foto",
+      "desc": "Decor foto complet Back to the 90's, cu arcadă de baloane argintii și aurii, globuri disco, steluțe metalizate, banner tematic și rame foto personalizate."
      }
     ]
    },
    {
-    "name": "Photo Corner si Branding Eveniment",
+    "name": "Photo Corner și Branding Eveniment",
     "items": [
      {
       "img": "/assets/decoratiuni/corporate-photo-corner-01.webp",
-      "alt": "Decor corporate cu neon Better Together, baloane calde si perete cu paiete",
-      "desc": "Decor de perete pentru eveniment corporate, cu inscriptia luminoasa neon Better Together, perete cu paiete aurii si un ciorchine de baloane in nuante calde de rosu, portocaliu si crem."
+      "alt": "Decor corporate cu neon Better Together, baloane calde și perete cu paiete",
+      "desc": "Decor de perete pentru eveniment corporate, cu inscripția luminoasă neon Better Together, perete cu paiete aurii și un ciorchine de baloane în nuanțe calde de roșu, portocaliu și crem."
      }
     ]
    },
    {
-    "name": "Decor Evenimente Nationale",
+    "name": "Decor Evenimente Naționale",
     "items": [
      {
       "img": "/assets/decoratiuni/corporate-eveniment-national-01.webp",
-      "alt": "Decor corporate Ziua Nationala cu baloane tricolor si stegulete",
-      "desc": "Decor tematic pentru un eveniment corporate dedicat zilei nationale, cu baloane in culorile drapelului (rosu, galben, albastru), stegulete si un tavan decorat cu flori si ramuri aurii."
+      "alt": "Decor corporate Ziua Națională cu baloane tricolor și stegulețe",
+      "desc": "Decor tematic pentru un eveniment corporate dedicat zilei naționale, cu baloane în culorile drapelului (roșu, galben, albastru), stegulețe și un tavan decorat cu flori și ramuri aurii."
      }
     ]
    }
