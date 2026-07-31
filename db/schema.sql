@@ -75,6 +75,11 @@ ALTER TABLE products ADD COLUMN IF NOT EXISTS addon_exclude_slugs TEXT[];
 -- care amesteca cifrele si literele (0-9 in trei culori ieseau intercalate, iar
 -- literele incepeau de la U). Valoare mica = mai sus; 0 = neordonat, cade la final.
 ALTER TABLE products ADD COLUMN IF NOT EXISTS sort_order INT NOT NULL DEFAULT 0;
+-- Suprascrie regula automata de retur (vezi returnPolicy din models/products.js).
+-- NULL = se aplica regula derivata din categorie/tip; TRUE/FALSE = decizie explicita.
+-- Cazul care a impus-o: lumanarile de cununie cu flori CRIOGENATE stau in
+-- categoria `florarie`, dar nu sunt perisabile, deci chiar pot fi returnate.
+ALTER TABLE products ADD COLUMN IF NOT EXISTS returnable BOOLEAN;
 
 -- Facturare pe firma (B2B). Clientul poate comanda ca persoana fizica (implicit)
 -- sau in numele unei firme, caz in care avem nevoie de datele de facturare.

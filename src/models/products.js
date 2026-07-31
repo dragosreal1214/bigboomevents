@@ -15,6 +15,13 @@ const NERETURNABIL_TIPURI = new Set([
 ]);
 
 function returnPolicy(row) {
+  // Suprascriere explicita din DB — bate orice regula derivata.
+  if (row.returnable === true) {
+    return { returnable: true, reason: 'Retur în 14 zile — nefolosit și în ambalajul original.' };
+  }
+  if (row.returnable === false) {
+    return { returnable: false, reason: 'Exceptat de la dreptul de retragere.' };
+  }
   if (row.category_slug === 'florarie') {
     return { returnable: false, reason: 'Produs perisabil — exceptat de la dreptul de retragere.' };
   }
