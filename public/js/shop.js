@@ -22,6 +22,14 @@
       { label: 'Baloane folie', types: 'folie-cifra,folie-litera,folie-figurina,folie-ocazii',
         subs: [['folie-cifra', 'Cifră'], ['folie-litera', 'Literă'], ['folie-figurina', 'Figurină'], ['folie-ocazii', 'Ocazii speciale']] },
       { label: 'Baloane latex', types: 'baloane-latex', subs: [] },
+      { label: 'Lumânări tort', types: 'lumanari-tort', subs: [] },
+      { label: 'Accesorii petrecere',
+        types: 'acc-cake-topper,acc-farfurii,acc-pahare,acc-servetele,acc-coifuri,acc-photo-props,acc-ghirlande,acc-gender-reveal,acc-placute,acc-tablite,acc-pungi,accesorii-party',
+        subs: [['acc-cake-topper', 'Cake topper'], ['acc-farfurii', 'Farfurii'], ['acc-pahare', 'Pahare'],
+               ['acc-servetele', 'Șervețele'], ['acc-coifuri', 'Coifuri'], ['acc-photo-props', 'Photo props'],
+               ['acc-ghirlande', 'Ghirlande'], ['acc-gender-reveal', 'Gender reveal'],
+               ['acc-placute', 'Plăcuțe cadou'], ['acc-tablite', 'Tăblițe Groom & Bride'],
+               ['acc-pungi', 'Pungi cadou']] },
     ],
   };
   const treeFor = (cat) => CATEGORY_TREE[cat] || [];
@@ -119,7 +127,7 @@
   const state = {
     q: '', category: '', type: '', occasion: '', color: '', collection: '',
     minPrice: '', maxPrice: '', inStock: false,
-    sort: 'nou', page: 1, pageSize: 9, totalPages: 1, total: 0,
+    sort: 'recomandat', page: 1, pageSize: 9, totalPages: 1, total: 0,
   };
 
   // ---------- URL SYNC ----------
@@ -140,7 +148,7 @@
     state.minPrice = u.get('minPrice') || '';
     state.maxPrice = u.get('maxPrice') || '';
     state.inStock = u.get('inStock') === 'true';
-    state.sort = u.get('sort') || 'nou';
+    state.sort = u.get('sort') || 'recomandat';
   }
   function writeURL() {
     const onPath = pathCategory();
@@ -345,7 +353,7 @@
     inStock.addEventListener('change', (e) => { state.inStock = e.target.checked; reset(); });
 
     document.querySelector('[data-clear-filters]').addEventListener('click', () => {
-      Object.assign(state, { q: '', category: '', type: '', occasion: '', color: '', collection: '', minPrice: '', maxPrice: '', inStock: false, sort: 'nou', page: 1 });
+      Object.assign(state, { q: '', category: '', type: '', occasion: '', color: '', collection: '', minPrice: '', maxPrice: '', inStock: false, sort: 'recomandat', page: 1 });
       location.search = '';
     });
 

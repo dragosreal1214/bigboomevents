@@ -161,6 +161,12 @@ window.DECOR_EVENTS = [
       "alt": "Lumanare de botez pentru baietel, cu ursulet si flori albe si albastre",
       "desc": "Lumanare de botez pentru baietel, in nuante de alb si albastru: hortensii, trandafiri si lisianthus albi, frezii si orhidee albastru-mov, cu un ursulet plusat. Aranjament delicat, potrivit pentru cel mai important moment.",
       "portrait": true
+     },
+     {
+      "img": "/assets/decoratiuni/botez-lumanari-02.webp",
+      "alt": "Lumanare de botez baiat, decorata cu hortensie alba, lisianthus, orhidee cymbidium albastre si ursulet de plus",
+      "desc": "Lumanare de botez pentru baiat, cu aranjament bogat de hortensie alba, lisianthus, frezii si orhidee cymbidium in nuante de albastru, completat de un ursulet de plus alb.",
+      "portrait": true
      }
     ]
    },
@@ -216,6 +222,18 @@ window.DECOR_EVENTS = [
       "img": "/assets/decoratiuni/botez-decor-sala-05.webp",
       "alt": "Detaliu masa botez cu trandafiri albi si lumanari plutitoare",
       "desc": "Detaliu al unei mese festive de botez, cu trandafiri albi in vaze aurii, lumanari plutitoare si fata de masa verde petrol drapata."
+     },
+     {
+      "img": "/assets/decoratiuni/botez-decor-sala-06.webp",
+      "alt": "Masa de botez cu decor bleumarin si auriu, baloane, meniuri personalizate si litere volumetrice pe fundal",
+      "desc": "Masa invitatilor in tema bleumarin cu auriu: baloane asortate, felinar de cristal, meniuri si place card-uri personalizate, cu litere volumetrice si ecran LED in fundal.",
+      "portrait": true
+     },
+     {
+      "img": "/assets/decoratiuni/botez-decor-sala-07.webp",
+      "alt": "Arcada organica de baloane bleumarin, auriu si alb, cu litere volumetrice iluminate si ecran LED",
+      "desc": "Arcada organica de baloane in bleumarin, auriu si alb, construita in jurul literelor volumetrice cu numele sarbatoritului si al ecranului LED de pe ringul de dans.",
+      "portrait": false
      }
     ]
    }

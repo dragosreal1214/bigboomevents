@@ -71,6 +71,11 @@ ALTER TABLE products ADD COLUMN IF NOT EXISTS addon_slugs TEXT[];
 -- Add-on-uri de categorie care NU se aplică produsului (ex. heliul de 50 lei al
 -- cifrelor de 100 cm nu are ce căuta pe un balon mic).
 ALTER TABLE products ADD COLUMN IF NOT EXISTS addon_exclude_slugs TEXT[];
+-- Ordinea de afisare in shop. Fara ea sortarea implicita era `created_at DESC`,
+-- care amesteca cifrele si literele (0-9 in trei culori ieseau intercalate, iar
+-- literele incepeau de la U). Valoare mica = mai sus; 0 = neordonat, cade la final.
+ALTER TABLE products ADD COLUMN IF NOT EXISTS sort_order INT NOT NULL DEFAULT 0;
+CREATE INDEX IF NOT EXISTS products_sort_idx ON products (category_id, sort_order, name);
 
 CREATE INDEX IF NOT EXISTS idx_products_category ON products(category_id);
 CREATE INDEX IF NOT EXISTS idx_products_addon    ON products(is_addon);

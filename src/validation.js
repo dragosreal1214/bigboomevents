@@ -27,7 +27,7 @@ export const productQuerySchema = z.object({
     .enum(['true', 'false', '1', '0'])
     .transform((v) => v === 'true' || v === '1')
     .optional(),
-  sort: z.enum(['nou', 'pret-asc', 'pret-desc', 'nume']).default('nou'),
+  sort: z.enum(['recomandat', 'nou', 'pret-asc', 'pret-desc', 'nume']).default('recomandat'),
   page: z.coerce.number().int().min(1).max(10000).default(1),
   pageSize: z.coerce.number().int().min(1).max(48).default(12),
 });
