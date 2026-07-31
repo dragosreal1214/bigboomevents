@@ -973,13 +973,11 @@ a:focus-visible, button:focus-visible, .chip:focus-visible, input:focus-visible,
     rgba(24,14,24,.9) 2%, rgba(24,14,24,.55) 34%, rgba(24,14,24,.15) 62%, transparent 84%); }
 .choice > * { position: relative; z-index: 2; }
 .choice .text { display: flex; flex-direction: column; gap: 5px; align-items: center; }
-.choice h2 { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 23px; line-height: 1.12;
-  color: #fff; text-shadow: 0 2px 14px rgba(0,0,0,.5); }
-.choice .desc { color: rgba(255,255,255,.9); font-size: 14px; line-height: 1.45; text-shadow: 0 1px 10px rgba(0,0,0,.55); }
-.choice .go { margin-top: 4px; font-weight: 600; font-size: 14px; color: #fff; display: inline-flex; align-items: center; gap: 6px;
-  text-shadow: 0 1px 10px rgba(0,0,0,.55); }
-.choice .go svg { width: 16px; height: 16px; transition: transform .2s; }
-.choice:hover .go svg { transform: translateX(4px); }
+/* Pe card a ramas doar titlul (fara subtext si fara „Intra") — deci e putin
+   mai mare, iar accentul de hover s-a mutat de pe sageata pe el. */
+.choice h2 { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 26px; line-height: 1.12;
+  color: #fff; text-shadow: 0 2px 14px rgba(0,0,0,.5); transition: transform .25s; }
+.choice:hover h2 { transform: translateY(-2px); }
 .choice.c-florarie::before    { background-image: url("/assets/portal/florarie.webp?v2"); }
 .choice.c-baloane::before     { background-image: url("/assets/portal/baloane.webp?v2"); }
 .choice.c-decoratiuni::before { background-image: url("/assets/portal/decoratiuni.webp?v2"); }
@@ -1000,13 +998,10 @@ a:focus-visible, button:focus-visible, .chip:focus-visible, input:focus-visible,
   .portal { place-items: start center; }
   .portal h1 { font-size: clamp(21px, 5.6vw, 34px); }
   .choices { grid-template-columns: 1fr; gap: 14px; }
-  .choice { flex-direction: row; align-items: center; gap: 14px; min-height: 112px; padding: 18px 42px 18px 18px; text-align: left; }
+  .choice { flex-direction: row; align-items: center; gap: 14px; min-height: 112px; padding: 18px; text-align: left; }
   .choice .ic { width: 54px; height: 54px; }
   .choice .text { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; align-items: flex-start; } /* min-width:0 → textul se rupe, nu împinge cardul */
-  .choice h2 { font-size: 20px; }
-  /* pe mobil: doar chevron centrat în dreapta (fără textul „Intră"), ca într-o listă */
-  .choice .go { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); margin: 0; font-size: 0; color: var(--ink-soft); }
-  .choice .go svg { width: 20px; height: 20px; }
+  .choice h2 { font-size: 21px; }
 }
 
 /* Intrare în cascadă (neutralizată automat de blocul reduce de mai sus) */
