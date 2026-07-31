@@ -12,3 +12,6 @@ pids/
 .pm2/
 public/assets/uploads/*
 !public/assets/uploads/.gitkeep
+
+# Date de deploy (host, user, cheie, cai) — repo-ul e public
+DEPLOY.local.md

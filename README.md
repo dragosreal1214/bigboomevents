@@ -158,11 +158,11 @@ Aceste valori se schimbă ușor dintr-un singur loc.
 
 ## Deploy — PRODUCȚIE (live, HTTPS)
 
-Site-ul rulează pe VPS-ul SiteBunker (Ubuntu 24.04), live pe **https://thebigboomevents.ro**
+Site-ul rulează pe un VPS Ubuntu, live pe **https://thebigboomevents.ro**
 (+ `www`) și magazinul pe **https://shop.thebigboomevents.ro**. Panou: **/admin**.
 Arhitectură: `Cloudflare DNS → nginx (static + proxy /api, redirect HTTP→HTTPS) → Node/pm2 (127.0.0.1:3000) → PostgreSQL`.
 
-- **DNS**: Cloudflare (nameservere `nameserverele Cloudflare`), 3× A record (`@`, `www`, `shop`) → `$DEPLOY_HOST`, „DNS only".
+- **DNS**: Cloudflare, 3× A record (`@`, `www`, `shop`) → IP-ul de origine al VPS-ului.
 - **SSL**: Let's Encrypt (certbot), reînnoire automată prin `certbot.timer`. Re-rulează `~/enable-ssl.sh` pentru subdomenii noi.
 - **Routing**: URL-uri curate (fără `.html`). Magazinul stă pe subdomeniu; paginile de shop pe domeniul principal → 301 spre subdomeniu (și invers pentru paginile de brand). Nav-ul e conștient de domeniu (`app.js`).
 - **Coș**: apare doar pe paginile de magazin (`data-page="shop"`).
@@ -176,19 +176,21 @@ Arhitectură: `Cloudflare DNS → nginx (static + proxy /api, redirect HTTP→HT
 - Poze urcate din panou: `UPLOAD_DIR=$WEB_DIR/assets/uploads` (servite de nginx)
 - Secrete: doar în `$APP_DIR/.env` (chmod 600) — NU în git.
 
-**Re-deploy (din mașina cu cheia `$SSH_KEY`)**
+**Re-deploy.** Valorile reale (host, user, cale către cheie, directoare) sunt în
+`DEPLOY.local.md` — fișier negitat, ține-l doar local.
 ```bash
+SSH="ssh -i $SSH_KEY"; TARGET="$DEPLOY_USER@$DEPLOY_HOST"
 # backend
-rsync -az -e "ssh -i $SSH_KEY" --exclude node_modules --exclude .env --exclude .git \
-  src db scripts package.json $DEPLOY_USER@$DEPLOY_HOST:$APP_DIR/
+rsync -az -e "$SSH" --exclude node_modules --exclude .env --exclude .git \
+  src db scripts package.json "$TARGET:$APP_DIR/"
 # frontend
-rsync -az -e "ssh -i $SSH_KEY" public/ $DEPLOY_USER@$DEPLOY_HOST:$WEB_DIR/
+rsync -az -e "$SSH" public/ "$TARGET:$WEB_DIR/"
 # repornire backend
-ssh -i $SSH_KEY $DEPLOY_USER@$DEPLOY_HOST 'cd $APP_DIR && npm install --omit=dev && pm2 restart bigboom-api'
+$SSH "$TARGET" "cd $APP_DIR && npm install --omit=dev && pm2 restart bigboom-api"
 ```
 pm2 e configurat să pornească la boot (`pm2 startup` + `pm2 save`); Postgres și nginx sunt servicii systemd.
 
 **Rămas de făcut** (depinde de decizii/conturi externe):
-- Domeniu (`.ro` vs `.com`) → DNS A `@`/`www` → `$DEPLOY_HOST` → apoi `server_name` + `certbot --nginx` (SSL).
+- Domeniu (`.ro` vs `.com`) → DNS A `@`/`www` → IP-ul de origine → apoi `server_name` + `certbot --nginx` (SSL).
 - Email pe domeniu (MX + SPF/DKIM) + `EMAIL_PROVIDER=resend|brevo`.
 - Credențiale Netopia (sandbox→live) + pagini legale completate.

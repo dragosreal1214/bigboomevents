@@ -64,7 +64,7 @@ Convenții care necesită mai multe fișiere pentru a fi înțelese:
 
 ## Production deployment
 
-Live: **https://thebigboomevents.ro** + **https://shop.thebigboomevents.ro** (panou `/admin`). VPS SiteBunker (Ubuntu 24.04), `ssh -i $SSH_KEY $DEPLOY_USER@$DEPLOY_HOST` . Topologie: `Cloudflare DNS → nginx (static + proxy /api, HTTP→HTTPS) → Node/pm2 (127.0.0.1:3000) → PostgreSQL`.
+Live: **https://thebigboomevents.ro** + **https://shop.thebigboomevents.ro**. VPS Ubuntu; datele de acces (host, user, cheie SSH) sunt în `DEPLOY.local.md`, negitat. Topologie: `Cloudflare DNS → nginx (static + proxy /api, HTTP→HTTPS) → Node/pm2 (127.0.0.1:3000) → PostgreSQL`.
 
 - Backend: `$APP_DIR` (pm2 `bigboom-api`, pornește la boot). Frontend: `$WEB_DIR`. Secrete doar în `$APP_DIR/.env` (chmod 600) — NU în git.
 - nginx: `/etc/nginx/sites-available/bigboom` + snippets în `/etc/nginx/snippets/` (securitate, proxy) + `/etc/nginx/conf.d/bigboom-global.conf`. Headere securitate (HSTS/CSP/X-Frame-Options/nosniff), `server_tokens off`, rate-limit pe `/api/admin/login`. CSP-ul din nginx trebuie să rămână aliniat cu CSP-ul helmet din `server.js`.
@@ -73,6 +73,6 @@ Live: **https://thebigboomevents.ro** + **https://shop.thebigboomevents.ro** (pa
 - **Conținutul `seed.sql`:** categoria `florarie` = **catalogul real BigBoomEvents** (18 produse, imagini locale în `public/assets/products/*.jpg`); `baloane`/`fun` = încă demo (servicii reale, dar fără date reale de catalog). E idempotent (upsert pe `slug`).
 - **Ștergerea produselor respectă FK-ul `order_items_product_id_fkey` (`ON DELETE RESTRICT`):** un produs care a fost vreodată comandat NU poate fi `DELETE`-uit. Pattern sigur (vezi cleanup-ul demo din `seed.sql`): `UPDATE ... SET is_active=FALSE WHERE id IN (SELECT product_id FROM order_items)` (ascunde din shop, păstrează istoricul) + `DELETE ... WHERE id NOT IN (SELECT product_id FROM order_items)`.
 - SSL: Let's Encrypt, auto-renew via `certbot.timer`; `~/enable-ssl.sh` adaugă SSL pentru subdomenii noi.
-- **Cod versionat în git** (de la 2026-06): repo privat `github.com/dragosreal1214/bigboomevents` (`gh` logat ca `dragosreal1214`). `.env` e gitignored; doar `.env.example` (placeholdere) e urcat. `.git` nu se transferă pe server (rsync îl exclude).
+- **Cod versionat în git** (de la 2026-06): repo **public** `github.com/dragosreal1214/bigboomevents` (`gh` logat ca `dragosreal1214`). Fiind public, în fișierele versionate NU intră IP-ul de origine, userul SSH, numele cheii sau căile de pe server — sunt în `DEPLOY.local.md` (gitignored). Originea e ascunsă în spatele Cloudflare (proxy activ); expunerea IP-ului ar permite ocolirea lui. `.env` e gitignored; doar `.env.example` (placeholdere) e urcat. `.git` nu se transferă pe server (rsync îl exclude).
 
 Detalii suplimentare de stare (ce e încă de făcut: email pe domeniu, credențiale Netopia, date firmă în paginile legale) sunt în `~/.claude/.../memory/deploy-state.md` și în secțiunea Deploy din `README.md`.
