@@ -73,7 +73,21 @@
     if (meta.deliverySlot && form.elements['deliverySlot']) form.elements['deliverySlot'].value = meta.deliverySlot;
   }
 
+  // Plata cu cardul se afiseaza DOAR daca serverul o raporteaza disponibila.
+  // Porneste ascunsa in HTML: daca apelul pica, clientul vede doar ramburs —
+  // mai bine decat sa aleaga cardul si sa primeasca eroare dupa ce comanda
+  // a fost deja creata.
+  async function revealCardOption() {
+    const box = document.querySelector('[data-pay-card]');
+    if (!box) return;
+    try {
+      const m = await API.get('/payment-methods');
+      if (m && m.card) box.hidden = false;
+    } catch { /* ramane ascunsa */ }
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
+    revealCardOption();
     renderSummary();
     document.addEventListener('bbe:cart', renderSummary);
 

@@ -21,6 +21,9 @@ router.post(
     if (!result) throw notFound('Comandă inexistentă');
     const { order, items } = result;
 
+    if (!config.netopia.cardEnabled) {
+      throw badRequest('Plata cu cardul este momentan indisponibilă. Te rugăm să alegi plata ramburs.');
+    }
     if (order.payment_method !== 'card') {
       throw badRequest('Comanda nu este cu plată card.');
     }

@@ -21,7 +21,10 @@
   const box = document.querySelector('[data-product]');
 
   // intervale orare propuse pentru livrare
-  const SLOTS = ['09:00 – 12:00', '12:00 – 15:00', '15:00 – 18:00', '18:00 – 21:00'];
+  // Programul de livrare e 09:00–18:00; lista trebuie să rămână identică cu
+  // cea din <select> din checkout.html, altfel intervalul ales pe pagina de
+  // produs nu se mai pre-completează la finalizarea comenzii.
+  const SLOTS = ['09:00 – 12:00', '12:00 – 15:00', '15:00 – 18:00'];
   // data minimă selectabilă = azi (YYYY-MM-DD, în fus local)
   function todayISO() {
     const d = new Date();

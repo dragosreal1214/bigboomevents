@@ -3,6 +3,7 @@ import { asyncHandler, notFound } from '../utils/http.js';
 import { parseOrThrow, productQuerySchema } from '../validation.js';
 import { listProducts, getProductBySlug, listCategories, listAddons } from '../models/products.js';
 import { getBanner } from '../models/settings.js';
+import config from '../config.js';
 
 const router = Router();
 
@@ -13,6 +14,13 @@ router.get(
     res.json({ banner: await getBanner() });
   })
 );
+
+// GET /api/payment-methods — ce metode de plata sunt disponibile acum (public).
+// Frontendul ascunde optiunea de card cand e dezactivata, ca sa nu lase clientul
+// sa ajunga la checkout cu o metoda care ar esua.
+router.get('/payment-methods', (_req, res) => {
+  res.json({ card: Boolean(config.netopia.cardEnabled), cod: true });
+});
 
 // GET /api/categories
 router.get(

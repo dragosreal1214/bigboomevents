@@ -74,6 +74,12 @@ const config = {
     get configured() {
       return Boolean(this.apiKey && this.posSignature);
     },
+    // Comutator separat de `configured`: credentialele pot fi corecte, dar
+    // punctul de vanzare sa nu fie inca aprobat de Netopia — caz in care
+    // /payment/card/start intoarce „POS is not approved" si clientul ar ramane
+    // cu o comanda creata si o eroare tehnica in loc de pagina de plata.
+    // Pune CARD_PAYMENTS_ENABLED=false ca sa ascunzi complet optiunea.
+    cardEnabled: process.env.CARD_PAYMENTS_ENABLED !== 'false',
   },
 
   // Director unde se salvează pozele urcate din panou.
