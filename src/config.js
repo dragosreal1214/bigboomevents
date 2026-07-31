@@ -64,7 +64,11 @@ const config = {
     baseUrl:
       process.env.NETOPIA_BASE_URL ||
       ((process.env.NETOPIA_MODE || 'sandbox').toLowerCase() === 'live'
-        ? process.env.NETOPIA_BASE_URL_LIVE || 'https://secure.mobilpay.ro/pay'
+        // ATENTIE: pe live endpointul v2 sta sub /api, pe sandbox NU.
+        // Verificat: POST .../api/payment/card/start -> 401 (exista),
+        // POST .../payment/card/start -> 302 catre site-ul de prezentare.
+        // `secure.mobilpay.ro/pay` era URL-ul API-ului v1 si ar fi rupt platile.
+        ? process.env.NETOPIA_BASE_URL_LIVE || 'https://secure.netopia-payments.com/api'
         : process.env.NETOPIA_BASE_URL_SANDBOX ||
           'https://secure.sandbox.netopia-payments.com'),
     get configured() {

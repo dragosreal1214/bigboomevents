@@ -4,8 +4,8 @@ import { query, withTransaction } from '../db.js';
 import { getProductsByIds } from './products.js';
 import { HttpError } from '../utils/http.js';
 
-// Cost livrare: gratuit peste 250 lei, altfel 25 lei. Rambursul nu schimbă livrarea.
-const FREE_SHIPPING_THRESHOLD = 25000; // cents
+// Cost livrare: gratuit peste 500 lei, altfel 25 lei. Rambursul nu schimbă livrarea.
+const FREE_SHIPPING_THRESHOLD = 50000; // cents (500 lei)
 const SHIPPING_FEE = 2500; // cents
 
 export function computeShipping(subtotalCents) {

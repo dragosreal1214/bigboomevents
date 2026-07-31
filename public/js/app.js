@@ -268,7 +268,7 @@
     <div class="drawer-foot">
       <div class="total"><span class="lbl">Subtotal</span><span class="amt" data-cart-total>0 lei</span></div>
       <a class="btn btn-primary btn-block" href="/checkout" data-checkout-link>Finalizează comanda</a>
-      <p class="note">Livrare gratuită peste 250 lei · plată card sau ramburs.</p>
+      <p class="note">Livrare gratuită peste 500 lei · plată card sau ramburs.</p>
     </div>
   </aside>`;
 

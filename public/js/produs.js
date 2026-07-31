@@ -174,7 +174,7 @@
               <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
             </button>
           </div>
-          <p class="note" style="text-align:left;margin-top:18px">🚚 Livrare gratuită peste 250 lei · plată card sau ramburs · retur 14 zile.</p>
+          <p class="note" style="text-align:left;margin-top:18px">🚚 Livrare gratuită peste 500 lei · plată card sau ramburs · retur 14 zile.</p>
         </div>
       </div>`;
 

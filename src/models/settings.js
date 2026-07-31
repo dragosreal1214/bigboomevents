@@ -7,7 +7,7 @@ import { query } from '../db.js';
 // Config implicit pentru banner (dacă rândul lipsește din DB).
 export const BANNER_DEFAULT = {
   enabled: false,
-  text: 'Livrare gratuită la comenzi peste 250 lei',
+  text: 'Livrare gratuită la comenzi peste 500 lei',
   bgColor: '#111111',
   textColor: '#ffffff',
   speed: 30, // secunde pentru o buclă completă (mai mic = mai rapid)
