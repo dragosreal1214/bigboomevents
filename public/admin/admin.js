@@ -1074,6 +1074,14 @@
         <div class="od-row"><span>Email</span><a href="mailto:${esc(o.customer.email)}">${esc(o.customer.email)}</a></div>
         <div class="od-row"><span>Telefon</span><a href="tel:${esc(o.customer.phone)}">${esc(o.customer.phone)}</a></div>
       </div>
+      ${o.company ? `
+      <div class="od-section">
+        <h4>Facturare pe firmă</h4>
+        <div class="od-row"><span>Denumire</span><b>${esc(o.company.name || '')}</b></div>
+        <div class="od-row"><span>CUI</span><b>${esc(o.company.cui || '')}</b></div>
+        ${o.company.regCom ? `<div class="od-row"><span>Reg. Com.</span><b>${esc(o.company.regCom)}</b></div>` : ''}
+        ${o.company.address ? `<div class="od-row"><span>Sediu social</span><b>${esc(o.company.address)}</b></div>` : ''}
+      </div>` : ''}
       <div class="od-section">
         <h4>Livrare</h4>
         <div class="od-row"><span>Adresă</span><b>${esc(o.address.address)}</b></div>

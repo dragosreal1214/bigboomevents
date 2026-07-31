@@ -3,7 +3,37 @@ import { query } from '../db.js';
 import { slugify } from '../utils/slug.js';
 
 // Mapează rândul DB în forma trimisă către frontend (prețuri în lei + în cents).
+// Dreptul de retragere in 14 zile NU se aplica la tot (vezi /retur):
+//  - florile si aranjamentele proaspete sunt perisabile;
+//  - pachetele si decorul de eveniment sunt prestatii/produse la comanda.
+// Baloanele NEUMFLATE se pot returna — de aceea nota le insoteste cu conditia
+// ambalajului original; heliul se alege ca extra-optiune, iar odata umflat
+// balonul intra la exceptii.
+const NERETURNABIL_TIPURI = new Set([
+  'pachet-1-an', 'pachet-5-ani', 'pachet-18-ani', 'pachet-25-ani', 'pachet-30-ani',
+  'pachet-50-ani', 'pachet-80-ani', 'pachet-bride', 'set-baloane', 'baby-shower',
+]);
+
+function returnPolicy(row) {
+  if (row.category_slug === 'florarie') {
+    return { returnable: false, reason: 'Produs perisabil — exceptat de la dreptul de retragere.' };
+  }
+  if (NERETURNABIL_TIPURI.has(row.product_type)) {
+    return { returnable: false, reason: 'Pregătit la comandă — exceptat de la dreptul de retragere.' };
+  }
+  // „Neumflat" are sens doar la baloane; la accesorii ar suna aiurea.
+  const eBalon = typeof row.product_type === 'string' &&
+    (row.product_type.startsWith('folie-') || row.product_type === 'baloane-latex');
+  return {
+    returnable: true,
+    reason: eBalon
+      ? 'Retur în 14 zile — neumflat și în ambalajul original.'
+      : 'Retur în 14 zile — nefolosit și în ambalajul original.',
+  };
+}
+
 function mapProduct(row) {
+  const ret = returnPolicy(row);
   return {
     id: row.id,
     slug: row.slug,
@@ -22,6 +52,8 @@ function mapProduct(row) {
     colors: row.colors || [],
     images: row.images || [],
     isAddon: row.is_addon === true,
+    returnable: ret.returnable,
+    returnNote: ret.reason,
   };
 }
 

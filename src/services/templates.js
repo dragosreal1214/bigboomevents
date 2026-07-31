@@ -59,6 +59,7 @@ export function orderConfirmationToCustomer(order, items) {
     <p>Livrare la: ${esc(order.ship_address)}, ${esc(order.ship_city)}, ${esc(order.ship_county)}</p>
     ${order.delivery_date ? `<p>Livrare dorită: <strong>${fmtDate(order.delivery_date)}${order.delivery_slot ? ` · ${esc(order.delivery_slot)}` : ''}</strong></p>` : ''}
     ${order.gift_message ? `<p>Mesaj felicitare: „${esc(order.gift_message)}"</p>` : ''}
+    ${companyBlock(order)}
     <p style="color:#6F6270;font-size:13px">Te contactăm în curând pentru confirmarea detaliilor.</p>
     <p style="color:#9A8E98;font-size:12px;margin-top:18px">Acesta este un mesaj automat — te rugăm să nu răspunzi la acest email. Pentru orice întrebare, sună-ne la <a href="tel:+40755436904" style="color:#9A8E98">0755 436 904</a>.</p>`;
   return {
@@ -66,6 +67,20 @@ export function orderConfirmationToCustomer(order, items) {
     html: shell('Comanda ta a fost primită', inner),
     text: `Comanda ${order.order_number} primită. Total ${formatLei(order.total_cents)}.`,
   };
+}
+
+// Datele de facturare, doar pentru comenzile pe firmă (altfel string gol).
+// Ies în ambele emailuri: clientul vede pe ce firmă se emite factura, iar
+// contabilitatea are CUI-ul fără să mai intre în panou.
+function companyBlock(order) {
+  if (order.billing_type !== 'company' || !order.company_name) return '';
+  const line = [
+    `<strong>${esc(order.company_name)}</strong>`,
+    `CUI ${esc(order.company_cui || '')}`,
+    order.company_reg_com ? `Reg. Com. ${esc(order.company_reg_com)}` : '',
+    order.company_address ? esc(order.company_address) : '',
+  ].filter(Boolean).join(' · ');
+  return `<p style="margin-top:12px">🧾 Factură pe firmă: ${line}</p>`;
 }
 
 // ─── Notificare comandă nouă pentru admin ───
@@ -78,6 +93,7 @@ export function orderNotificationToAdmin(order, items) {
     <p>Adresă: ${esc(order.ship_address)}, ${esc(order.ship_city)}, ${esc(order.ship_county)} ${order.ship_postcode || ''}</p>
     ${order.delivery_date ? `<p><strong>Livrare dorită: ${fmtDate(order.delivery_date)}${order.delivery_slot ? ` · ${esc(order.delivery_slot)}` : ''}</strong></p>` : ''}
     ${order.gift_message ? `<p>📝 Felicitare: „${esc(order.gift_message)}"</p>` : ''}
+    ${companyBlock(order)}
     ${order.notes ? `<p>Mențiuni: ${esc(order.notes)}</p>` : ''}`;
   return {
     subject: `🛒 Comandă nouă ${order.order_number} — ${formatLei(order.total_cents)}`,

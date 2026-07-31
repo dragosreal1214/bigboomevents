@@ -177,7 +177,12 @@
               <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
             </button>
           </div>
-          <p class="note" style="text-align:left;margin-top:18px">🚚 Livrare gratuită peste 500 lei · plată card sau ramburs · retur 14 zile.</p>
+          <p class="note" style="text-align:left;margin-top:18px">🚚 Livrare gratuită peste 500 lei · plată card sau ramburs.</p>
+          <p class="note" style="text-align:left;margin-top:6px">${
+            p.returnable
+              ? `↩️ <a href="${urls.retur}">${esc(p.returnNote || 'Retur în 14 zile.')}</a>`
+              : `ℹ️ ${esc(p.returnNote || 'Exceptat de la dreptul de retragere.')} <a href="${urls.retur}">Detalii</a>`
+          }</p>
         </div>
       </div>`;
 

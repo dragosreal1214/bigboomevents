@@ -56,6 +56,17 @@ export const createOrderSchema = z.object({
     address: z.string().trim().min(4, 'Adresă prea scurtă').max(240),
     postcode: z.string().trim().max(12, 'Cod poștal prea lung').optional().or(z.literal('')),
   }),
+  // Facturare: implicit persoana fizica. Pentru firma, `company` devine
+  // obligatoriu — vezi superRefine de la finalul schemei.
+  billingType: z.enum(['person', 'company']).default('person'),
+  company: z
+    .object({
+      name: z.string().trim().max(160).optional().or(z.literal('')),
+      cui: z.string().trim().max(20).optional().or(z.literal('')),
+      regCom: z.string().trim().max(40).optional().or(z.literal('')),
+      address: z.string().trim().max(240).optional().or(z.literal('')),
+    })
+    .optional(),
   paymentMethod: z.enum(['card', 'cod']),
   notes: z.string().trim().max(500).optional().or(z.literal('')),
   // cadou & livrare programată (opționale)
@@ -70,7 +81,20 @@ export const createOrderSchema = z.object({
   acceptTerms: z.literal(true, {
     errorMap: () => ({ message: 'Trebuie să accepți termenii și condițiile.' }),
   }),
-});
+})
+  // Datele de firmă se cer DOAR când clientul comandă pe firmă. Le validăm aici,
+  // nu în obiectul `company`, ca să putem privi `billingType` din același nivel.
+  .superRefine((v, ctx) => {
+    if (v.billingType !== 'company') return;
+    const c = v.company || {};
+    if (!c.name || c.name.trim().length < 2) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['company', 'name'], message: 'Denumirea firmei e obligatorie.' });
+    }
+    // CUI RO: 2–10 cifre, cu prefixul RO opțional.
+    if (!c.cui || !/^(RO)?\s?\d{2,10}$/i.test(c.cui.trim())) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['company', 'cui'], message: 'CUI invalid (ex: RO12345678).' });
+    }
+  });
 
 // ─── Lead (cerere ofertă) ───
 export const createLeadSchema = z.object({

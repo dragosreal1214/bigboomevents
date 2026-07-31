@@ -54,6 +54,11 @@
     return {
       customer: { name: f('name'), email: f('email'), phone: f('phone') },
       shipping: { county: f('county'), city: f('city'), address: f('address'), postcode: f('postcode') },
+      billingType: form.elements['billingType']?.value || 'person',
+      company: {
+        name: f('companyName'), cui: f('companyCui'),
+        regCom: f('companyRegCom'), address: f('companyAddress'),
+      },
       paymentMethod: form.elements['paymentMethod'].value,
       notes: f('notes'),
       giftMessage: f('giftMessage'),
@@ -86,6 +91,27 @@
     } catch { /* ramane ascunsa */ }
   }
 
+  // Comutator facturare: câmpurile de firmă apar doar la „Firmă". Marcăm și
+  // `required` dinamic, ca validarea nativă a browserului să nu blocheze
+  // trimiterea când blocul e ascuns.
+  function bindBillingToggle(form) {
+    const box = form.querySelector('[data-company-fields]');
+    if (!box) return;
+    const apply = () => {
+      const isCompany = form.elements['billingType']?.value === 'company';
+      box.hidden = !isCompany;
+      ['companyName', 'companyCui'].forEach((n) => {
+        const el = form.elements[n];
+        if (el) el.required = isCompany;
+      });
+      form.querySelectorAll('[data-bill-option]').forEach((l) =>
+        l.classList.toggle('sel', l.querySelector('input').checked)
+      );
+    };
+    form.querySelectorAll('[data-bill-option] input').forEach((r) => r.addEventListener('change', apply));
+    apply();
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     revealCardOption();
     renderSummary();
@@ -95,6 +121,7 @@
     prefillMeta(form);
 
     // stilizare radio selectat
+    bindBillingToggle(form);
     form.querySelectorAll('[data-pay-option] input').forEach((r) =>
       r.addEventListener('change', () => {
         form.querySelectorAll('[data-pay-option]').forEach((l) =>

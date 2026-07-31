@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Finalizare comandă — The Big Boom Events</title>
 <meta name="robots" content="noindex" />
-<link rel="stylesheet" href="/css/styles.css?v=slot13m" />
+<link rel="stylesheet" href="/css/styles.css?v=b2b14n" />
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
 <meta property="og:type" content="website" />
@@ -60,6 +60,43 @@
             <label>Telefon <span class="req">*</span></label>
             <input class="input" type="tel" name="phone" autocomplete="tel" required />
             <div class="field-error" data-err="customer.phone"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-block">
+        <h3>Facturare</h3>
+        <label class="radio-card sel" data-bill-option>
+          <input type="radio" name="billingType" value="person" checked />
+          <div><div class="t">Persoană fizică</div><div class="d">Factura se emite pe numele tău.</div></div>
+        </label>
+        <label class="radio-card" data-bill-option>
+          <input type="radio" name="billingType" value="company" />
+          <div><div class="t">Firmă</div><div class="d">Factura se emite pe firmă, cu CUI și date de identificare.</div></div>
+        </label>
+
+        <div data-company-fields hidden style="margin-top:16px">
+          <div class="form-row">
+            <div class="field">
+              <label>Denumire firmă <span class="req">*</span></label>
+              <input class="input" name="companyName" autocomplete="organization" />
+              <div class="field-error" data-err="company.name"></div>
+            </div>
+            <div class="field">
+              <label>CUI / CIF <span class="req">*</span></label>
+              <input class="input" name="companyCui" placeholder="RO12345678" />
+              <div class="field-error" data-err="company.cui"></div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label>Nr. Reg. Comerțului</label>
+              <input class="input" name="companyRegCom" placeholder="J22/1234/2020" />
+            </div>
+            <div class="field">
+              <label>Sediu social</label>
+              <input class="input" name="companyAddress" />
+            </div>
           </div>
         </div>
       </div>
@@ -165,7 +202,7 @@
      app.js îl mută în footer, lângă bannerele ANPC. -->
 <div data-netopia><script src="https://mny.ro/npId.js?p=167581" data-version="orizontal" data-contrast-color="#3b2e3a"></script></div>
 
-<script defer src="/js/app.js?v=slot13m"></script>
-<script defer src="/js/checkout.js?v=slot13m"></script>
+<script defer src="/js/app.js?v=b2b14n"></script>
+<script defer src="/js/checkout.js?v=b2b14n"></script>
 </body>
 </html>

@@ -75,6 +75,20 @@ ALTER TABLE products ADD COLUMN IF NOT EXISTS addon_exclude_slugs TEXT[];
 -- care amesteca cifrele si literele (0-9 in trei culori ieseau intercalate, iar
 -- literele incepeau de la U). Valoare mica = mai sus; 0 = neordonat, cade la final.
 ALTER TABLE products ADD COLUMN IF NOT EXISTS sort_order INT NOT NULL DEFAULT 0;
+
+-- Facturare pe firma (B2B). Clientul poate comanda ca persoana fizica (implicit)
+-- sau in numele unei firme, caz in care avem nevoie de datele de facturare.
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS billing_type    TEXT NOT NULL DEFAULT 'person';
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS company_name    TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS company_cui     TEXT;   -- CUI / CIF
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS company_reg_com TEXT;   -- Nr. Reg. Comertului (J..)
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS company_address TEXT;   -- sediul social
+-- Datele de firma exista DOAR pe comenzile de tip 'company'.
+ALTER TABLE orders DROP CONSTRAINT IF EXISTS orders_billing_type_chk;
+ALTER TABLE orders ADD CONSTRAINT orders_billing_type_chk CHECK (
+  billing_type IN ('person', 'company')
+  AND (billing_type = 'person' OR (company_name IS NOT NULL AND company_cui IS NOT NULL))
+);
 CREATE INDEX IF NOT EXISTS products_sort_idx ON products (category_id, sort_order, name);
 
 CREATE INDEX IF NOT EXISTS idx_products_category ON products(category_id);

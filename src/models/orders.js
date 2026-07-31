@@ -93,8 +93,9 @@ export async function createOrder(input) {
         (order_number, customer_name, customer_email, customer_phone,
          ship_county, ship_city, ship_address, ship_postcode, notes,
          gift_message, delivery_date, delivery_slot,
+         billing_type, company_name, company_cui, company_reg_com, company_address,
          payment_method, status, subtotal_cents, shipping_cents, total_cents)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22)
        RETURNING *`,
       [
         orderNumber,
@@ -109,6 +110,13 @@ export async function createOrder(input) {
         input.giftMessage || null,
         input.deliveryDate || null,
         input.deliverySlot || null,
+        // Datele de firmă se scriu doar pentru comenzile pe firmă; altfel NULL,
+        // ca să nu rămână resturi de la un formular completat și apoi comutat.
+        input.billingType === 'company' ? 'company' : 'person',
+        input.billingType === 'company' ? input.company?.name?.trim() || null : null,
+        input.billingType === 'company' ? input.company?.cui?.trim().toUpperCase() || null : null,
+        input.billingType === 'company' ? input.company?.regCom?.trim() || null : null,
+        input.billingType === 'company' ? input.company?.address?.trim() || null : null,
         input.paymentMethod,
         input.paymentMethod === 'cod' ? 'pending' : 'pending',
         subtotal,
@@ -208,6 +216,17 @@ function mapOrder(row) {
       address: row.ship_address,
       postcode: row.ship_postcode,
     },
+    // Facturare: `company` e null pentru comenzile pe persoană fizică.
+    billingType: row.billing_type || 'person',
+    company:
+      row.billing_type === 'company'
+        ? {
+            name: row.company_name,
+            cui: row.company_cui,
+            regCom: row.company_reg_com,
+            address: row.company_address,
+          }
+        : null,
     notes: row.notes,
     giftMessage: row.gift_message,
     deliveryDate: row.delivery_date,
