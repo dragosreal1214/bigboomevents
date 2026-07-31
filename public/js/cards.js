@@ -16,6 +16,7 @@
   }
 
   function priceHTML(p) {
+    if (!p.priceCents) return '<span class="price price-req">Preț la cerere</span>';
     const old = p.oldPrice ? `<span class="old">${fmtLei(p.oldPrice)}</span>` : '';
     return `<span class="price">${old}${fmtLei(p.price)}</span>`;
   }
@@ -25,26 +26,32 @@
     const badge = p.badge ? `<span class="badge ${esc(p.badge)}">${esc(p.badge)}</span>` : '';
     const fav = Favs.has(p.id);
     return `
-    <article class="card cat-${esc(p.category)} ${out ? 'out' : ''}" data-id="${p.id}" data-slug="${esc(p.slug)}">
+    <article class="card cat-${esc(p.category)}${p.type ? ' type-' + esc(p.type) : ''} ${out ? 'out' : ''}" data-id="${p.id}" data-slug="${esc(p.slug)}">
       <div class="thumb">
         ${badge}
         <button class="fav" data-fav="${p.id}" aria-pressed="${fav}" aria-label="Adaugă la favorite">${heartSVG}</button>
-        <a href="/produs?slug=${esc(p.slug)}" aria-label="${esc(p.name)}">${thumb(p)}</a>
+        <a href="/produs/${esc(p.slug)}" aria-label="${esc(p.name)}">${thumb(p)}</a>
         <button class="quickview-btn" data-quickview="${esc(p.slug)}">Vezi rapid</button>
       </div>
       <div class="body">
         <span class="tag">${esc(p.categoryName || p.category)}</span>
-        <h3><a href="/produs?slug=${esc(p.slug)}" style="text-decoration:none">${esc(p.name)}</a></h3>
+        <h3><a href="/produs/${esc(p.slug)}" style="text-decoration:none">${esc(p.name)}</a></h3>
         <div class="row">
           ${priceHTML(p)}
-          <button class="add" data-add="${p.id}" ${out ? 'disabled' : ''}>${out ? 'Indisponibil' : 'Adaugă'}</button>
+          ${!p.priceCents
+            ? `<a class="add add-req" href="/contact">Cere ofertă</a>`
+            : `<button class="add" data-add="${p.id}" ${out ? 'disabled' : ''}>${out ? 'Indisponibil' : 'Adaugă'}</button>`}
         </div>
       </div>
     </article>`;
   }
 
   function skeletons(n) {
-    return Array.from({ length: n }, () => '<div class="skeleton"></div>').join('');
+    // Structură ca a cardului real (thumb 3/4 + corp) → aceeași geometrie la
+    // orice lățime, deci grid-ul are înălțimea finală și footer-ul nu sare.
+    return Array.from({ length: n }, () =>
+      '<div class="skeleton"><div class="skeleton-thumb"></div><div class="skeleton-body"></div></div>'
+    ).join('');
   }
 
   // Cache produse randate, ca să avem datele la add/quickview fără un nou fetch.
@@ -112,7 +119,7 @@
       body.innerHTML = `
         <div class="qv">
           <div class="img cat-${esc(p.category)}" style="background:color-mix(in srgb, var(--rose) 30%, #fff)">
-            ${img ? `<img src="${esc(img)}" alt="${esc(p.name)}" style="width:100%;height:100%;object-fit:cover">` : ''}
+            ${img ? `<img src="${esc(img)}" alt="${esc(p.name)}" style="width:100%;height:100%;object-fit:contain">` : ''}
           </div>
           <div>
             <span class="tag">${esc(p.categoryName || p.category)}</span>
@@ -120,8 +127,10 @@
             ${priceHTML(p)}
             <p class="muted" style="margin:14px 0">${esc(p.description || '')}</p>
             <div class="buy-row">
-              <button class="btn btn-primary" data-qv-add="${p.id}" ${p.inStock ? '' : 'disabled'}>${p.inStock ? 'Adaugă în coș' : 'Indisponibil'}</button>
-              <a class="btn btn-ghost" href="/produs?slug=${esc(p.slug)}">Detalii</a>
+              ${!p.priceCents
+                ? `<a class="btn btn-primary" href="${window.BBE.urls ? window.BBE.urls.contact : '/contact'}">Cere ofertă</a>`
+                : `<button class="btn btn-primary" data-qv-add="${p.id}" ${p.inStock ? '' : 'disabled'}>${p.inStock ? 'Adaugă în coș' : 'Indisponibil'}</button>`}
+              <a class="btn btn-ghost" href="/produs/${esc(p.slug)}">Detalii</a>
             </div>
           </div>
         </div>`;

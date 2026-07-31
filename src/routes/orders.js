@@ -18,6 +18,13 @@ router.post(
   '/orders',
   asyncHandler(async (req, res) => {
     const data = parseOrThrow(createOrderSchema, req.body);
+
+    // Honeypot: câmpul ascuns „website" e completat doar de boți. Pretindem
+    // succes (fără comandă reală), ca botul să nu afle care câmp l-a trădat.
+    if (data.website) {
+      return res.status(201).json({ ok: true, order: { number: 'BBE-0000', total: 0, totalCents: 0, status: 'pending' } });
+    }
+
     const { order, items } = await createOrder(data);
 
     // Pentru ramburs (cod) trimitem confirmarea imediat.

@@ -3,32 +3,56 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Shop — BigBoomEvents</title>
-<meta name="description" content="Magazin BigBoomEvents: florărie, baloane și accesorii de petrecere. Filtrează după categorie, preț, ocazie și culoare." />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/css/styles.css" />
+<title>Shop — The Big Boom Events</title>
+<meta name="description" content="Magazin The Big Boom Events: florărie, baloane și accesorii de petrecere. Filtrează după categorie, preț, ocazie și culoare." />
+<link rel="stylesheet" href="/css/styles.css?v=anpc8h" />
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="The Big Boom Events" />
+<meta property="og:locale" content="ro_RO" />
+<meta property="og:title" content="Shop — The Big Boom Events" />
+<meta property="og:description" content="Magazin The Big Boom Events: florărie, baloane și accesorii de petrecere. Filtrează după categorie, preț, ocazie și culoare." />
+<meta property="og:url" content="https://thebigboomevents.ro/" />
+<meta property="og:image" content="https://thebigboomevents.ro/assets/og-image.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="The Big Boom Events — Flori, Baloane, Decor evenimente, Iași" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Shop — The Big Boom Events" />
+<meta name="twitter:description" content="Magazin The Big Boom Events: florărie, baloane și accesorii de petrecere. Filtrează după categorie, preț, ocazie și culoare." />
+<meta name="twitter:image" content="https://thebigboomevents.ro/assets/og-image.jpg" />
 </head>
 <body data-page="shop">
+<div data-include="promo"></div>
 
 <div data-include="nav"></div>
 
 <main class="wrap">
   <div class="crumb"><a href="/">Acasă</a> · Shop</div>
 
-  <div class="section-head" style="margin:6px auto 30px">
+  <!-- Intro de categorie (florărie/baloane) — populat din shop.js când e activă o categorie. -->
+  <div class="cat-intro" data-cat-intro hidden></div>
+
+  <div class="section-head" data-shop-head style="margin:6px auto 30px">
     <span class="eyebrow">Shop</span>
     <h2>Alege din colecții</h2>
     <p>Filtrează după categorie, preț, ocazie sau culoare. Comandă online sau cere o ofertă.</p>
   </div>
 
+  <!-- QUICK FILTERS — populate din shop.js (diferă pe categorie) -->
+  <div class="quick-filters" data-quick-filters role="group" aria-label="Filtre rapide"></div>
+
   <div class="shop-layout">
     <!-- SIDEBAR FILTERS -->
     <aside class="sidebar collapsed" data-sidebar>
-      <div class="filter-group">
+      <div class="filter-group" data-cat-group>
         <h4>Categorie</h4>
         <div data-filter-categories></div>
+      </div>
+      <div class="filter-group" data-filter-section hidden>
+        <h4>Tip produs</h4>
+        <div class="filter-scroll" data-filter-types></div>
       </div>
       <div class="filter-group">
         <h4>Preț (lei)</h4>
@@ -40,9 +64,9 @@
         <input type="range" min="0" max="500" step="10" value="500" data-price-slider style="margin-top:12px" />
         <div class="muted" style="font-size:13px">până la <span data-price-slider-label>500</span> lei</div>
       </div>
-      <div class="filter-group">
-        <h4>Ocazie</h4>
-        <div data-filter-occasions></div>
+      <div class="filter-group" data-occ-group>
+        <h4 data-occ-head>Ocazie</h4>
+        <div class="filter-scroll" data-filter-occasions></div>
       </div>
       <div class="filter-group">
         <h4>Culoare</h4>
@@ -79,9 +103,13 @@
 </main>
 
 <div data-include="footer"></div>
+<!-- Sigla NETOPIA (obligatorie pentru punctul de vânzare). Trebuie să stea în
+     markup static: un <script> extern injectat prin outerHTML nu s-ar executa.
+     app.js îl mută în footer, lângă bannerele ANPC. -->
+<div data-netopia><script src="https://mny.ro/npId.js?p=167581" data-version="orizontal" data-contrast-color="#3b2e3a"></script></div>
 
-<script src="/js/app.js"></script>
-<script src="/js/cards.js"></script>
-<script src="/js/shop.js"></script>
+<script defer src="/js/app.js?v=anpc8h"></script>
+<script defer src="/js/cards.js?v=anpc8h"></script>
+<script defer src="/js/shop.js?v=anpc8h"></script>
 </body>
 </html>

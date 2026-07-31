@@ -2,7 +2,7 @@
 // Interfață unică: sendEmail({ to, subject, html, text }).
 import config from '../config.js';
 
-const { provider, from, resendKey, brevoKey } = config.email;
+const { provider, from, replyTo, resendKey, brevoKey } = config.email;
 
 function parseFrom(str) {
   // "Nume <email@dom.ro>" -> { name, email }
@@ -18,7 +18,7 @@ async function sendViaResend({ to, subject, html, text }) {
       Authorization: `Bearer ${resendKey}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ from, to: [to], subject, html, text }),
+    body: JSON.stringify({ from, to: [to], subject, html, text, reply_to: replyTo || undefined }),
   });
   if (!res.ok) {
     const body = await res.text();
@@ -39,6 +39,7 @@ async function sendViaBrevo({ to, subject, html, text }) {
     body: JSON.stringify({
       sender,
       to: [{ email: to }],
+      replyTo: replyTo ? { email: replyTo } : undefined,
       subject,
       htmlContent: html,
       textContent: text,

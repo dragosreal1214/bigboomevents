@@ -40,6 +40,7 @@
         <button class="tab" data-tab="categories">Categorii</button>
         <button class="tab" data-tab="orders">Comenzi</button>
         <button class="tab" data-tab="leads">Cereri</button>
+        <button class="tab" data-tab="banner">Banner</button>
       </nav>
       <div class="admin-bar-right">
         <a href="/" target="_blank" class="link-site">Vezi site-ul ↗</a>
@@ -68,8 +69,23 @@
       <div class="toolbar">
         <input class="input" id="product-search" placeholder="Caută după nume…" />
         <select class="select" id="product-cat-filter"><option value="">Toate categoriile</option></select>
+        <select class="select" id="product-type-filter" hidden><option value="">Toate tipurile</option></select>
+        <select class="select" id="product-status-filter">
+          <option value="">Toate</option>
+          <option value="active">Active</option>
+          <option value="hidden">Ascunse</option>
+        </select>
+      </div>
+      <div class="list-meta">
+        <span id="product-count" class="muted"></span>
+        <div id="bulk-bar" class="bulk-bar" hidden>
+          <span id="bulk-count" class="bulk-count"></span>
+          <button class="btn btn-sm" id="bulk-clear" type="button">Anulează</button>
+          <button class="btn btn-sm btn-danger" id="bulk-delete" type="button">Șterge selectate</button>
+        </div>
       </div>
       <div id="products-list" class="table-wrap"></div>
+      <div id="products-pager" class="pager"></div>
     </section>
 
     <!-- CATEGORIES -->
@@ -98,6 +114,48 @@
         <select class="select" id="lead-status-filter"><option value="">Toate statusurile</option></select>
       </div>
       <div id="leads-list" class="table-wrap"></div>
+    </section>
+
+    <!-- BANNER -->
+    <section class="view" data-view="banner" hidden>
+      <div class="view-head"><h2 class="view-title">Banner promo (bara de sus)</h2></div>
+      <form id="banner-form" class="banner-form">
+        <label class="switchline">
+          <input type="checkbox" id="banner-enabled" />
+          <span>Activează bannerul pe site</span>
+        </label>
+
+        <label class="field">
+          <span class="field-label">Text (se derulează la infinit)</span>
+          <textarea class="input" id="banner-text" rows="2" maxlength="300"
+            placeholder="Ex: Luni și marți -50% la toate buchetele ▼"></textarea>
+        </label>
+
+        <div class="banner-row">
+          <label class="field">
+            <span class="field-label">Culoare fundal</span>
+            <input type="color" id="banner-bg" class="color-input" value="#111111" />
+          </label>
+          <label class="field">
+            <span class="field-label">Culoare text</span>
+            <input type="color" id="banner-fg" class="color-input" value="#ffffff" />
+          </label>
+          <label class="field">
+            <span class="field-label">Viteză (secunde/buclă) — mai mic = mai rapid</span>
+            <input type="number" id="banner-speed" class="input" min="5" max="120" value="30" />
+          </label>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Previzualizare</span>
+          <div id="banner-preview" class="banner-preview"></div>
+        </div>
+
+        <div class="banner-actions">
+          <button type="submit" class="btn btn-primary">Salvează</button>
+          <span id="banner-status" class="banner-status" role="status"></span>
+        </div>
+      </form>
     </section>
   </main>
 </div>

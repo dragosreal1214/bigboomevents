@@ -9,8 +9,29 @@
   let token = localStorage.getItem(TOKEN_KEY) || '';
   let categories = [];
   let products = [];
-  let facets = { occasions: [], colors: [], badges: [] };
+  let facets = { occasions: [], colors: [], badges: [], addonSlugs: [] };
   let facetsLoaded = false;
+  let productPage = 1;
+  const PRODUCT_PAGE_SIZE = 24;
+  const selectedIds = new Set(); // produse bifate pentru ștergere în masă
+
+  // Tipuri (product_type) pe categorie — pentru filtrul din lista de produse.
+  const TYPES_BY_CAT = {
+    florarie: [
+      ['buchet', 'Flori în buchet'], ['cutie', 'Flori în cutie'], ['cos', 'Flori în coș'],
+    ],
+    baloane: [
+      ['folie-cifra', 'Folie · Cifră'], ['folie-litera', 'Folie · Literă'],
+      ['folie-figurina', 'Folie · Figurină'], ['folie-ocazii', 'Folie · Ocazii speciale'],
+      ['baloane-latex', 'Baloane latex'],
+      ['pachet-1-an', 'Set · Pachet 1 An'], ['pachet-18-ani', 'Set · Pachet 18 Ani'],
+      ['pachet-30-ani', 'Set · Pachet 30 Ani'], ['pachet-50-ani', 'Set · Pachet 50 Ani'],
+      ['pachet-80-ani', 'Set · Pachet 80 Ani'], ['baby-shower', 'Set · Baby Shower'],
+      ['pachet-bride', 'Set · Pachet Bride'], ['pachet-5-ani', 'Set · Pachet 5 Ani'],
+      ['pachet-25-ani', 'Set · Pachet 25 Ani'], ['set-baloane', 'Set · Altele'],
+      ['lumanari-tort', 'Lumânări tort'],
+    ],
+  };
 
   // Încarcă categoriile + valorile disponibile (ocazii/culori) înainte de editor.
   async function ensureProductMeta() {
@@ -83,7 +104,9 @@
       body = JSON.stringify(body);
     }
     const r = await fetch('/api' + path, { method: opts.method || 'GET', headers, body });
-    if (r.status === 401) {
+    if (r.status === 401 && path !== '/admin/login') {
+      // 401 pe login înseamnă „parolă greșită", nu sesiune expirată — altfel
+      // utilizatorul primea un mesaj derutant chiar la prima încercare.
       logout();
       throw new Error('Sesiune expirată. Conectează-te din nou.');
     }
@@ -148,6 +171,7 @@
     if (name === 'categories') loadCategories();
     if (name === 'orders') loadOrders();
     if (name === 'leads') loadLeads();
+    if (name === 'banner') loadBanner();
   }
   $$('.tab').forEach((t) => t.addEventListener('click', () => switchTab(t.dataset.tab)));
   $$('[data-go]').forEach((b) => b.addEventListener('click', () => switchTab(b.dataset.go)));
@@ -308,36 +332,90 @@
   let searchTimer;
   $('#product-search').addEventListener('input', () => {
     clearTimeout(searchTimer);
-    searchTimer = setTimeout(loadProducts, 250);
+    searchTimer = setTimeout(() => { productPage = 1; clearSelection(); loadProducts(); }, 250);
   });
-  $('#product-cat-filter').addEventListener('change', loadProducts);
+  $('#product-cat-filter').addEventListener('change', () => {
+    productPage = 1; clearSelection(); populateTypeFilter(); loadProducts();
+  });
+  $('#product-type-filter')?.addEventListener('change', () => { productPage = 1; clearSelection(); loadProducts(); });
+  $('#product-status-filter')?.addEventListener('change', () => { productPage = 1; clearSelection(); loadProducts(); });
+  $('#bulk-delete')?.addEventListener('click', bulkDeleteSelected);
+  $('#bulk-clear')?.addEventListener('click', clearSelection);
 
-  async function loadProducts() {
+  async function loadProducts(opts = {}) {
     const wrap = $('#products-list');
     if (!categories.length) await fetchCategories().catch(() => {});
-    wrap.innerHTML = '<div class="spinner">Se încarcă…</div>';
+    // „silent" = nu arăta spinner-ul (evită flash-ul după salvare); altfel spinner.
+    if (!opts.silent) wrap.innerHTML = '<div class="spinner">Se încarcă…</div>';
     const q = $('#product-search').value.trim();
     const cat = $('#product-cat-filter').value;
+    const type = $('#product-type-filter')?.value || '';
+    const status = $('#product-status-filter')?.value || '';
     try {
       const params = new URLSearchParams();
       if (q) params.set('q', q);
       if (cat) params.set('category', cat);
-      params.set('pageSize', '100');
+      if (type) params.set('type', type);
+      if (status) params.set('active', status);
+      params.set('page', String(productPage));
+      params.set('pageSize', String(PRODUCT_PAGE_SIZE));
       const data = await api('/admin/products?' + params.toString());
       products = data.items;
+      renderProductCount(data.total);
       if (!products.length) {
         wrap.innerHTML = '<table class="admin-table"><tr class="muted-row"><td>Niciun produs găsit.</td></tr></table>';
+        renderPager(data);
         return;
       }
       wrap.innerHTML = `
         <table class="admin-table">
-          <thead><tr><th></th><th>Produs</th><th>Categorie</th><th>Preț</th><th>Stoc</th><th>Activ</th><th></th></tr></thead>
+          <thead><tr><th class="col-check"><input type="checkbox" data-select-all aria-label="Selectează tot"></th><th></th><th>Produs</th><th>Categorie</th><th>Preț</th><th>Stoc</th><th>Activ</th><th></th></tr></thead>
           <tbody>${products.map(productRow).join('')}</tbody>
         </table>`;
       bindProductRows(wrap);
+      bindSelection(wrap);
+      renderPager(data);
     } catch (err) {
       wrap.innerHTML = `<p class="muted" style="padding:20px">${esc(err.message)}</p>`;
     }
+  }
+
+  function renderProductCount(total) {
+    const el = $('#product-count');
+    if (el) el.textContent = total === 1 ? '1 produs' : `${total} produse`;
+  }
+
+  function renderPager(data) {
+    const el = $('#products-pager');
+    if (!el) return;
+    const { page, totalPages } = data;
+    if (!totalPages || totalPages <= 1) { el.innerHTML = ''; return; }
+    el.innerHTML = `
+      <button class="btn btn-ghost btn-sm" data-page-prev ${page <= 1 ? 'disabled' : ''}>← Înapoi</button>
+      <span class="pager-info">Pagina ${page} / ${totalPages}</span>
+      <button class="btn btn-ghost btn-sm" data-page-next ${page >= totalPages ? 'disabled' : ''}>Înainte →</button>`;
+    const prev = el.querySelector('[data-page-prev]');
+    const next = el.querySelector('[data-page-next]');
+    // clearSelection și la paginare: altfel bara arăta „1 selectat" pentru un
+    // produs invizibil de pe pagina anterioară, iar Șterge l-ar fi șters orbește.
+    if (prev) prev.addEventListener('click', () => { if (productPage > 1) { productPage--; clearSelection(); loadProducts(); scrollProductsTop(); } });
+    if (next) next.addEventListener('click', () => { if (productPage < totalPages) { productPage++; clearSelection(); loadProducts(); scrollProductsTop(); } });
+  }
+
+  function scrollProductsTop() {
+    $('#products-list')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Populează filtrul de tip în funcție de categoria selectată (ascuns dacă nu are tipuri).
+  function populateTypeFilter() {
+    const sel = $('#product-type-filter');
+    if (!sel) return;
+    const cat = $('#product-cat-filter').value;
+    const types = TYPES_BY_CAT[cat] || [];
+    if (!types.length) { sel.hidden = true; sel.value = ''; return; }
+    sel.hidden = false;
+    sel.innerHTML = '<option value="">Toate tipurile</option>' +
+      types.map(([v, l]) => `<option value="${esc(v)}">${esc(l)}</option>`).join('');
   }
 
   function productRow(p) {
@@ -349,6 +427,7 @@
     const badge = p.badge ? `<span class="badge-mini">${esc(p.badge)}</span>` : '';
     return `
       <tr data-id="${p.id}">
+        <td class="col-check"><input type="checkbox" data-select="${p.id}" ${selectedIds.has(p.id) ? 'checked' : ''} aria-label="Selectează"></td>
         <td><div class="row-thumb">${thumb}</div></td>
         <td class="cell-name">${esc(p.name)} ${badge}<small>${esc(p.slug)}${p.isActive ? '' : ' · <span class="inactive-tag">ascuns</span>'}</small></td>
         <td><span class="tag-mini">${esc(p.categoryName)}</span></td>
@@ -363,29 +442,137 @@
   }
 
   function bindProductRows(wrap) {
-    $$('[data-edit]', wrap).forEach((b) =>
-      b.addEventListener('click', async () => {
-        await ensureProductMeta();
-        openProductEditor(products.find((p) => p.id == b.dataset.edit));
+    $$('tr[data-id]', wrap).forEach(bindOneRow);
+  }
+
+  // ---------- SELECȚIE MULTIPLĂ / ȘTERGERE ÎN MASĂ ----------
+  function bindSelection(wrap) {
+    $$('[data-select]', wrap).forEach((cb) =>
+      cb.addEventListener('change', () => {
+        const id = Number(cb.dataset.select);
+        if (cb.checked) selectedIds.add(id); else selectedIds.delete(id);
+        updateBulkBar();
       })
     );
-    $$('[data-del]', wrap).forEach((b) =>
-      b.addEventListener('click', () => deleteProduct(products.find((p) => p.id == b.dataset.del)))
-    );
-    $$('[data-toggle]', wrap).forEach((b) =>
-      b.addEventListener('change', async () => {
-        try {
-          await api('/admin/products/' + b.dataset.toggle + '/active', {
-            method: 'PATCH',
-            body: { isActive: b.checked },
-          });
-          toast(b.checked ? 'Produs activat ✓' : 'Produs ascuns ✓');
-        } catch (err) {
-          b.checked = !b.checked;
-          toast(err.message, true);
-        }
-      })
-    );
+    const all = wrap.querySelector('[data-select-all]');
+    if (all) all.addEventListener('change', () => {
+      $$('[data-select]', wrap).forEach((cb) => {
+        cb.checked = all.checked;
+        const id = Number(cb.dataset.select);
+        if (all.checked) selectedIds.add(id); else selectedIds.delete(id);
+      });
+      updateBulkBar();
+    });
+    updateBulkBar();
+  }
+
+  function updateBulkBar() {
+    const bar = $('#bulk-bar');
+    const count = $('#bulk-count');
+    if (count) count.textContent = selectedIds.size === 1 ? '1 selectat' : `${selectedIds.size} selectate`;
+    if (bar) bar.hidden = selectedIds.size === 0;
+    // sincronizează „selectează tot" pe pagina curentă
+    const all = document.querySelector('#products-list [data-select-all]');
+    if (all) {
+      const boxes = $$('#products-list [data-select]');
+      const checked = boxes.filter((b) => b.checked).length;
+      all.checked = boxes.length > 0 && checked === boxes.length;
+      all.indeterminate = checked > 0 && checked < boxes.length;
+    }
+  }
+
+  function clearSelection() {
+    selectedIds.clear();
+    $$('#products-list [data-select]').forEach((b) => (b.checked = false));
+    updateBulkBar();
+  }
+
+  async function bulkDeleteSelected() {
+    const ids = [...selectedIds];
+    if (!ids.length) return;
+    if (!confirm(`Ștergi ${ids.length} ${ids.length === 1 ? 'produs' : 'produse'}? Cele cu comenzi vor fi ascunse în loc de șterse.`)) return;
+    const btn = $('#bulk-delete');
+    if (btn) btn.disabled = true;
+    try {
+      const res = await api('/admin/products/bulk-delete', { method: 'POST', body: { ids } });
+      const del = res.deletedIds || [];
+      const deact = res.deactivatedIds || [];
+      // scoate din DOM rândurile șterse
+      del.forEach((id) => {
+        document.querySelector(`#products-list tr[data-id="${id}"]`)?.remove();
+        const i = products.findIndex((p) => p.id === id);
+        if (i !== -1) products.splice(i, 1);
+      });
+      // marchează ca ascunse rândurile dezactivate (au comenzi)
+      deact.forEach((id) => {
+        const p = products.find((x) => x.id === id);
+        if (p) { p.isActive = false; const tr = document.querySelector(`#products-list tr[data-id="${id}"]`); if (tr) { tr.outerHTML = productRow(p); const nt = document.querySelector(`#products-list tr[data-id="${id}"]`); if (nt) bindOneRow(nt); } }
+      });
+      clearSelection();
+      let msg = del.length ? `${del.length} șterse` : '';
+      if (deact.length) msg += (msg ? ', ' : '') + `${deact.length} ascunse (au comenzi)`;
+      toast(msg || 'Gata');
+      // reîncarcă discret dacă pagina a rămas goală
+      if (!$$('#products-list tr[data-id]').length) loadProducts({ silent: true });
+    } catch (err) {
+      toast(err.message, true);
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  function bindOneRow(tr) {
+    const edit = tr.querySelector('[data-edit]');
+    if (edit) edit.addEventListener('click', async () => {
+      await ensureProductMeta();
+      openProductEditor(products.find((p) => p.id == edit.dataset.edit));
+    });
+    const del = tr.querySelector('[data-del]');
+    if (del) del.addEventListener('click', () => deleteProduct(products.find((p) => p.id == del.dataset.del)));
+    const tog = tr.querySelector('[data-toggle]');
+    if (tog) tog.addEventListener('change', async () => {
+      try {
+        await api('/admin/products/' + tog.dataset.toggle + '/active', {
+          method: 'PATCH',
+          body: { isActive: tog.checked },
+        });
+        toast(tog.checked ? 'Produs activat ✓' : 'Produs ascuns ✓');
+      } catch (err) {
+        tog.checked = !tog.checked;
+        toast(err.message, true);
+      }
+    });
+  }
+
+  // Actualizează tabelul după salvare, fără reîncărcare (fără flash/scroll jump).
+  function applyProductRow(saved, isEdit) {
+    if (isEdit) {
+      const idx = products.findIndex((p) => p.id === saved.id);
+      if (idx !== -1) products[idx] = saved;
+      const oldTr = document.querySelector(`#products-list tr[data-id="${saved.id}"]`);
+      if (oldTr) {
+        oldTr.outerHTML = productRow(saved);
+        const newTr = document.querySelector(`#products-list tr[data-id="${saved.id}"]`);
+        if (newTr) { bindOneRow(newTr); flashRow(newTr); }
+        return;
+      }
+    } else {
+      products.unshift(saved);
+      const tbody = document.querySelector('#products-list tbody');
+      if (tbody) {
+        tbody.insertAdjacentHTML('afterbegin', productRow(saved));
+        const newTr = tbody.querySelector(`tr[data-id="${saved.id}"]`);
+        if (newTr) { bindOneRow(newTr); flashRow(newTr); }
+        return;
+      }
+    }
+    // fallback dacă rândul/tabelul nu există (ex. lista goală) — reîncarcă discret
+    loadProducts({ silent: true });
+  }
+
+  function flashRow(tr) {
+    tr.classList.add('row-saved');
+    setTimeout(() => tr.classList.remove('row-saved'), 1400);
   }
 
   async function deleteProduct(p) {
@@ -418,6 +605,10 @@
           <select class="select" name="categoryId" required>
             <option value="">— alege —</option>${catOptions}
           </select>
+        </div>
+        <div class="field" id="type-field" hidden>
+          <label>Tip produs</label>
+          <select class="select" name="productType" id="f-type"></select>
         </div>
         <div class="field">
           <label>Descriere</label>
@@ -484,6 +675,29 @@
         </div>
 
         <div class="field">
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer">
+            <input type="checkbox" name="isAddon" id="f-isaddon" ${p?.isAddon ? 'checked' : ''} style="width:18px;height:18px" />
+            Este extra-opțiune (nu apare în magazin)
+          </label>
+          <div class="hint">Ex.: felicitare, umflare cu heliu, cutie bomboane. Apare doar pe pagina altui produs.</div>
+        </div>
+        <div class="field" id="addon-scope-field" ${p?.isAddon ? '' : 'hidden'}>
+          <label>Apare automat la categoriile</label>
+          <div class="taginput" data-tags="addonScope"></div>
+          <div class="hint">Slug-uri de categorie (ex. <code>baloane</code>). Gol = apare doar unde e pusă explicit pe produs.</div>
+        </div>
+        <div class="field" id="addon-slugs-field" ${p?.isAddon ? 'hidden' : ''}>
+          <label>Extra-opțiuni pentru acest produs</label>
+          <div class="taginput" data-tags="addonSlugs"></div>
+          <div class="hint">Slug-uri de extra-opțiuni afișate DOAR la acest produs (ex. <code>addon-heliu-forma</code>, <code>baby-girl</code>).</div>
+        </div>
+        <div class="field" id="addon-excl-field" ${p?.isAddon ? 'hidden' : ''}>
+          <label>Extra-opțiuni excluse</label>
+          <div class="taginput" data-tags="addonExcludeSlugs"></div>
+          <div class="hint">Extra-opțiuni de categorie care NU se aplică acestui produs.</div>
+        </div>
+
+        <div class="field">
           <label>Slug (URL)</label>
           <input class="input" name="slug" value="${esc(p?.slug || '')}" placeholder="auto din nume" />
           <div class="hint">Lasă gol la creare → se generează automat.</div>
@@ -498,8 +712,41 @@
     bindDrawerClose();
 
     // tag inputs cu autocomplete din valorile existente
-    const occ = makeTagInput($('[data-tags="occasions"]'), p?.occasions || [], facets.occasions);
+    // Sugestii ocazii: valorile din catalog + „categoriile" florăriei (ca să folosești slug-ul corect).
+    const CANON_OCCASIONS = ['aniversare', 'cerere', 'nunta', 'botez', 'majorat', 'mama', 'ghiveci', 'funerare'];
+    const occSuggestions = [...new Set([...(facets.occasions || []), ...CANON_OCCASIONS])];
+    const occ = makeTagInput($('[data-tags="occasions"]'), p?.occasions || [], occSuggestions);
     const col = makeTagInput($('[data-tags="colors"]'), p?.colors || [], facets.colors);
+    // Extra-opțiuni: sugestii = slug-urile add-on-urilor existente.
+    const addonSuggestions = (facets.addonSlugs || []);
+    const aScope = makeTagInput($('[data-tags="addonScope"]'), p?.addonScope || [], categories.map((c) => c.slug));
+    const aSlugs = makeTagInput($('[data-tags="addonSlugs"]'), p?.addonSlugs || [], addonSuggestions);
+    const aExcl = makeTagInput($('[data-tags="addonExcludeSlugs"]'), p?.addonExcludeSlugs || [], addonSuggestions);
+    // Un add-on își are propriul scope; un produs normal are liste de extra-opțiuni.
+    const isAddonBox = $('#f-isaddon');
+    function refreshAddonFields() {
+      const on = isAddonBox.checked;
+      $('#addon-scope-field').hidden = !on;
+      $('#addon-slugs-field').hidden = on;
+      $('#addon-excl-field').hidden = on;
+    }
+    isAddonBox.addEventListener('change', refreshAddonFields);
+    refreshAddonFields();
+
+    // „Tip produs" — opțiuni în funcție de categorie; ascuns dacă nu are tipuri.
+    const catSel = $('[name="categoryId"]');
+    const typeField = $('#type-field');
+    const typeSel = $('#f-type');
+    function refreshTypeOptions(selected) {
+      const cat = categories.find((c) => String(c.id) === String(catSel.value));
+      const types = (cat && TYPES_BY_CAT[cat.slug]) || [];
+      if (!types.length) { typeField.hidden = true; typeSel.innerHTML = ''; return; }
+      typeField.hidden = false;
+      typeSel.innerHTML = '<option value="">— alege —</option>' +
+        types.map(([v, l]) => `<option value="${esc(v)}" ${selected === v ? 'selected' : ''}>${esc(l)}</option>`).join('');
+    }
+    refreshTypeOptions(p?.type || '');
+    catSel.addEventListener('change', () => refreshTypeOptions(''));
 
     // images
     function renderImages() {
@@ -591,6 +838,7 @@
         slug: fd.get('slug'),
         description: fd.get('description'),
         categoryId: Number(fd.get('categoryId')),
+        productType: fd.get('productType') || '',
         price: Number(fd.get('price')),
         oldPrice: fd.get('oldPrice') === '' ? null : Number(fd.get('oldPrice')),
         stock: Number(fd.get('stock')) || 0,
@@ -599,15 +847,22 @@
         colors: col.get(),
         images,
         isActive: fd.get('isActive') === 'on',
+        isAddon: fd.get('isAddon') === 'on',
+        addonScope: aScope.get(),
+        addonSlugs: aSlugs.get(),
+        addonExcludeSlugs: aExcl.get(),
       };
       const btn = e.target.querySelector('button[type=submit]');
       btn.disabled = true;
       try {
-        if (isEdit) await api('/admin/products/' + p.id, { method: 'PUT', body });
-        else await api('/admin/products', { method: 'POST', body });
+        const res = isEdit
+          ? await api('/admin/products/' + p.id, { method: 'PUT', body })
+          : await api('/admin/products', { method: 'POST', body });
         closeDrawer();
         toast(isEdit ? 'Produs salvat ✓' : 'Produs adăugat ✓');
-        loadProducts();
+        // Async, fără flash: actualizează doar rândul editat / adaugă rândul nou în tabel.
+        if (res && res.product) applyProductRow(res.product, isEdit);
+        else loadProducts({ silent: true });
       } catch (err) {
         toast(err.message, true);
         btn.disabled = false;
@@ -824,6 +1079,8 @@
         <div class="od-row"><span>Adresă</span><b>${esc(o.address.address)}</b></div>
         <div class="od-row"><span>Oraș / Județ</span><b>${esc(o.address.city)}, ${esc(o.address.county)}</b></div>
         ${o.address.postcode ? `<div class="od-row"><span>Cod poștal</span><b>${esc(o.address.postcode)}</b></div>` : ''}
+        ${o.deliveryDate ? `<div class="od-row"><span>Data livrării</span><b>${esc(fmtDate(o.deliveryDate))}${o.deliverySlot ? ' · ' + esc(o.deliverySlot) : ''}</b></div>` : ''}
+        ${o.giftMessage ? `<div class="od-row"><span>Text felicitare</span><b>${esc(o.giftMessage)}</b></div>` : ''}
         ${o.notes ? `<div class="od-row"><span>Observații</span><b>${esc(o.notes)}</b></div>` : ''}
       </div>
       <div class="od-section">
@@ -993,6 +1250,59 @@
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !drawerEl.hidden) closeDrawer();
   });
+
+  // ---------- BANNER PROMO ----------
+  function renderBannerPreview() {
+    const prev = $('#banner-preview');
+    if (!prev) return;
+    const text = $('#banner-text').value.trim() || '(fără text)';
+    const bg = $('#banner-bg').value;
+    const fg = $('#banner-fg').value;
+    prev.style.background = bg;
+    prev.style.color = fg;
+    prev.textContent = text + '   ✦   ' + text + '   ✦   ' + text;
+  }
+
+  async function loadBanner() {
+    try {
+      const { banner } = await api('/admin/banner');
+      $('#banner-enabled').checked = !!banner.enabled;
+      $('#banner-text').value = banner.text || '';
+      $('#banner-bg').value = banner.bgColor || '#111111';
+      $('#banner-fg').value = banner.textColor || '#ffffff';
+      $('#banner-speed').value = banner.speed || 30;
+      renderBannerPreview();
+    } catch (e) {
+      toast(e.message, true);
+    }
+  }
+
+  ['#banner-text', '#banner-bg', '#banner-fg'].forEach((sel) => {
+    const el = $(sel);
+    if (el) el.addEventListener('input', renderBannerPreview);
+  });
+
+  const bannerForm = $('#banner-form');
+  if (bannerForm) {
+    bannerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const status = $('#banner-status');
+      const payload = {
+        enabled: $('#banner-enabled').checked,
+        text: $('#banner-text').value.trim(),
+        bgColor: $('#banner-bg').value,
+        textColor: $('#banner-fg').value,
+        speed: Number($('#banner-speed').value) || 30,
+      };
+      try {
+        await api('/admin/banner', { method: 'PUT', body: payload });
+        if (status) { status.textContent = 'Salvat ✓'; setTimeout(() => (status.textContent = ''), 2500); }
+        toast('Banner actualizat');
+      } catch (err) {
+        toast(err.message, true);
+      }
+    });
+  }
 
   // ---------- BOOT ----------
   (async function boot() {

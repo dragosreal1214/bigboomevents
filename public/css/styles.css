@@ -1,3 +1,255 @@
+/* vietnamese */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/fonts/fraunce-23cb87eb.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/fonts/fraunce-cac1056b.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/fonts/fraunce-36024e18.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/assets/fonts/fraunce-23cb87eb.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/assets/fonts/fraunce-cac1056b.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/assets/fonts/fraunce-36024e18.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/assets/fonts/fraunce-23cb87eb.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/assets/fonts/fraunce-cac1056b.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/assets/fonts/fraunce-36024e18.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(/assets/fonts/fraunce-23cb87eb.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(/assets/fonts/fraunce-cac1056b.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(/assets/fonts/fraunce-36024e18.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/fonts/hankengrotek-f5c1b9d9.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/fonts/hankengrotek-9662fd0e.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/fonts/hankengrotek-e88e8cb4.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/fonts/hankengrotek-b8f11765.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/assets/fonts/hankengrotek-f5c1b9d9.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/assets/fonts/hankengrotek-9662fd0e.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/assets/fonts/hankengrotek-e88e8cb4.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/assets/fonts/hankengrotek-b8f11765.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/assets/fonts/hankengrotek-f5c1b9d9.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/assets/fonts/hankengrotek-9662fd0e.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/assets/fonts/hankengrotek-e88e8cb4.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/assets/fonts/hankengrotek-b8f11765.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/assets/fonts/hankengrotek-f5c1b9d9.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/assets/fonts/hankengrotek-9662fd0e.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/assets/fonts/hankengrotek-e88e8cb4.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/assets/fonts/hankengrotek-b8f11765.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 /* ═══════════════════════════════════════════════════════════════════
    BigBoomEvents — design system (pastel + arcadă)
    Folosit pe toate paginile. Fonturi: Fraunces (titluri) + Hanken Grotesk.
@@ -41,8 +293,12 @@ a { color: inherit; }
 img { max-width: 100%; display: block; }
 main { flex: 1; }
 button { font-family: inherit; }
+/* Atributul `hidden` trebuie să ascundă mereu, chiar și pe elemente cu `display`
+   setat de o clasă (ex. .btn) — altfel specificitatea clasei învinge regula UA. */
+[hidden] { display: none !important; }
 
 .wrap { width: min(1140px, 92vw); margin-inline: auto; }
+.wrap.wide { width: min(1240px, 94vw); }
 .eyebrow {
   font-size: 12.5px; font-weight: 600; letter-spacing: .18em;
   text-transform: uppercase; color: var(--ink-soft);
@@ -70,18 +326,23 @@ button { font-family: inherit; }
 /* ---------- NAV ---------- */
 .nav {
   position: sticky; top: 0; z-index: 40;
-  background: color-mix(in srgb, var(--cream) 86%, transparent);
+  background: color-mix(in srgb, var(--rose) 30%, #fff);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
 }
-.nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; gap: 16px; }
-.brand { display: flex; align-items: center; gap: 10px; font-family: "Fraunces"; font-weight: 800; font-size: 21px; letter-spacing: -.01em; text-decoration: none; color: var(--ink); white-space: nowrap; }
-.brand .dot { width: 13px; height: 13px; border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #fff7, transparent 60%), var(--rose); box-shadow: 0 2px 8px #efb6c877; flex-shrink: 0; }
-.nav-links { display: flex; align-items: center; gap: 24px; margin-left: auto; }
-.nav-actions { display: flex; align-items: center; gap: 10px; }
-.nav-links a { text-decoration: none; font-weight: 500; font-size: 15.5px; color: var(--ink-soft); transition: color .2s; }
-.nav-links a:hover, .nav-links a[aria-current="page"] { color: var(--ink); }
+/* Header centrat: logo „THE BIG / BOOM / EVENTS" pe un rând, meniul centrat dedesubt. */
+.nav-inner { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px 0 12px; gap: 12px; position: relative; }
+.brand { display: flex; flex-direction: column; align-items: center; gap: 0; text-decoration: none; color: var(--ink); line-height: 1; text-align: center; }
+.brand-eyebrow { font-family: "Fraunces", Georgia, serif; font-size: 11px; font-weight: 600; letter-spacing: .34em; text-transform: uppercase; color: var(--ink); }
+.brand-name { font-family: "Fraunces", Georgia, serif; font-size: 40px; font-weight: 800; letter-spacing: .02em; color: var(--ink); margin: -1px 0; }
+.brand-sub { font-family: "Fraunces", Georgia, serif; font-size: 13px; font-weight: 600; letter-spacing: .52em; text-transform: uppercase; color: var(--ink); text-indent: .52em; }
+.nav-links { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0; }
+.nav-actions { display: flex; align-items: center; gap: 10px; position: absolute; right: 0; top: 50%; transform: translateY(-50%); }
+.nav-links a { position: relative; text-decoration: none; font-weight: 600; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); padding: 4px 20px; transition: color .2s; }
+/* Separator romb între iteme. */
+.nav-links a:not(:last-child)::after { content: "◆"; position: absolute; right: -4px; top: 50%; transform: translateY(-50%); font-size: 6px; color: color-mix(in srgb, var(--rose) 75%, var(--ink-soft)); }
+.nav-links a:hover { color: var(--ink); }
+.nav-links a[aria-current="page"] { color: var(--rose); text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1.5px; }
 .cart-btn {
   display: inline-flex; align-items: center; gap: 8px;
   background: var(--ink); color: #fff; border: 0; cursor: pointer;
@@ -90,7 +351,7 @@ button { font-family: inherit; }
 .cart-btn:hover { transform: translateY(-1px); }
 .cart-count { background: var(--butter); color: var(--ink); border-radius: 100px; min-width: 20px; height: 20px;
   display: inline-grid; place-items: center; font-size: 12px; font-weight: 700; padding: 0 5px; }
-.nav-toggle { display: none; background: none; border: 0; cursor: pointer; padding: 10px; }
+.nav-toggle { display: none; background: none; border: 0; cursor: pointer; padding: 0; width: 44px; height: 44px; align-items: center; justify-content: center; }
 /* hamburger din 3 bare care se transformă în X când meniul e deschis */
 .nav-bars { position: relative; display: block; width: 24px; height: 2.5px; border-radius: 3px; background: var(--ink); transition: background .15s ease; }
 .nav-bars::before, .nav-bars::after { content: ""; position: absolute; left: 0; width: 24px; height: 2.5px; border-radius: 3px; background: var(--ink); transition: transform .3s cubic-bezier(.4,0,.2,1); }
@@ -117,12 +378,18 @@ body.menu-open { overflow: hidden; }
 .b4 { width: 46px; height: 56px; background: var(--butter);top: 250px; left: 16%; animation: float 10s ease-in-out infinite .3s; }
 @keyframes float { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-18px) rotate(2deg); } }
 .hero-content { position: relative; z-index: 2; text-align: center; max-width: 720px; margin-inline: auto; padding-top: 30px; }
-.hero h1 { font-size: clamp(42px, 8vw, 84px); font-weight: 600; letter-spacing: -.02em; }
-.hero h1 .boom { position: relative; font-style: italic; font-weight: 800;
-  background: linear-gradient(100deg, var(--rose), var(--lilac) 55%, var(--sky));
+/* Titlu hero — aceeași temă ca titlul de pe ecranul de start (închis, cu tente fine). */
+.hero h1 { font-size: clamp(42px, 8vw, 84px); font-weight: 700; letter-spacing: -.02em;
+  line-height: 1.08; padding-bottom: .06em;
+  background: linear-gradient(100deg,
+    color-mix(in srgb, var(--rose) 22%, var(--ink)),
+    color-mix(in srgb, var(--lilac) 16%, var(--ink)) 50%,
+    color-mix(in srgb, var(--sky) 24%, var(--ink)));
   -webkit-background-clip: text; background-clip: text; color: transparent; }
-.hero h1 .boom::after { content:""; position:absolute; left:-4%; right:-4%; bottom:.08em; height:.14em; background: var(--butter); border-radius: 100px; z-index:-1; opacity:.8; }
-.hero p.lead { font-size: clamp(17px, 2.4vw, 20px); color: var(--ink-soft); margin: 20px auto 0; max-width: 540px; }
+.hero h1 .boom { font-style: normal; font-weight: 800; }
+.hero h1 .boom::after { display: none; }
+.hero p.lead { font-family: "Fraunces", Georgia, serif; font-size: clamp(19px, 2.7vw, 26px); font-weight: 500; color: var(--ink); margin: 18px auto 0; max-width: 620px; }
+.hero-desc { font-size: clamp(15px, 2vw, 17.5px); line-height: 1.6; color: var(--ink-soft); margin: 16px auto 0; max-width: 620px; }
 .hero-cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
 
 /* ---------- SECTIONS ---------- */
@@ -145,7 +412,7 @@ body.menu-open { overflow: hidden; }
 
 /* ---------- SHOP LAYOUT ---------- */
 .shop-layout { display: grid; grid-template-columns: 260px 1fr; gap: 32px; align-items: start; }
-.sidebar { position: sticky; top: 86px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+.sidebar { position: sticky; top: calc(var(--nav-h, 132px) + 14px); background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
 .filter-group { padding: 14px 0; border-bottom: 1px solid var(--line); }
 .filter-group:last-child { border-bottom: 0; }
 .filter-group h4 { font-family: "Hanken Grotesk"; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 12px; }
@@ -159,6 +426,11 @@ input[type="range"] { width: 100%; accent-color: var(--rose); }
 
 .shop-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 22px; flex-wrap: wrap; }
 .shop-toolbar .count { color: var(--ink-soft); font-size: 15px; }
+/* Rezervă înălțimea contorului „N produse" (populat din JS) ca grid-ul să nu sară. */
+.count { min-height: 22px; }
+/* Rezervă înălțime pe grid-ul de produse cât timp se încarcă, ca footer-ul să
+   stea sub ecran (reflow-ul la sosirea produselor nu mai e vizibil = fără CLS). */
+[data-grid] { min-height: 70vh; }
 .search-box { display: flex; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--line); border-radius: 100px; padding: 8px 16px; flex: 1; max-width: 340px; }
 .search-box input { border: 0; background: none; outline: none; font-family: inherit; font-size: 15px; width: 100%; color: var(--ink); }
 .search-box svg { width: 18px; height: 18px; stroke: var(--ink-soft); flex-shrink: 0; }
@@ -172,17 +444,25 @@ input[type="range"] { width: 100%; accent-color: var(--rose); }
 .chip { font-weight: 600; font-size: 14.5px; cursor: pointer; background: var(--card); color: var(--ink-soft); border: 1px solid var(--line); padding: 9px 20px; border-radius: 100px; transition: all .18s; }
 .chip:hover { color: var(--ink); border-color: var(--ink); }
 .chip[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+.quick-filters { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 0 auto 28px; min-height: 42px; }
+/* Pe ecrane înguste chip-urile se rup pe 2 rânduri — rezervă înălțimea lor. */
+@media (max-width: 640px) { .quick-filters { min-height: 92px; } }
 
 /* ---------- PRODUCT GRID ---------- */
 .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
 .card { background: var(--card); border: 1px solid var(--line); border-radius: 26px; overflow: hidden; display: flex; flex-direction: column; transition: transform .2s, box-shadow .25s; position: relative; }
 .card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
-.card .thumb { aspect-ratio: 4/3; display: grid; place-items: center; border-radius: 24px 24px 0 0; position: relative; overflow: hidden; }
-.card .thumb img, .card .thumb svg { width: 100%; height: 100%; object-fit: cover; }
-.card.cat-florarie .thumb { background: color-mix(in srgb, var(--rose) 40%, #fff); }
-.card.cat-baloane  .thumb { background: color-mix(in srgb, var(--sky) 40%, #fff); }
-.card.cat-fun      .thumb { background: color-mix(in srgb, var(--lilac) 40%, #fff); }
+.card .thumb { aspect-ratio: 3/4; display: grid; place-items: center; border-radius: 24px 24px 0 0; position: relative; overflow: hidden; }
+/* Toată imaginea vizibilă (contain), încadrată pe fundal alb — fără benzi colorate. */
+/* Link-ul din thumb trebuie să umple tot cardul, altfel poza nu se poate încadra corect. */
+.card .thumb > a { display: block; width: 100%; height: 100%; }
+/* Poza produsului umple tot cardul (cover) — fără efect de „poză în poză".
+   Pozele de produs pe alb (baloane) au produsul centrat, deci cover taie doar
+   marginile albe și produsul se vede întreg. SVG-urile (iconițe) rămân contain. */
+.card .thumb img { width: 100%; height: 100%; object-fit: cover; padding: 0; }
+.card .thumb svg { width: 100%; height: 100%; object-fit: contain; }
+.card .thumb { background: #fff; }
 .card .body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
 .card .tag { font-size: 11.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
 .card h3 { font-family: "Fraunces"; font-size: 19px; font-weight: 600; }
@@ -210,7 +490,14 @@ input[type="range"] { width: 100%; accent-color: var(--rose); }
 
 /* ---------- EMPTY / SKELETON ---------- */
 .empty-state { text-align: center; color: var(--ink-soft); padding: 60px 20px; }
-.skeleton { background: linear-gradient(90deg, #f0e9ec 25%, #f8f3f5 50%, #f0e9ec 75%); background-size: 200% 100%; animation: shimmer 1.2s infinite; border-radius: 26px; height: 320px; }
+/* Scheletul imită structura cardului real (thumb 3/4 + corp fix), ca grid-ul
+   să aibă înălțimea finală la ORICE lățime → footer-ul nu mai sare la încărcare. */
+.skeleton { border: 1px solid var(--line); border-radius: 26px; overflow: hidden; display: flex; flex-direction: column; background: var(--card); }
+.skeleton-thumb { aspect-ratio: 3/4; }
+.skeleton-body { height: 118px; }
+/* Pe mobil cardul are corpul mai înalt (preț + buton stivuite), deci și scheletul. */
+@media (max-width: 560px) { .skeleton-body { height: 185px; } }
+.skeleton-thumb, .skeleton-body { background: linear-gradient(90deg, #f0e9ec 25%, #f8f3f5 50%, #f0e9ec 75%); background-size: 200% 100%; animation: shimmer 1.2s infinite; }
 @keyframes shimmer { to { background-position: -200% 0; } }
 
 /* ---------- FORMS ---------- */
@@ -244,19 +531,39 @@ input[type="range"] { width: 100%; accent-color: var(--rose); }
 
 /* ---------- BREADCRUMB ---------- */
 .crumb { font-size: 14px; color: var(--ink-soft); padding: 18px 0; }
-.crumb a { text-decoration: none; }
+.crumb a { text-decoration: none; display: inline-block; padding: 8px 0; }
 .crumb a:hover { color: var(--ink); }
 
 /* ---------- PRODUCT PAGE ---------- */
 .product { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; padding: 10px 0 60px; align-items: start; }
-.gallery .main-img { aspect-ratio: 1; border-radius: var(--radius); overflow: hidden; display: grid; place-items: center; }
-.gallery .main-img img, .gallery .main-img svg { width: 100%; height: 100%; object-fit: cover; }
+.gallery .main-img { aspect-ratio: 3/4; border-radius: var(--radius); overflow: hidden; display: grid; place-items: center; background: color-mix(in srgb, var(--rose) 22%, #fff); }
+.gallery .main-img img, .gallery .main-img svg { width: 100%; height: 100%; object-fit: contain; }
+/* Baloane: poze pe fundal alb → galerie albă, fără bandă colorată. */
+.product.cat-baloane .gallery .main-img { background: #fff; }
+.product.cat-baloane .gallery .main-img img { padding: 18px; }
+
+/* Notă persistentă „livrare doar în Iași" pentru heliu — vizibilă cât timp e bifat. */
+.heliu-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: #FFF4E5;
+  border: 1px solid #F0B860;
+  border-left: 4px solid #E8930C;
+  border-radius: 12px;
+  color: #7A4E00;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.heliu-notice-icon { font-size: 18px; line-height: 1.2; }
 .thumbs { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
 .thumbs button { width: 70px; height: 70px; border-radius: 12px; overflow: hidden; border: 2px solid transparent; cursor: pointer; padding: 0; background: var(--card); }
 .thumbs button[aria-current="true"] { border-color: var(--ink); }
 .product .info h1 { font-size: clamp(28px, 4vw, 40px); margin-bottom: 10px; }
 .product .info .price { font-size: 26px; margin: 14px 0; }
-.product .info .desc { color: var(--ink-soft); margin: 16px 0; }
+.product .info .desc { color: var(--ink-soft); margin: 16px 0; white-space: pre-line; }
 .attr { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0; }
 .attr .pill { font-size: 13px; background: var(--card); border: 1px solid var(--line); border-radius: 100px; padding: 6px 13px; }
 .qty-picker { display: inline-flex; align-items: center; gap: 14px; border: 1px solid var(--line); border-radius: 100px; padding: 6px 8px; }
@@ -330,14 +637,15 @@ textarea.input { min-height: 84px; resize: vertical; }
 .modal.open { display: grid; }
 .modal-box { background: var(--cream); border-radius: var(--radius); max-width: 760px; width: 100%; max-height: 90vh; overflow: auto; position: relative; box-shadow: var(--shadow); }
 .modal .qv { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 24px; }
-.modal .qv .img { aspect-ratio: 1; border-radius: 14px; overflow: hidden; }
+.modal .qv .img { aspect-ratio: 3/4; border-radius: 14px; overflow: hidden; display: grid; place-items: center; }
 .modal .x-abs { position: absolute; top: 12px; right: 14px; background: #fff; border-radius: 50%; width: 36px; height: 36px; border: 1px solid var(--line); cursor: pointer; font-size: 20px; color: var(--ink); z-index: 2; }
 
 /* ---------- CHECKOUT ---------- */
 .checkout-layout { display: grid; grid-template-columns: 1fr 380px; gap: 36px; align-items: start; padding-bottom: 60px; }
-.summary { position: sticky; top: 86px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+.summary { position: sticky; top: calc(var(--nav-h, 132px) + 14px); background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
 .summary h3 { font-size: 20px; margin-bottom: 14px; }
-.summary .line { display: flex; justify-content: space-between; padding: 8px 0; font-size: 15px; border-bottom: 1px solid var(--line); }
+.summary .line { display: flex; justify-content: space-between; gap: 14px; padding: 8px 0; font-size: 15px; border-bottom: 1px solid var(--line); }
+.summary .line > :last-child { white-space: nowrap; flex-shrink: 0; }
 .summary .totals { margin-top: 12px; }
 .summary .totals .row { display: flex; justify-content: space-between; padding: 5px 0; color: var(--ink-soft); }
 .summary .totals .grand { font-family: "Fraunces"; font-weight: 700; font-size: 22px; color: var(--ink); padding-top: 10px; }
@@ -383,8 +691,26 @@ footer { background: var(--ink); color: #fff; padding: 58px 0 26px; margin-top: 
 footer .brand { color: #fff; }
 footer p { color: #ffffffb0; font-size: 15px; max-width: 280px; }
 .foot-col h4 { font-family: "Hanken Grotesk"; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: #ffffff80; margin: 0 0 14px; }
-.foot-col a { display: block; color: #ffffffcc; text-decoration: none; font-size: 15px; padding: 5px 0; }
+.foot-col a { display: block; color: #ffffffcc; text-decoration: none; font-size: 15px; padding: 9px 0; }
 .foot-col a:hover { color: #fff; }
+/* Iconuri social — pastile rotunde, aceeași culoare cu linkurile din footer. */
+.foot-social { display: flex; gap: 10px; margin-top: 10px; }
+.foot-social a { display: inline-grid; place-items: center; width: 40px; height: 40px; padding: 0;
+  border-radius: 50%; border: 1px solid #ffffff33; color: #ffffffcc; transition: color .2s, background .2s, border-color .2s; }
+.foot-social a:hover { color: var(--ink); background: #fff; border-color: #fff; }
+.foot-social svg { width: 19px; height: 19px; display: block; }
+
+/* Bannerele ANPC (SAL + SOL) — obligatorii în footer pentru magazine online. */
+.foot-anpc { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+.foot-anpc img { display: block; width: 250px; max-width: 100%; height: auto; border-radius: 6px; }
+/* Sigla NETOPIA (randată de scriptul lor) — aceleași dimensiuni ca bannerele ANPC. */
+[data-netopia] { display: block; width: 250px; height: 50px; max-width: 100%; }
+/* Identificarea comerciantului (nume, CUI, sediu, contact) — obligatorie pe fiecare pagină. */
+.foot-legal { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ffffff22;
+  font-size: 12.5px; line-height: 1.9; color: #ffffff85; }
+.foot-legal strong { color: #ffffffc0; font-weight: 600; }
+.foot-legal a { color: #ffffffb5; text-decoration: underline; text-underline-offset: 2px; }
+.foot-legal a:hover { color: #fff; }
 .foot-bottom { border-top: 1px solid #ffffff22; margin-top: 38px; padding-top: 20px; font-size: 13px; color: #ffffff80; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 
 /* ---------- TOAST ---------- */
@@ -406,11 +732,11 @@ footer p { color: #ffffffb0; font-size: 15px; max-width: 280px; }
   .lead-grid { gap: 28px; }
   /* fără backdrop-filter pe mobil: altfel devine containing-block pentru meniul
      fixed și îi colapsează înălțimea (eroarea de panou pe jumătate). */
-  .nav { backdrop-filter: none; background: color-mix(in srgb, var(--cream) 97%, transparent); }
+  .nav { backdrop-filter: none; background: color-mix(in srgb, var(--rose) 30%, #fff); }
 
   /* MENIU FULL-SCREEN cu animație fade + zoom și link-uri în cascadă */
   .nav-links {
-    position: fixed; inset: 0; width: 100%; height: 100dvh; margin-left: 0;
+    position: fixed; inset: 0; height: 100dvh; margin-left: 0;
     display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px;
     padding: 24px;
     background: linear-gradient(165deg,
@@ -424,19 +750,32 @@ footer p { color: #ffffffb0; font-size: 15px; max-width: 280px; }
   }
   .nav-links.open { opacity: 1; visibility: visible; pointer-events: auto; transform: none; }
   .nav-links a {
-    font-family: "Fraunces", Georgia, serif; font-size: 32px; font-weight: 600; line-height: 1.1;
-    color: var(--ink); text-align: center; width: auto; padding: 12px 0;
+    font-family: "Fraunces", Georgia, serif; font-size: 30px; font-weight: 600; line-height: 1.1;
+    letter-spacing: .01em; text-transform: none;
+    color: var(--ink); text-align: center; width: auto; padding: 10px 0;
     opacity: 0; transform: translateY(16px);
     transition: opacity .45s ease, transform .45s cubic-bezier(.16,1,.3,1), color .2s;
   }
+  .nav-links a::after { display: none; }  /* fără romburi în meniul full-screen */
+  .nav-links a[aria-current="page"] { color: var(--rose); }
   .nav-links.open a { opacity: 1; transform: none; }
-  .nav-links.open a:nth-child(1) { transition-delay: .10s; }
-  .nav-links.open a:nth-child(2) { transition-delay: .16s; }
-  .nav-links.open a:nth-child(3) { transition-delay: .22s; }
-  .nav-links.open a:nth-child(4) { transition-delay: .28s; }
+  .nav-links.open a:nth-child(1) { transition-delay: .08s; }
+  .nav-links.open a:nth-child(2) { transition-delay: .13s; }
+  .nav-links.open a:nth-child(3) { transition-delay: .18s; }
+  .nav-links.open a:nth-child(4) { transition-delay: .23s; }
+  .nav-links.open a:nth-child(5) { transition-delay: .28s; }
+  .nav-links.open a:nth-child(6) { transition-delay: .33s; }
+  .nav-links.open a:nth-child(7) { transition-delay: .38s; }
 
-  /* logo + buton X rămân vizibile deasupra meniului */
+  /* logo + buton X rămân vizibile deasupra meniului.
+     .nav-actions are `transform` → creează stacking context propriu, deci
+     z-index-ul butonului se compară DOAR în interiorul lui. Fără z-index aici,
+     hamburger-ul rămâne sub overlay-ul meniului și X-ul nu mai închide nimic. */
   .nav .brand { position: relative; z-index: 55; }
+  .nav-actions { z-index: 60; }
+  /* nav-ul are z-index 40; cât timp meniul e deschis trebuie să treacă peste
+     bannerul de cookie (z-index 80), altfel acesta acoperă ultimul link. */
+  body.menu-open .nav { z-index: 100; }
   .nav-toggle { display: inline-flex; position: relative; z-index: 60; }
 }
 @media (max-width: 640px) {
@@ -450,9 +789,31 @@ footer p { color: #ffffffb0; font-size: 15px; max-width: 280px; }
   footer { padding: 44px 0 24px; }
 }
 @media (max-width: 560px) {
-  .dirs, .grid, .grid.cols-4, .services, .portfolio, .foot-grid, .steps, .form-row { grid-template-columns: 1fr; }
-  .brand { font-size: 19px; }
+  .dirs, .grid.cols-4, .services, .foot-grid, .steps, .form-row { grid-template-columns: 1fr; }
+  /* Shop-ul rămâne pe 2 coloane pe telefon — cu una singură se vede 1,5 produse pe ecran.
+     Cardul devine îngust, deci prețul și butonul trec unul sub altul. */
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .card .body { padding: 12px 13px 14px; }
+  .card h3 { font-size: 16px; }
+  .card .row { flex-direction: column; align-items: stretch; gap: 8px; padding-top: 10px; }
+  .card .row .add { width: 100%; text-align: center; }
   .nav-links a { font-size: 28px; }
+  /* Logo-ul are font-size propriu pe fiecare rând; fără asta se suprapune peste butonul „Coș". */
+  .brand-name { font-size: 28px; }
+  .brand-eyebrow { font-size: 9px; }
+  .brand-sub { font-size: 11px; letter-spacing: .38em; text-indent: .38em; }
+  .cart-btn { padding: 8px 12px; font-size: 13px; gap: 6px; }
+  .nav-actions { gap: 6px; }
+  /* Căutarea din shop se strivea la ~90px lângă select-ul de sortare. */
+  .search-box { flex: 1 1 100%; max-width: none; order: -1; }
+  .shop-toolbar .select { flex: 1 1 auto; }
+}
+/* Zone de tap ≥ 36–44px pe touch. */
+@media (max-width: 640px) {
+  .qty button, .qty-picker button { width: 36px; height: 36px; }
+  .ci .rm { padding: 8px 0; }
+  .x { width: 40px; height: 40px; }
+  .radio-card input, .field input[type="checkbox"], .checkline input { width: 20px; height: 20px; }
 }
 
 /* focus + reduced motion */
@@ -507,15 +868,72 @@ a:focus-visible, button:focus-visible, .chip:focus-visible, input:focus-visible,
   .portal .choice.is-picked { transition: transform .35s cubic-bezier(.16, 1, .3, 1), box-shadow .35s ease; }
 }
 
-.portal-inner { width: min(1080px, 100%); text-align: center; }
-.portal .eyebrow { display: inline-block; margin-bottom: 14px; }
-.portal h1 { font-size: clamp(34px, 6.5vw, 66px); letter-spacing: -.02em; }
-/* „boom" cu gradient — replică a celui din hero (.hero h1 .boom) */
-.portal h1 .boom { position: relative; font-style: italic; font-weight: 800;
-  background: linear-gradient(100deg, var(--rose), var(--lilac) 55%, var(--sky));
-  -webkit-background-clip: text; background-clip: text; color: transparent; }
-.portal h1 .boom::after { content:""; position:absolute; left:-4%; right:-4%; bottom:.08em; height:.14em; background: var(--butter); border-radius: 100px; z-index:-1; opacity:.8; }
-.portal-sub { color: var(--ink-soft); font-size: clamp(16px, 2.4vw, 20px); margin: 16px auto 0; max-width: 520px; }
+.portal-inner { width: min(1240px, 100%); text-align: center; }
+/* „Bine ai venit la" — rând mic, spațiat, cu două liniuțe fine pe laturi. */
+.portal-welcome {
+  display: inline-flex; align-items: center; gap: 14px;
+  font-weight: 600; font-size: clamp(12px, 1.5vw, 14px);
+  letter-spacing: .34em; text-transform: uppercase;
+  color: var(--ink-soft); margin-bottom: 18px;
+}
+.portal-welcome i { width: clamp(18px, 4vw, 38px); height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--rose) 70%, var(--ink-soft))); }
+.portal-welcome i:last-child { background: linear-gradient(90deg, color-mix(in srgb, var(--rose) 70%, var(--ink-soft)), transparent); }
+/* „The Big Boom Events" — tot titlul în gradientul de brand (ca „Boom"), mai mare,
+   cu un halou moale în spate pentru profunzime. */
+.portal-title {
+  position: relative;
+  margin: 0; /* era <h1>; ca <p> ar prelua marginile implicite de paragraf */
+  font-family: "Fraunces", Georgia, serif;
+  font-size: clamp(30px, 7vw, 88px); font-weight: 800; white-space: nowrap;
+  /* Fraunces la optical-size maxim → serife dramatice, aspect de display. */
+  font-optical-sizing: auto; font-variation-settings: 'opsz' 144, 'wght' 820;
+  letter-spacing: -.005em; line-height: 1.14; padding-bottom: .12em;
+  /* Strat 1: rază de lumină care traversează textul (efect luminos discret).
+     Strat 2: baza închisă, cu tente fine de roz/lila/bleu. */
+  background:
+    linear-gradient(115deg, transparent 42%,
+      color-mix(in srgb, #fff 72%, transparent) 50%, transparent 58%),
+    linear-gradient(100deg,
+      color-mix(in srgb, var(--rose) 19%, var(--ink)),
+      color-mix(in srgb, var(--lilac) 14%, var(--ink)) 50%,
+      color-mix(in srgb, var(--sky) 21%, var(--ink)));
+  background-size: 250% 100%, 100% 100%;
+  background-position: 150% 0, 0 0;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 1px 9px color-mix(in srgb, var(--lilac) 35%, transparent));
+  animation: portal-shine 5.5s ease-in-out infinite;
+}
+@keyframes portal-shine {
+  0%, 12%    { background-position: 150% 0, 0 0; }
+  58%, 100%  { background-position: -55% 0, 0 0; }
+}
+.portal-title::before {
+  content: ""; position: absolute; left: 50%; top: 52%; z-index: -1;
+  width: 78%; height: 220%; transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center,
+    color-mix(in srgb, var(--rose) 30%, transparent),
+    color-mix(in srgb, var(--lilac) 18%, transparent) 45%, transparent 72%);
+  filter: blur(38px); opacity: .9; pointer-events: none;
+}
+/* „Boom" — text simplu, aceeași temă ca restul titlului (fără italic). */
+.portal-accent { font-style: normal; }
+/* Detaliu fin: linie subțire cu o steluță care pâlpâie discret. */
+.portal-divider {
+  display: flex; align-items: center; justify-content: center; gap: 16px;
+  width: min(300px, 72%); margin: 22px auto 0;
+}
+.portal-divider::before, .portal-divider::after { content: ""; height: 1px; flex: 1; }
+.portal-divider::before { background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--ink) 16%, transparent)); }
+.portal-divider::after  { background: linear-gradient(90deg, color-mix(in srgb, var(--ink) 16%, transparent), transparent); }
+.portal-star { font-size: 12px; font-style: normal; line-height: 1;
+  color: color-mix(in srgb, var(--rose) 62%, var(--butter));
+  animation: portal-twinkle 3.2s ease-in-out infinite; }
+@keyframes portal-twinkle {
+  0%, 100% { opacity: .8; transform: scale(1) rotate(0deg); }
+  50%      { opacity: 1; transform: scale(1.22) rotate(90deg); }
+}
+.portal-sub { color: var(--ink-soft); font-size: clamp(15px, 2.2vw, 19px); margin: 18px auto 0; max-width: 520px; }
 
 /* Grila de alegeri — un singur markup, responsive prin grid-template-columns.
    Desktop ≥900px: 4 pe rând. Tabletă 520–900: 2×2. Telefon <520: 1 coloană. */
@@ -523,26 +941,49 @@ a:focus-visible, button:focus-visible, .chip:focus-visible, input:focus-visible,
   display: grid; gap: 18px; margin-top: clamp(28px, 5vw, 44px);
   grid-template-columns: repeat(4, 1fr);
 }
+/* Card = poză reală pe tot boxul, text alb peste un gradient jos, cu parallax. */
 .choice {
-  position: relative; cursor: pointer; text-align: left;
-  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
-  padding: 26px 22px; text-decoration: none; color: inherit;
-  display: flex; flex-direction: column; gap: 14px;
-  box-shadow: var(--shadow-sm);
-  transition: transform .2s, box-shadow .25s, border-color .2s;
+  --px: 0px; --py: 0px;
+  position: relative; overflow: hidden; cursor: pointer; text-decoration: none; text-align: center;
+  border-radius: calc(var(--radius) + 4px);
+  min-height: 360px;
+  display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 8px;
+  padding: 26px 22px; color: #fff;
+  border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
+  box-shadow: 0 16px 40px -16px color-mix(in srgb, var(--ink) 48%, transparent);
+  transition: transform .28s cubic-bezier(.16,1,.3,1), box-shadow .3s;
 }
-.choice:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--ink) 18%, var(--line)); }
-.choice .ic { width: 58px; height: 58px; border-radius: 16px; display: grid; place-items: center; flex-shrink: 0; }
-.choice .ic svg { width: 30px; height: 30px; }
-.choice h2 { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 22px; line-height: 1.1; }
-.choice .desc { color: var(--ink-soft); font-size: 14.5px; line-height: 1.45; }
-.choice .go { margin-top: auto; font-weight: 600; font-size: 14px; color: var(--ink); display: inline-flex; align-items: center; gap: 6px; }
+.choice:hover { transform: translateY(-8px); box-shadow: 0 26px 56px -18px color-mix(in srgb, var(--ink) 58%, transparent); }
+/* Poza (::before) — parallax: se mișcă ușor după cursor (variabilele --px/--py din JS) + zoom la hover. */
+.choice::before {
+  content: ""; position: absolute; inset: -6%; z-index: 0;
+  background-size: cover; background-position: center;
+  transform: scale(1.06) translate(var(--px), var(--py));
+  transition: transform .5s cubic-bezier(.16,1,.3,1);
+}
+.choice:hover::before { transform: scale(1.14) translate(var(--px), var(--py)); }
+/* Gradient jos pentru lizibilitatea textului alb. */
+.choice::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(to top,
+    rgba(24,14,24,.86) 2%, rgba(24,14,24,.5) 32%, rgba(24,14,24,.12) 60%, transparent 82%);
+  transition: opacity .3s;
+}
+.choice:hover::after { background: linear-gradient(to top,
+    rgba(24,14,24,.9) 2%, rgba(24,14,24,.55) 34%, rgba(24,14,24,.15) 62%, transparent 84%); }
+.choice > * { position: relative; z-index: 2; }
+.choice .text { display: flex; flex-direction: column; gap: 5px; align-items: center; }
+.choice h2 { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 23px; line-height: 1.12;
+  color: #fff; text-shadow: 0 2px 14px rgba(0,0,0,.5); }
+.choice .desc { color: rgba(255,255,255,.9); font-size: 14px; line-height: 1.45; text-shadow: 0 1px 10px rgba(0,0,0,.55); }
+.choice .go { margin-top: 4px; font-weight: 600; font-size: 14px; color: #fff; display: inline-flex; align-items: center; gap: 6px;
+  text-shadow: 0 1px 10px rgba(0,0,0,.55); }
 .choice .go svg { width: 16px; height: 16px; transition: transform .2s; }
 .choice:hover .go svg { transform: translateX(4px); }
-.choice.c-nunta    .ic { background: color-mix(in srgb, var(--lilac) 50%, #fff); }
-.choice.c-florarie .ic { background: color-mix(in srgb, var(--rose) 50%, #fff); }
-.choice.c-baloane  .ic { background: color-mix(in srgb, var(--sky) 50%, #fff); }
-.choice.c-shop     .ic { background: color-mix(in srgb, var(--butter) 55%, #fff); }
+.choice.c-florarie::before    { background-image: url("/assets/portal/florarie.webp?v2"); }
+.choice.c-baloane::before     { background-image: url("/assets/portal/baloane.webp?v2"); }
+.choice.c-decoratiuni::before { background-image: url("/assets/portal/decoratiuni.webp?v2"); }
+.choice.c-wedding::before     { background-image: url("/assets/portal/wedding.webp?v2"); }
 
 .portal-skip {
   margin-top: 26px; background: none; border: 0; cursor: pointer;
@@ -551,19 +992,17 @@ a:focus-visible, button:focus-visible, .chip:focus-visible, input:focus-visible,
 }
 .portal-skip:hover { color: var(--ink); }
 
-/* Tabletă: 2×2 */
-@media (max-width: 900px) {
-  .choices { grid-template-columns: repeat(2, 1fr); }
-}
-/* Telefon: o coloană, carduri full-width, layout orizontal pentru tap ușor.
+/* Telefon + tabletă îngustă: o coloană, carduri full-width, layout orizontal
+   pentru tap ușor. Cardurile înalte (min-height 360px) pe 2 coloane nu încap
+   sub ~900px — „Mergi direct la site" ajungea sub fold, fără indiciu de scroll.
    „Peek": dacă cele 4 nu încap, overlay-ul e scrollabil (place-items:start). */
-@media (max-width: 519px) {
+@media (max-width: 860px) {
   .portal { place-items: start center; }
-  .portal h1 { font-size: clamp(27px, 8vw, 40px); }
+  .portal h1 { font-size: clamp(21px, 5.6vw, 34px); }
   .choices { grid-template-columns: 1fr; gap: 14px; }
-  .choice { flex-direction: row; align-items: center; gap: 14px; min-height: 112px; padding: 18px 42px 18px 18px; }
+  .choice { flex-direction: row; align-items: center; gap: 14px; min-height: 112px; padding: 18px 42px 18px 18px; text-align: left; }
   .choice .ic { width: 54px; height: 54px; }
-  .choice .text { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; } /* min-width:0 → textul se rupe, nu împinge cardul */
+  .choice .text { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; align-items: flex-start; } /* min-width:0 → textul se rupe, nu împinge cardul */
   .choice h2 { font-size: 20px; }
   /* pe mobil: doar chevron centrat în dreapta (fără textul „Intră"), ca într-o listă */
   .choice .go { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); margin: 0; font-size: 0; color: var(--ink-soft); }
@@ -573,8 +1012,10 @@ a:focus-visible, button:focus-visible, .chip:focus-visible, input:focus-visible,
 /* Intrare în cascadă (neutralizată automat de blocul reduce de mai sus) */
 @media (prefers-reduced-motion: no-preference) {
   .portal:not(.is-out) .portal-inner > * { animation: portal-rise .6s both cubic-bezier(.16,1,.3,1); }
-  .portal:not(.is-out) h1 { animation-delay: .08s; }
-  .portal:not(.is-out) .portal-sub { animation-delay: .14s; }
+  .portal:not(.is-out) .portal-welcome { animation-delay: .02s; }
+  .portal:not(.is-out) h1 { animation-delay: .12s; }
+  .portal:not(.is-out) .portal-divider { animation-delay: .22s; }
+  .portal:not(.is-out) .portal-sub { animation-delay: .30s; }
   .portal:not(.is-out) .portal-skip { animation-delay: .5s; }
   .portal:not(.is-out) .choice { animation: portal-rise .55s both cubic-bezier(.16,1,.3,1); }
   .portal:not(.is-out) .choice:nth-child(1) { animation-delay: .20s; }
@@ -582,4 +1023,402 @@ a:focus-visible, button:focus-visible, .chip:focus-visible, input:focus-visible,
   .portal:not(.is-out) .choice:nth-child(3) { animation-delay: .36s; }
   .portal:not(.is-out) .choice:nth-child(4) { animation-delay: .44s; }
   @keyframes portal-rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   BANNER PROMO (marquee infinit) — bara de sus, configurabilă din admin.
+   Buclă seamless: două grupuri identice în track, translateX(-50%).
+   ═══════════════════════════════════════════════════════════════════ */
+.promo-banner {
+  overflow: hidden;
+  width: 100%;
+  background: var(--promo-bg, #111);
+  color: var(--promo-fg, #fff);
+  font-weight: 800;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1;
+  padding: 0.5rem 0;
+}
+.promo-track {
+  display: flex;
+  width: max-content;
+  animation: promo-scroll var(--promo-dur, 30s) linear infinite;
+  will-change: transform;
+}
+.promo-group {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+.promo-seg { padding: 0 1rem; }
+.promo-sep { opacity: 0.55; }
+@keyframes promo-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+/* Accesibilitate: fără mișcare pentru cine a cerut reduced-motion (rămâne text static). */
+@media (prefers-reduced-motion: reduce) {
+  .promo-track { animation: none; transform: translateX(0); }
+}
+
+/* ─── Subcategorii pe paginile de categorie (/florarie, /baloane) ─── */
+.subcats {
+  display: grid; gap: 12px; margin-top: 22px;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+}
+.subcat {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 16px 18px; border-radius: 16px;
+  background: var(--card); border: 1px solid var(--line);
+  text-decoration: none; color: var(--ink); font-weight: 600; font-size: 15px;
+  transition: transform .2s, box-shadow .25s, border-color .2s;
+}
+.subcat:hover { transform: translateY(-3px); box-shadow: var(--shadow-sm);
+  border-color: color-mix(in srgb, var(--ink) 16%, var(--line)); }
+.subcat .arrow { color: var(--ink-soft); transition: transform .2s; flex-shrink: 0; }
+.subcat:hover .arrow { transform: translateX(3px); }
+.subcat.c-florarie    { border-left: 4px solid var(--rose); }
+.subcat.c-baloane     { border-left: 4px solid var(--sky); }
+
+/* ─── Recenzii Google — carusel mic și discret ─── */
+.reviews-band { padding: 40px 0; }
+.reviews-carousel { max-width: 1040px; margin: 0 auto; text-align: center; position: relative; }
+.rv-track { position: relative; }
+.rv-set {
+  position: absolute; inset: 0; margin: 0;
+  display: flex; gap: 16px; justify-content: center; align-items: stretch;
+  opacity: 0; visibility: hidden; transition: opacity .5s ease;
+}
+.rv-set.is-active { opacity: 1; visibility: visible; position: relative; }
+.rv-card {
+  flex: 1 1 0; max-width: 330px; margin: 0;
+  display: flex; flex-direction: column; gap: 8px; text-align: center;
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  padding: 20px 18px; box-shadow: var(--shadow-sm);
+}
+.rv-stars { color: #F5B301; font-size: 15px; letter-spacing: 1.5px; }
+.rv-star-empty { color: color-mix(in srgb, #F5B301 30%, transparent); }
+.rv-text { margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--ink); font-style: italic; }
+.rv-name { margin-top: auto; font-size: 13px; color: var(--ink-soft); font-weight: 600; }
+@media (max-width: 720px) {
+  .rv-set { flex-direction: column; align-items: center; }
+  .rv-card { max-width: 460px; width: 100%; }
+}
+.rv-src { color: color-mix(in srgb, var(--ink-soft) 80%, transparent); font-weight: 500; }
+.rv-dots { display: flex; justify-content: center; gap: 6px; margin-top: 12px; }
+.rv-dot { width: 6px; height: 6px; padding: 0; border: 0; border-radius: 50%; cursor: pointer;
+  background: color-mix(in srgb, var(--ink) 20%, transparent); transition: background .2s, transform .2s; }
+.rv-dot.is-active { background: var(--rose); transform: scale(1.3); }
+.rv-more { display: inline-block; margin-top: 12px; font-size: 12.5px; color: var(--ink-soft);
+  text-decoration: none; font-weight: 600; }
+.rv-more:hover { color: var(--ink); }
+
+/* Paginile de categorie (/florarie, /baloane): hero mai lat și mai compact,
+   ca produsele să apară mai sus. */
+body[data-category] .hero { padding: 42px 0 22px; }
+body[data-category] .hero-content { max-width: 1080px; }
+/* Subtextele ocupă toată lățimea (foarte late). */
+body[data-category] .hero p.lead,
+body[data-category] .hero-desc { max-width: none; }
+body[data-category] #ocazii, body[data-category] #tipuri { padding-top: 30px; }
+
+/* Intro de categorie în capul shop-ului (florărie etc.) — text lat, centrat. */
+.cat-intro { text-align: center; max-width: 1000px; margin: 8px auto 26px; }
+.cat-intro .eyebrow { display: inline-block; margin-bottom: 10px; }
+.cat-intro h1 {
+  font-family: "Fraunces", Georgia, serif; font-weight: 700;
+  font-size: clamp(30px, 4.4vw, 48px); line-height: 1.08; margin-bottom: 14px;
+  background: linear-gradient(100deg,
+    color-mix(in srgb, var(--rose) 22%, var(--ink)),
+    color-mix(in srgb, var(--lilac) 16%, var(--ink)) 50%,
+    color-mix(in srgb, var(--sky) 24%, var(--ink)));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.cat-intro p { color: var(--ink-soft); font-size: clamp(15px, 1.9vw, 17px); line-height: 1.6; margin: 8px auto 0; }
+
+/* Cele 3 opțiuni TRIO (sus pe florărie) — boxuri fără poză/preț deocamdată. */
+.trio-boxes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 0 auto 30px; max-width: 1000px; }
+.trio-box {
+  position: relative; display: flex; flex-direction: column; gap: 8px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  padding: 24px 22px 20px; box-shadow: var(--shadow-sm); text-align: center;
+}
+.trio-tag {
+  position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+  background: var(--rose); color: var(--ink); font-size: 11px; font-weight: 700;
+  letter-spacing: .04em; text-transform: uppercase; padding: 4px 12px; border-radius: 100px; white-space: nowrap;
+}
+.trio-name { font-family: "Fraunces", Georgia, serif; font-size: 21px; font-weight: 700; letter-spacing: .01em; margin-top: 4px; }
+.trio-extras { color: var(--ink-soft); font-size: 14.5px; line-height: 1.5; margin: 0; }
+.trio-soon { margin-top: auto; padding-top: 6px; font-size: 12px; font-weight: 600; color: color-mix(in srgb, var(--ink-soft) 90%, transparent); letter-spacing: .02em; }
+@media (max-width: 780px) { .trio-boxes { grid-template-columns: 1fr; max-width: 460px; } }
+
+/* „Preț la cerere" — produse fără preț încă (ex. TRIO). */
+.price-req { color: var(--ink-soft); font-weight: 600; font-size: .95em; }
+a.add { text-decoration: none; }
+.add.add-req { background: var(--ink); color: #fff; }
+.add.add-req:hover { background: #2c2230; }
+
+/* Arbore de categorii (baloane) — principală bold, sub-categorii indentate. */
+.checkline.cat-main { font-weight: 700; margin-top: 6px; }
+.checkline.cat-sub { padding-left: 20px; font-size: 14px; color: var(--ink-soft); }
+.checkline.cat-sub input { accent-color: var(--sky); }
+
+/* Secțiuni de filtre lungi (Categorii/Ocazii) — scrollabile. */
+.filter-scroll { max-height: 260px; overflow-y: auto; padding-right: 4px; }
+/* Rezervă înălțimea listelor de filtre (populate din JS) ca grupurile din
+   sidebar să nu se împingă între ele la încărcare. */
+[data-filter-categories], [data-filter-types] { min-height: 120px; }
+[data-filter-occasions] { min-height: 200px; }
+[data-filter-colors] { min-height: 210px; }
+.filter-scroll::-webkit-scrollbar { width: 6px; }
+.filter-scroll::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--ink) 18%, transparent); border-radius: 100px; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   WEDDING PLANNER (Ionela Jora)
+   ═══════════════════════════════════════════════════════════════════ */
+.wp-hero { padding-top: 44px; }
+.wp-hero-grid { display: grid; grid-template-columns: minmax(0,0.85fr) minmax(0,1.15fr); gap: 48px; align-items: center; }
+.wp-portrait img { width: 100%; border-radius: 22px; box-shadow: var(--shadow); object-fit: cover; }
+.wp-hero-text h1 { font-size: clamp(30px, 4.6vw, 52px); line-height: 1.06; margin: 12px 0 16px; }
+.wp-hero-text .lead { font-size: clamp(17px, 2.1vw, 20px); color: var(--ink); margin-bottom: 12px; }
+.wp-hero-text .hero-cta { justify-content: flex-start; margin-top: 26px; }
+
+.wp-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 8px; }
+.wp-step { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 24px 22px; box-shadow: var(--shadow-sm); }
+.wp-num { display: inline-grid; place-items: center; width: 38px; height: 38px; border-radius: 50%;
+  background: color-mix(in srgb, var(--lilac) 45%, #fff); color: var(--ink); font-family: "Fraunces", Georgia, serif; font-weight: 700; font-size: 18px; margin-bottom: 12px; }
+.wp-step h3 { font-size: 18px; margin-bottom: 8px; line-height: 1.2; }
+.wp-step p { font-size: 14.5px; color: var(--ink-soft); line-height: 1.55; }
+
+.wp-why { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 26px; max-width: 900px; margin-inline: auto; }
+.wp-why li { position: relative; padding-left: 30px; font-size: 16px; line-height: 1.5; }
+.wp-why li::before { content: "✓"; position: absolute; left: 0; top: 0; color: var(--ok); font-weight: 800; }
+
+.wp-pack { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.1fr); gap: 40px; align-items: center; margin-bottom: 40px; }
+.wp-pack-alt { direction: rtl; }
+.wp-pack-alt > * { direction: ltr; }
+.wp-pack-img img { width: 100%; border-radius: 20px; box-shadow: var(--shadow); aspect-ratio: 3/2; object-fit: cover; }
+.wp-pack-tag { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink); background: color-mix(in srgb, var(--butter) 55%, #fff); padding: 4px 12px; border-radius: 100px; margin-bottom: 10px; }
+.wp-pack-body h3 { font-size: clamp(23px, 3vw, 30px); margin-bottom: 6px; }
+.wp-pack-sub { font-family: "Fraunces", Georgia, serif; font-style: italic; color: var(--ink-soft); font-size: 17px; margin-bottom: 12px; }
+.wp-services { list-style: none; padding: 0; margin: 16px 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 7px 20px; }
+.wp-services li { position: relative; padding-left: 24px; font-size: 14.5px; line-height: 1.45; }
+.wp-services li::before { content: "✓"; position: absolute; left: 0; color: var(--ok); font-weight: 700; }
+.wp-forwho { font-size: 14.5px; color: var(--ink-soft); background: color-mix(in srgb, var(--rose) 10%, transparent); padding: 12px 16px; border-radius: 12px; border-left: 3px solid var(--rose); }
+
+@media (max-width: 860px) {
+  .wp-hero-grid { grid-template-columns: 1fr; gap: 28px; }
+  .wp-portrait { max-width: 420px; margin-inline: auto; }
+  .wp-hero-text .hero-cta { justify-content: center; }
+  .wp-hero-text { text-align: center; }
+  .wp-steps { grid-template-columns: 1fr; }
+  .wp-why { grid-template-columns: 1fr; }
+  .wp-pack, .wp-pack-alt { grid-template-columns: 1fr; direction: ltr; gap: 20px; }
+  .wp-services { grid-template-columns: 1fr; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   DECORAȚIUNI EVENIMENTE — submeniu, carduri-eveniment, galerii
+   ═══════════════════════════════════════════════════════════════════ */
+/* Submeniu (doar pe paginile de decorațiuni), sub nav-ul principal */
+.decor-submenu { background: color-mix(in srgb, var(--rose) 16%, #fff); border-bottom: 1px solid var(--line); position: sticky; top: var(--nav-h, 75px); z-index: 30; }
+.decor-submenu-inner { display: flex; gap: 4px; justify-content: center; flex-wrap: wrap; padding: 10px 0; }
+.decor-submenu a { text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--ink-soft); padding: 10px 14px; border-radius: 100px; transition: background .2s, color .2s; white-space: nowrap; }
+.decor-submenu a:hover { color: var(--ink); }
+.decor-submenu a.is-active { background: var(--ink); color: #fff; }
+
+/* Grila de evenimente (carduri-imagine) */
+.decor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; }
+.decor-tile { position: relative; display: block; border-radius: 20px; overflow: hidden; aspect-ratio: 4/5;
+  text-decoration: none; box-shadow: 0 14px 38px -16px color-mix(in srgb, var(--ink) 48%, transparent); transition: transform .28s cubic-bezier(.16,1,.3,1), box-shadow .3s; }
+.decor-tile:hover { transform: translateY(-6px); box-shadow: 0 24px 54px -18px color-mix(in srgb, var(--ink) 58%, transparent); }
+.decor-tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .5s cubic-bezier(.16,1,.3,1); }
+.decor-tile:hover img { transform: scale(1.07); }
+.decor-tile::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(24,14,24,.82) 6%, rgba(24,14,24,.25) 42%, transparent 70%); }
+.decor-tile-body { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 20px 22px; color: #fff; display: flex; flex-direction: column; gap: 6px; }
+.decor-tile-name { font-family: "Fraunces", Georgia, serif; font-size: clamp(17px, 2.2vw, 24px); font-weight: 600; text-shadow: 0 2px 14px rgba(0,0,0,.5); }
+.decor-tile-go { font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; opacity: .95; }
+.decor-tile-go svg { width: 15px; height: 15px; transition: transform .2s; }
+.decor-tile:hover .decor-tile-go svg { transform: translateX(4px); }
+
+/* Subpagina eveniment — poză + text unul lângă altul (side by side), alternând */
+.decor-ev-hero { padding: 34px 0 12px; }
+.decor-ev-hero h1 { font-size: clamp(34px, 5vw, 60px); margin-top: 4px; }
+.decor-ev-hero .hero-content { max-width: 1240px; padding-top: 6px; }
+.decor-ev-hero p.lead { max-width: 1140px; }
+.decor-gallery { display: flex; flex-direction: column; gap: clamp(28px, 4vw, 52px); margin-top: 18px; }
+.decor-shot { margin: 0; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); align-items: center; gap: clamp(22px, 3.5vw, 48px); }
+.decor-shot-img { border-radius: 18px; overflow: hidden; box-shadow: 0 16px 40px -22px color-mix(in srgb, var(--ink) 45%, transparent); }
+.decor-shot img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; transition: transform .6s cubic-bezier(.16,1,.3,1); }
+/* Imaginile portret (verticale) primesc un cadru vertical, ca să se vadă
+   întregul aranjament, nu doar o bandă tăiată din centru. */
+.decor-shot.is-portrait img { aspect-ratio: 3/4; }
+.decor-shot:hover img { transform: scale(1.04); }
+.decor-shot figcaption {
+  font-size: clamp(16px, 1.65vw, 19px);
+  line-height: 1.8;
+  color: var(--ink);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--rose) 16%, #fff), color-mix(in srgb, var(--rose) 6%, #fff));
+  border: 1px solid color-mix(in srgb, var(--rose) 28%, var(--line));
+  border-radius: 20px;
+  padding: clamp(24px, 3.2vw, 38px);
+  box-shadow: 0 18px 44px -26px color-mix(in srgb, var(--ink) 45%, transparent);
+  position: relative;
+}
+.decor-shot figcaption::before {
+  content: "";
+  position: absolute; left: clamp(24px, 3.2vw, 38px); top: 0;
+  width: 44px; height: 3px; border-radius: 3px;
+  background: var(--rose);
+  transform: translateY(-1.5px);
+}
+/* alternează: pozele pare trec în dreapta, textul în stânga */
+.decor-shot:nth-child(even) .decor-shot-img { order: 2; }
+.decor-ev-hero + section .section-head h2, main[data-decor-event] .section-head h2 { font-size: clamp(26px, 3.4vw, 40px); }
+@media (max-width: 760px) {
+  .decor-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .decor-shot { grid-template-columns: 1fr; gap: 14px; }
+  .decor-shot:nth-child(even) .decor-shot-img { order: 0; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   MIȘCARE — tranziții între pagini + apariție la scroll.
+   Totul e progressive enhancement: fără JS sau fără suport de
+   browser, paginile rămân exact la fel, doar fără animație.
+   Blocul global `prefers-reduced-motion: reduce` de mai sus
+   (`animation:none !important`) le oprește pe toate deodată.
+   ════════════════════════════════════════════════════════════ */
+
+/* 1. Tranziție între pagini (View Transitions API, cross-document).
+      Browserele fără suport ignoră regula și navighează normal. */
+@view-transition { navigation: auto; }
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: bbe-fade-out .18s cubic-bezier(.4, 0, 1, 1) both;
+  }
+  ::view-transition-new(root) {
+    animation: bbe-page-in .34s cubic-bezier(.16, 1, .3, 1) both;
+  }
+  /* Nav-ul și footerul rămân pe loc — se schimbă doar conținutul.
+     Fără asta, headerul „clipește" la fiecare navigare. */
+  .nav { view-transition-name: bbe-nav; }
+  footer { view-transition-name: bbe-foot; }
+  ::view-transition-old(bbe-nav), ::view-transition-new(bbe-nav),
+  ::view-transition-old(bbe-foot), ::view-transition-new(bbe-foot) {
+    animation: none;
+  }
+}
+
+@keyframes bbe-fade-out { to { opacity: 0; } }
+@keyframes bbe-page-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes bbe-rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* 2. Prima încărcare (și browserele fără View Transitions): conținutul
+      principal intră lin. Nav/footer nu se animă, ca să nu sară layout-ul. */
+@media (prefers-reduced-motion: no-preference) {
+  main { animation: bbe-page-in .38s cubic-bezier(.16, 1, .3, 1) both; }
+
+  /* 3. Carduri & tile-uri: se animă la inserare în DOM, deci merg și pentru
+        grilele randate din JS (shop, decorațiuni), fără cod în plus. */
+  .card, .decor-tile, .dir, .stat, .wp-pack, .service {
+    animation: bbe-rise .5s cubic-bezier(.16, 1, .3, 1) both;
+  }
+  /* Cascadă scurtă pe primele elemente dintr-o grilă (după 8, fără delay,
+     ca să nu aștepte nimeni după un rând de la coada listei). */
+  .card:nth-child(1), .decor-tile:nth-child(1), .dir:nth-child(1) { animation-delay: .02s; }
+  .card:nth-child(2), .decor-tile:nth-child(2), .dir:nth-child(2) { animation-delay: .07s; }
+  .card:nth-child(3), .decor-tile:nth-child(3), .dir:nth-child(3) { animation-delay: .12s; }
+  .card:nth-child(4), .decor-tile:nth-child(4), .dir:nth-child(4) { animation-delay: .17s; }
+  .card:nth-child(5), .decor-tile:nth-child(5) { animation-delay: .21s; }
+  .card:nth-child(6), .decor-tile:nth-child(6) { animation-delay: .25s; }
+
+  /* 4. Apariție la scroll. Clasele le pune JS (app.js) DOAR dacă browserul
+        suportă IntersectionObserver — de aceea starea ascunsă e condiționată
+        de `.has-reveal` pe <html>: fără JS nu se ascunde nimic. */
+  .has-reveal .reveal { opacity: 0; transform: translateY(22px); }
+  .has-reveal .reveal.in {
+    animation: bbe-rise .6s cubic-bezier(.16, 1, .3, 1) both;
+    opacity: 1; transform: none;
+  }
+
+  /* 5. Micro-interacțiuni. */
+  .btn, .chip, .addon, .decor-tile, .foot-social a { transition: transform .18s ease, box-shadow .25s ease, background .2s ease, color .2s ease; }
+  .btn:hover, .chip:hover { transform: translateY(-2px); }
+  .btn:active, .chip:active, .addon:active { transform: translateY(0); }
+}
+
+/* ════════════════════════════════════════════════════════════
+   CONSIMȚĂMÂNT COOKIES (GDPR) — banner cu Accept / Refuz / Setări.
+   ════════════════════════════════════════════════════════════ */
+.consent-host { position: fixed; left: 0; right: 0; bottom: 0; z-index: 95; display: flex; justify-content: center; padding: 16px; pointer-events: none; }
+.consent-panel { pointer-events: auto; width: min(560px, 100%); background: var(--card); color: var(--ink);
+  border: 1px solid var(--line); border-radius: 20px; box-shadow: 0 20px 60px -20px #3b2e3a55; padding: 22px 24px; }
+.consent-panel h2 { font-size: 19px; margin: 0 0 8px; }
+.consent-panel p { font-size: 14px; color: var(--ink-soft); margin: 0 0 16px; line-height: 1.55; }
+.consent-panel a { color: var(--rose); font-weight: 600; }
+.consent-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.consent-actions .btn { flex: 1 1 auto; }
+.consent-rows { display: flex; flex-direction: column; gap: 4px; margin: 4px 0 18px; }
+.consent-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px;
+  padding: 12px 0; border-bottom: 1px solid var(--line); cursor: pointer; }
+.consent-row:last-child { border-bottom: 0; }
+.consent-row-txt { display: flex; flex-direction: column; gap: 3px; }
+.consent-row-txt strong { font-size: 14.5px; }
+.consent-desc { font-size: 12.5px; color: var(--ink-soft); line-height: 1.5; }
+.consent-row input[type="checkbox"] { width: 22px; height: 22px; flex-shrink: 0; accent-color: var(--ink); margin-top: 2px; cursor: pointer; }
+.consent-row input:disabled { opacity: .55; cursor: not-allowed; }
+@media (max-width: 560px) { .consent-actions .btn { flex-basis: 100%; } }
+@media (prefers-reduced-motion: no-preference) {
+  .consent-panel { animation: bbe-rise .4s cubic-bezier(.16,1,.3,1) both; }
+}
+
+/* Tabel politică cookies. */
+.cookie-table { width: 100%; border-collapse: collapse; margin: 14px 0 8px; font-size: 14.5px; }
+.cookie-table th, .cookie-table td { text-align: left; padding: 12px 14px; border: 1px solid var(--line); vertical-align: top; }
+.cookie-table th { background: color-mix(in srgb, var(--rose) 12%, #fff); font-weight: 600; }
+.cookie-table td:first-child { white-space: nowrap; }
+@media (max-width: 560px) {
+  .cookie-table, .cookie-table tbody, .cookie-table tr, .cookie-table td { display: block; width: 100%; }
+  .cookie-table thead { display: none; }
+  .cookie-table td:first-child { white-space: normal; }
+  .cookie-table tr { margin-bottom: 12px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .cookie-table td { border: 0; border-bottom: 1px solid var(--line); }
+}
+
+/* ════════════════════════════════════════════════════════════
+   ANTI-LAYOUT-SHIFT — rezervă spațiul pentru chrome-ul injectat din
+   JS (banner promo + nav), ca pagina să nu „sară" când apar.
+   Înălțimile sunt măsurate pe breakpoint-urile reale.
+   ════════════════════════════════════════════════════════════ */
+/* Nav: placeholder-ul [data-include="nav"] ține locul până se injectează nav-ul. */
+[data-include="nav"] { min-height: 132px; }
+@media (max-width: 560px)  { [data-include="nav"] { min-height: 75px; } }
+@media (min-width: 561px) and (max-width: 980px)  { [data-include="nav"] { min-height: 91px; } }
+@media (min-width: 981px) and (max-width: 1180px) { [data-include="nav"] { min-height: 161px; } }
+
+/* Banner promo: placeholder-ul [data-include="promo"] rezervă 30px din prima
+   pictare (înainte de JS), ca banner-ul să se umple fără să împingă pagina.
+   Când banner-ul e dezactivat, JS pune .promo-empty și spațiul se colapsează. */
+[data-include="promo"] { min-height: 30px; background: var(--ink); }
+[data-include="promo"].promo-empty { min-height: 0; background: none; }
+.promo-banner { min-height: 30px; box-sizing: border-box; }
+.promo-skeleton { background: var(--ink); }
+
+/* Persistă banner-ul la tranziția între pagini (fără flicker). */
+@media (prefers-reduced-motion: no-preference) {
+  .promo-banner { view-transition-name: bbe-promo; }
+  ::view-transition-old(bbe-promo), ::view-transition-new(bbe-promo) { animation: none; }
 }

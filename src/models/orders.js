@@ -1,4 +1,5 @@
 // Acces la date pentru comenzi — creare tranzacțională, validare server-side.
+import crypto from 'node:crypto';
 import { query, withTransaction } from '../db.js';
 import { getProductsByIds } from './products.js';
 import { HttpError } from '../utils/http.js';
@@ -19,7 +20,12 @@ async function nextOrderNumber(client) {
   const ymd = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(
     d.getDate()
   ).padStart(2, '0')}`;
-  return `BBE-${ymd}-${seq}`;
+  // Sufix aleator: numerele erau secvențiale (BBE-DATA-0001, 0002…), deci
+  // `GET /api/orders/:number` (public, pentru pagina de mulțumire) permitea
+  // enumerarea tuturor comenzilor. Cele 4 hex fac numărul neghicibil. Nu
+  // conține „_” (separatorul folosit la orderID-ul Netopia), deci nu strică IPN-ul.
+  const rnd = crypto.randomBytes(2).toString('hex');
+  return `BBE-${ymd}-${seq}-${rnd}`;
 }
 
 /**
@@ -38,6 +44,11 @@ export async function createOrder(input) {
     const p = byId.get(it.productId);
     if (!p || !p.is_active) {
       throw new HttpError(409, `Produsul #${it.productId} nu mai este disponibil.`);
+    }
+    // Produs „preț la cerere" (price_cents = 0, non-addon) — nu se poate comanda online.
+    // (Add-on-urile pot fi 0, ex. felicitarea gratuită.)
+    if (!p.is_addon && p.price_cents <= 0) {
+      throw new HttpError(409, `Produsul „${p.name}" este disponibil doar la cerere.`);
     }
     // Extra-opțiunile (felicitare, bomboane...) nu țin stoc — sunt mereu disponibile.
     if (!p.is_addon && p.stock < it.quantity) {
@@ -147,7 +158,35 @@ export async function markPaid(orderNumber, paymentRef) {
      RETURNING *`,
     [orderNumber, paymentRef]
   );
-  return rows[0] || null; // null dacă nu era pending (deja procesată)
+  return rows[0] || null; // null dacă nu era pending (deja procesată) → idempotent
+}
+
+// Ramburs de card (refund din panoul Netopia → IPN status 8) sau chargeback.
+// Repune stocul o singură dată (nu și pentru add-on-uri) și trece în „refunded".
+export async function markRefunded(orderNumber, paymentRef) {
+  return withTransaction(async (client) => {
+    const { rows } = await client.query(
+      `SELECT * FROM orders WHERE order_number = $1 FOR UPDATE`,
+      [orderNumber]
+    );
+    const order = rows[0];
+    if (!order || order.status === 'refunded') return null;
+    const items = await client.query(
+      `SELECT product_id, quantity FROM order_items WHERE order_id = $1`,
+      [order.id]
+    );
+    for (const it of items.rows) {
+      await client.query(
+        `UPDATE products SET stock = stock + $1 WHERE id = $2 AND is_addon = FALSE`,
+        [it.quantity, it.product_id]
+      );
+    }
+    await client.query(
+      `UPDATE orders SET status = 'refunded', payment_ref = COALESCE($2, payment_ref) WHERE id = $1`,
+      [order.id, paymentRef]
+    );
+    return order;
+  });
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -245,32 +284,70 @@ export async function getOrderDetailAdmin(id) {
 }
 
 // Actualizează status și/sau AWB. La trecerea în „paid" setează paid_at dacă lipsește.
+// La anulare/rambursare repune stocul (o singură dată — doar dacă nu era deja
+// într-un status de anulare), ca marfa să nu rămână blocată în rezervă.
+const RESTOCK_STATUSES = ['cancelled', 'refunded'];
+
 export async function updateOrderAdmin(id, { status, awb }) {
-  const sets = [];
-  const params = [id];
-  let i = 2;
-  if (status !== undefined) {
-    sets.push(`status = $${i++}`);
-    params.push(status);
-    if (status === 'paid') sets.push(`paid_at = COALESCE(paid_at, now())`);
-  }
-  if (awb !== undefined) {
-    sets.push(`awb = $${i++}`);
-    params.push(awb || null);
-  }
-  if (!sets.length) return getOrderDetailAdmin(id);
-  const { rowCount } = await query(
-    `UPDATE orders SET ${sets.join(', ')} WHERE id = $1`,
-    params
-  );
-  return rowCount ? getOrderDetailAdmin(id) : null;
+  return withTransaction(async (client) => {
+    const { rows: cur } = await client.query(`SELECT * FROM orders WHERE id = $1 FOR UPDATE`, [id]);
+    const order = cur[0];
+    if (!order) return null;
+
+    const sets = [];
+    const params = [id];
+    let i = 2;
+    if (status !== undefined) {
+      sets.push(`status = $${i++}`);
+      params.push(status);
+      if (status === 'paid') sets.push(`paid_at = COALESCE(paid_at, now())`);
+    }
+    if (awb !== undefined) {
+      sets.push(`awb = $${i++}`);
+      params.push(awb || null);
+    }
+    if (sets.length) {
+      await client.query(`UPDATE orders SET ${sets.join(', ')} WHERE id = $1`, params);
+    }
+
+    const goesToRestock =
+      status !== undefined &&
+      RESTOCK_STATUSES.includes(status) &&
+      !RESTOCK_STATUSES.includes(order.status);
+    if (goesToRestock) {
+      const items = await client.query(
+        `SELECT product_id, quantity FROM order_items WHERE order_id = $1`,
+        [id]
+      );
+      for (const it of items.rows) {
+        // Add-on-urile nu consumă stoc la creare, deci nu li se repune nici aici.
+        await client.query(
+          `UPDATE products SET stock = stock + $1 WHERE id = $2 AND is_addon = FALSE`,
+          [it.quantity, it.product_id]
+        );
+      }
+    }
+
+    // Citim prin `client`, nu prin pool: în interiorul tranzacției, UPDATE-ul
+    // de mai sus nu e încă vizibil pentru alte conexiuni (am fi întors starea veche).
+    const { rows: fresh } = await client.query(`SELECT * FROM orders WHERE id = $1`, [id]);
+    const { rows: freshItems } = await client.query(
+      `SELECT * FROM order_items WHERE order_id = $1 ORDER BY id`,
+      [id]
+    );
+    return { ...mapOrder(fresh[0]), items: freshItems.map(mapItem) };
+  });
 }
 
 // Comandă eșuată la plată: repune stocul și anulează.
+// Doar comenzile cu CARDUL pot fi anulate pe ruta asta — un ramburs nu are ce
+// căuta într-un callback de procesator.
 export async function markFailed(orderNumber) {
   return withTransaction(async (client) => {
     const { rows } = await client.query(
-      `SELECT * FROM orders WHERE order_number = $1 AND status = 'pending' FOR UPDATE`,
+      `SELECT * FROM orders
+       WHERE order_number = $1 AND status = 'pending' AND payment_method = 'card'
+       FOR UPDATE`,
       [orderNumber]
     );
     const order = rows[0];
@@ -280,10 +357,12 @@ export async function markFailed(orderNumber) {
       [order.id]
     );
     for (const it of items.rows) {
-      await client.query(`UPDATE products SET stock = stock + $1 WHERE id = $2`, [
-        it.quantity,
-        it.product_id,
-      ]);
+      // Add-on-urile nu consumă stoc la creare (vezi createOrder), deci nici la
+      // anulare nu li se repune — altfel stocul lor ar crește la infinit.
+      await client.query(
+        `UPDATE products SET stock = stock + $1 WHERE id = $2 AND is_addon = FALSE`,
+        [it.quantity, it.product_id]
+      );
     }
     await client.query(`UPDATE orders SET status = 'cancelled' WHERE id = $1`, [order.id]);
     return order;

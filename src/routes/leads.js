@@ -7,7 +7,7 @@ import {
   leadConfirmationToCustomer,
   leadNotificationToAdmin,
 } from '../services/templates.js';
-import { notifyTelegram } from '../services/notify.js';
+import { notifyTelegram, tgEscape } from '../services/notify.js';
 import config from '../config.js';
 
 const router = Router();
@@ -31,7 +31,7 @@ router.post(
     Promise.allSettled([
       sendEmail({ to: config.email.admin, ...adminMail }),
       sendEmail({ to: lead.email, ...custMail }),
-      notifyTelegram(`✨ <b>Lead nou</b>: ${lead.name} (${lead.email})`),
+      notifyTelegram(`✨ <b>Lead nou</b>: ${tgEscape(lead.name)} (${tgEscape(lead.email)})`),
     ]).catch(() => {});
 
     res.status(201).json({ ok: true, id: lead.id });

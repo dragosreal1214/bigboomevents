@@ -6,11 +6,12 @@
     const u = new URLSearchParams(location.search);
     const order = u.get('order');
     const ref = u.get('ref');
+    const t = u.get('t'); // token legat de comandă, cerut de webhook
     document.querySelector('[data-order]').textContent = order || '—';
 
     async function finish(status) {
       try {
-        await API.post('/webhooks/payment', { orderNumber: order, ref, status });
+        await API.post('/webhooks/payment', { orderNumber: order, ref, status, t });
       } catch {}
       window.location.href = `/multumim?order=${encodeURIComponent(order)}`;
     }

@@ -18,7 +18,11 @@ import {
   adminCategorySchema,
   adminOrderUpdateSchema,
   adminLeadStatusSchema,
+  bannerSchema,
+  ORDER_STATUSES,
+  LEAD_STATUSES,
 } from '../validation.js';
+import { getBanner, setSetting } from '../models/settings.js';
 import {
   listOrdersAdmin,
   getOrderDetailAdmin,
@@ -38,6 +42,7 @@ import {
   updateProduct,
   setProductActive,
   deleteProduct,
+  bulkDeleteProducts,
   listCategoriesAdmin,
   createCategory,
   updateCategory,
@@ -48,6 +53,21 @@ import {
 
 const router = Router();
 
+// ID-urile din URL trebuie validate ÎNAINTE de query: altfel `Number('abc')`
+// ajunge NaN în Postgres și primim 500 (cu mesaj de schemă) în loc de 400.
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+function intId(raw) {
+  const n = Number(raw);
+  if (!Number.isInteger(n) || n <= 0) throw new HttpError(400, 'ID invalid');
+  return n;
+}
+function uuidId(raw) {
+  const v = String(raw || '');
+  if (!UUID_RE.test(v)) throw new HttpError(400, 'ID invalid');
+  return v;
+}
+const pageNum = (v) => Math.max(1, Number(v) || 1);
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 // În producție, nginx servește staticul din alt director (ex: /var/www/bigboom).
 // UPLOAD_DIR pune pozele urcate direct acolo. Implicit: public/ din aplicație (dev).
@@ -56,10 +76,11 @@ const uploadsDir =
 fs.mkdirSync(uploadsDir, { recursive: true });
 
 // ─── Upload imagini (multer) ───
-const ALLOWED = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml']);
+// SVG intenționat exclus: poate purta <script> (XSS stocat dacă e deschis direct).
+const ALLOWED = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
 const EXT = {
   'image/jpeg': '.jpg', 'image/png': '.png', 'image/webp': '.webp',
-  'image/gif': '.gif', 'image/svg+xml': '.svg',
+  'image/gif': '.gif',
 };
 
 const storage = multer.diskStorage({
@@ -74,7 +95,7 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024, files: 12 }, // 5MB / fișier, max 12
   fileFilter: (_req, file, cb) => {
     if (ALLOWED.has(file.mimetype)) return cb(null, true);
-    cb(new HttpError(400, 'Tip fișier neacceptat. Folosește JPG, PNG, WEBP, GIF sau SVG.'));
+    cb(new HttpError(400, 'Tip fișier neacceptat. Folosește JPG, PNG, WEBP sau GIF.'));
   },
 });
 
@@ -110,17 +131,38 @@ router.get(
 );
 
 // ───────────────────────────────────────────────
+//  BANNER PROMO (setări site)
+// ───────────────────────────────────────────────
+router.get(
+  '/admin/banner',
+  asyncHandler(async (_req, res) => {
+    res.json({ banner: await getBanner() });
+  })
+);
+
+router.put(
+  '/admin/banner',
+  asyncHandler(async (req, res) => {
+    const data = parseOrThrow(bannerSchema, req.body);
+    const banner = await setSetting('banner', data);
+    res.json({ banner });
+  })
+);
+
+// ───────────────────────────────────────────────
 //  PRODUSE
 // ───────────────────────────────────────────────
 router.get(
   '/admin/products',
   asyncHandler(async (req, res) => {
-    const { q, category, page, pageSize } = req.query;
+    const { q, category, type, active, page, pageSize } = req.query;
     res.json(
       await listAllProducts({
         q: q?.trim() || undefined,
         category: category?.trim() || undefined,
-        page: Number(page) || 1,
+        type: type?.trim() || undefined,
+        active: active === 'active' || active === 'hidden' ? active : undefined,
+        page: pageNum(page),
         pageSize: Math.min(Number(pageSize) || 50, 100),
       })
     );
@@ -138,17 +180,23 @@ router.get(
 router.get(
   '/admin/products/:id',
   asyncHandler(async (req, res) => {
-    const product = await getProductById(Number(req.params.id));
+    const product = await getProductById(intId(req.params.id));
     if (!product) throw notFound('Produs inexistent');
     res.json({ product });
   })
 );
 
+// FK pe categorie: fără asta, un categoryId inexistent ieșea ca 500 cu mesaj SQL.
+function rethrowFk(err) {
+  if (err?.code === '23503') throw new HttpError(400, 'Categoria selectată nu există.');
+  throw err;
+}
+
 router.post(
   '/admin/products',
   asyncHandler(async (req, res) => {
     const data = parseOrThrow(adminProductSchema, req.body);
-    const product = await createProduct(data);
+    const product = await createProduct(data).catch(rethrowFk);
     res.status(201).json({ product });
   })
 );
@@ -157,7 +205,7 @@ router.put(
   '/admin/products/:id',
   asyncHandler(async (req, res) => {
     const data = parseOrThrow(adminProductSchema, req.body);
-    const product = await updateProduct(Number(req.params.id), data);
+    const product = await updateProduct(intId(req.params.id), data).catch(rethrowFk);
     if (!product) throw notFound('Produs inexistent');
     res.json({ product });
   })
@@ -167,8 +215,12 @@ router.put(
 router.patch(
   '/admin/products/:id/active',
   asyncHandler(async (req, res) => {
-    const isActive = req.body?.isActive === true || req.body?.isActive === 'true';
-    const product = await setProductActive(Number(req.params.id), isActive);
+    const raw = req.body?.isActive;
+    if (raw !== true && raw !== false && raw !== 'true' && raw !== 'false') {
+      throw new HttpError(400, 'Câmpul isActive lipsește sau e invalid.');
+    }
+    const isActive = raw === true || raw === 'true';
+    const product = await setProductActive(intId(req.params.id), isActive);
     if (!product) throw notFound('Produs inexistent');
     res.json({ product });
   })
@@ -177,8 +229,19 @@ router.patch(
 router.delete(
   '/admin/products/:id',
   asyncHandler(async (req, res) => {
-    const result = await deleteProduct(Number(req.params.id));
+    const result = await deleteProduct(intId(req.params.id));
     res.json(result);
+  })
+);
+
+// Ștergere în masă: { ids: [1,2,3] }
+router.post(
+  '/admin/products/bulk-delete',
+  asyncHandler(async (req, res) => {
+    const raw = Array.isArray(req.body?.ids) ? req.body.ids : [];
+    const ids = raw.map(Number).filter((n) => Number.isInteger(n) && n > 0).slice(0, 500);
+    if (!ids.length) throw new HttpError(400, 'Niciun produs selectat.');
+    res.json(await bulkDeleteProducts(ids));
   })
 );
 
@@ -205,7 +268,7 @@ router.put(
   '/admin/categories/:id',
   asyncHandler(async (req, res) => {
     const data = parseOrThrow(adminCategorySchema, req.body);
-    const ok = await updateCategory(Number(req.params.id), data);
+    const ok = await updateCategory(intId(req.params.id), data);
     if (!ok) throw notFound('Categorie inexistentă');
     res.json({ ok: true });
   })
@@ -215,7 +278,7 @@ router.delete(
   '/admin/categories/:id',
   asyncHandler(async (req, res) => {
     try {
-      const result = await deleteCategory(Number(req.params.id));
+      const result = await deleteCategory(intId(req.params.id));
       res.json(result);
     } catch (err) {
       if (err.code === 'CATEGORY_NOT_EMPTY') throw new HttpError(409, err.message);
@@ -231,11 +294,14 @@ router.get(
   '/admin/orders',
   asyncHandler(async (req, res) => {
     const { status, q, page, pageSize } = req.query;
+    // Validează statusul contra enum-ului (coloană ENUM în DB): o valoare
+    // străină ajungea în query și producea 500 cu mesaj SQL. Necunoscut → ignoră filtrul.
+    const st = ORDER_STATUSES.includes(status?.trim()) ? status.trim() : undefined;
     res.json(
       await listOrdersAdmin({
-        status: status?.trim() || undefined,
+        status: st,
         q: q?.trim() || undefined,
-        page: Number(page) || 1,
+        page: pageNum(page),
         pageSize: Math.min(Number(pageSize) || 50, 100),
       })
     );
@@ -245,7 +311,7 @@ router.get(
 router.get(
   '/admin/orders/:id',
   asyncHandler(async (req, res) => {
-    const order = await getOrderDetailAdmin(req.params.id);
+    const order = await getOrderDetailAdmin(uuidId(req.params.id));
     if (!order) throw notFound('Comandă inexistentă');
     res.json({ order });
   })
@@ -255,7 +321,7 @@ router.patch(
   '/admin/orders/:id',
   asyncHandler(async (req, res) => {
     const data = parseOrThrow(adminOrderUpdateSchema, req.body);
-    const order = await updateOrderAdmin(req.params.id, data);
+    const order = await updateOrderAdmin(uuidId(req.params.id), data);
     if (!order) throw notFound('Comandă inexistentă');
     res.json({ order });
   })
@@ -268,10 +334,11 @@ router.get(
   '/admin/leads',
   asyncHandler(async (req, res) => {
     const { status, page, pageSize } = req.query;
+    const st = LEAD_STATUSES.includes(status?.trim()) ? status.trim() : undefined;
     res.json(
       await listLeadsAdmin({
-        status: status?.trim() || undefined,
-        page: Number(page) || 1,
+        status: st,
+        page: pageNum(page),
         pageSize: Math.min(Number(pageSize) || 50, 100),
       })
     );
@@ -282,7 +349,7 @@ router.patch(
   '/admin/leads/:id/status',
   asyncHandler(async (req, res) => {
     const { status } = parseOrThrow(adminLeadStatusSchema, req.body);
-    const ok = await updateLeadStatus(req.params.id, status);
+    const ok = await updateLeadStatus(uuidId(req.params.id), status);
     if (!ok) throw notFound('Cerere inexistentă');
     res.json({ ok: true });
   })

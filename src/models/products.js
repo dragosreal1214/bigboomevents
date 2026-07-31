@@ -11,6 +11,7 @@ function mapProduct(row) {
     description: row.description,
     category: row.category_slug,
     categoryName: row.category_name,
+    type: row.product_type || null,
     price: row.price_cents / 100,
     priceCents: row.price_cents,
     oldPrice: row.old_price_cents != null ? row.old_price_cents / 100 : null,
@@ -40,12 +41,42 @@ export async function listCategories() {
 }
 
 // Extra-opțiunile globale (felicitare, bomboane, șampanie, pungă) — pentru pagina produsului.
-export async function listAddons() {
+// Add-on-urile aplicabile unui produs. `category` = slug categorie produs (ex. 'baloane').
+// addon_scope NULL => apare peste tot (comportament vechi); altfel doar dacă include categoria.
+// `productSlug` = produsul deschis: pe lângă add-on-urile categoriei, primește
+// și lista lui explicită `products.addon_slugs` (ex. heliu la tariful lui, sau
+// buchetele baby boy/girl la seturile de baby shower). Excluderile din listă
+// (`addon_exclude_slugs`) scot add-on-urile de categorie care nu i se potrivesc
+// — un balon mic nu trebuie să arate heliul de 50 lei al cifrelor de 100 cm.
+export async function listAddons(category, productSlug) {
+  const params = [];
+  const conds = [];
+  if (category) {
+    params.push(category);
+    conds.push(`(p.is_addon = TRUE AND (p.addon_scope IS NULL OR $${params.length} = ANY(p.addon_scope))
+                 AND NOT (p.slug = ANY(COALESCE(src.addon_exclude_slugs, ARRAY[]::text[]))))`);
+  }
+  if (productSlug) {
+    params.push(productSlug);
+    conds.push(`p.slug = ANY(COALESCE(src.addon_slugs, ARRAY[]::text[]))`);
+  }
+  if (!conds.length) conds.push('p.is_addon = TRUE');
+
+  // `src` = produsul curent. Sub-select-urile garantează exact un rând (cu NULL-uri)
+  // și când slug-ul lipsește sau nu există — altfel CROSS JOIN ar goli rezultatul.
+  const srcSlugParam = productSlug ? `$${params.length}` : 'NULL';
   const { rows } = await query(
-    `SELECT p.*, c.slug AS category_slug, c.name AS category_name
-     FROM products p JOIN categories c ON c.id = p.category_id
-     WHERE p.is_addon = TRUE AND p.is_active = TRUE
-     ORDER BY p.price_cents, p.name`
+    `WITH src AS (
+       SELECT (SELECT addon_slugs         FROM products WHERE slug = ${srcSlugParam}) AS addon_slugs,
+              (SELECT addon_exclude_slugs FROM products WHERE slug = ${srcSlugParam}) AS addon_exclude_slugs
+     )
+     SELECT DISTINCT p.*, c.slug AS category_slug, c.name AS category_name
+     FROM products p
+     JOIN categories c ON c.id = p.category_id
+     CROSS JOIN src
+     WHERE p.is_active = TRUE AND (${conds.join(' OR ')})
+     ORDER BY p.price_cents, p.name`,
+    params
   );
   return rows.map(mapProduct);
 }
@@ -71,6 +102,17 @@ export async function listProducts(f) {
     where.push(`$${i++} = ANY(p.occasions)`);
     params.push(f.occasion);
   }
+  if (f.type) {
+    // `type` poate fi o listă CSV (o categorie principală = mai multe sub-tipuri).
+    const types = String(f.type).split(',').map((t) => t.trim()).filter(Boolean);
+    if (types.length === 1) {
+      where.push(`p.product_type = $${i++}`);
+      params.push(types[0]);
+    } else if (types.length > 1) {
+      where.push(`p.product_type = ANY($${i++})`);
+      params.push(types);
+    }
+  }
   if (f.color) {
     where.push(`$${i++} = ANY(p.colors)`);
     params.push(f.color);
@@ -85,6 +127,15 @@ export async function listProducts(f) {
   }
   if (f.inStock) {
     where.push(`p.stock > 0`);
+  }
+  // Colecții (filtre rapide). „reduceri" se deduce din preț (sursa de adevăr),
+  // „popular"/„nou" din badge.
+  if (f.collection === 'reduceri') {
+    where.push(`p.old_price_cents IS NOT NULL AND p.old_price_cents > p.price_cents`);
+  } else if (f.collection === 'popular') {
+    where.push(`p.badge = 'popular'`);
+  } else if (f.collection === 'nou') {
+    where.push(`p.badge = 'nou'`);
   }
 
   const orderBy =
@@ -129,6 +180,16 @@ export async function getProductBySlug(slug) {
   return rows[0] ? mapProduct(rows[0]) : null;
 }
 
+// Slug-urile tuturor produselor vizibile (non-addon), pentru sitemap.
+export async function getSitemapProducts() {
+  const { rows } = await query(
+    `SELECT slug, updated_at FROM products
+     WHERE is_active = TRUE AND is_addon = FALSE
+     ORDER BY updated_at DESC`
+  );
+  return rows;
+}
+
 // Folosit la validarea comenzii: ia produsele cu prețul curent (sursa de adevăr).
 export async function getProductsByIds(ids) {
   if (!ids.length) return [];
@@ -153,13 +214,17 @@ function mapAdminProduct(row) {
     ...mapProduct(row),
     categoryId: row.category_id,
     isActive: row.is_active,
+    isAddon: row.is_addon === true,
+    addonScope: row.addon_scope || [],
+    addonSlugs: row.addon_slugs || [],
+    addonExcludeSlugs: row.addon_exclude_slugs || [],
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
 }
 
 // Listare admin: toate produsele (active+inactive), cu căutare + filtru categorie.
-export async function listAllProducts({ q, category, page = 1, pageSize = 50 } = {}) {
+export async function listAllProducts({ q, category, type, active, page = 1, pageSize = 50 } = {}) {
   const where = [];
   const params = [];
   let i = 1;
@@ -172,6 +237,12 @@ export async function listAllProducts({ q, category, page = 1, pageSize = 50 } =
     where.push(`c.slug = $${i++}`);
     params.push(category);
   }
+  if (type) {
+    where.push(`p.product_type = $${i++}`);
+    params.push(type);
+  }
+  if (active === 'active') where.push(`p.is_active = TRUE`);
+  else if (active === 'hidden') where.push(`p.is_active = FALSE`);
   const whereSql = where.length ? `WHERE ${where.join(' AND ')}` : '';
   const countRes = await query(
     `SELECT COUNT(*)::int AS total FROM products p JOIN categories c ON c.id = p.category_id ${whereSql}`,
@@ -229,6 +300,11 @@ function toRow(d) {
     colors: d.colors || [],
     images: d.images || [],
     is_active: d.isActive,
+    product_type: d.productType ? d.productType : null,
+    is_addon: d.isAddon === true,
+    addon_scope: d.addonScope || [],
+    addon_slugs: d.addonSlugs || [],
+    addon_exclude_slugs: d.addonExcludeSlugs || [],
   };
 }
 
@@ -238,12 +314,14 @@ export async function createProduct(data) {
   const { rows } = await query(
     `INSERT INTO products
        (slug, name, description, category_id, price_cents, old_price_cents,
-        stock, badge, occasions, colors, images, is_active)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
+        stock, badge, occasions, colors, images, is_active, product_type,
+        is_addon, addon_scope, addon_slugs, addon_exclude_slugs)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)
      RETURNING id`,
     [
       slug, r.name, r.description, r.category_id, r.price_cents, r.old_price_cents,
-      r.stock, r.badge, r.occasions, r.colors, r.images, r.is_active,
+      r.stock, r.badge, r.occasions, r.colors, r.images, r.is_active, r.product_type,
+      r.is_addon, r.addon_scope, r.addon_slugs, r.addon_exclude_slugs,
     ]
   );
   return getProductById(rows[0].id);
@@ -255,17 +333,19 @@ export async function updateProduct(id, data) {
   const slug = data.slug ? await uniqueSlug(data.slug, id) : null;
   const { rows } = await query(
     `UPDATE products SET
-       ${slug ? 'slug = $13,' : ''}
+       ${slug ? 'slug = $18,' : ''}
        name = $2, description = $3, category_id = $4, price_cents = $5,
        old_price_cents = $6, stock = $7, badge = $8, occasions = $9,
-       colors = $10, images = $11, is_active = $12
+       colors = $10, images = $11, is_active = $12, product_type = $13,
+       is_addon = $14, addon_scope = $15, addon_slugs = $16, addon_exclude_slugs = $17
      WHERE id = $1
      RETURNING id`,
-    slug
-      ? [id, r.name, r.description, r.category_id, r.price_cents, r.old_price_cents,
-         r.stock, r.badge, r.occasions, r.colors, r.images, r.is_active, slug]
-      : [id, r.name, r.description, r.category_id, r.price_cents, r.old_price_cents,
-         r.stock, r.badge, r.occasions, r.colors, r.images, r.is_active]
+    (() => {
+      const base = [id, r.name, r.description, r.category_id, r.price_cents, r.old_price_cents,
+        r.stock, r.badge, r.occasions, r.colors, r.images, r.is_active, r.product_type,
+        r.is_addon, r.addon_scope, r.addon_slugs, r.addon_exclude_slugs];
+      return slug ? [...base, slug] : base;
+    })()
   );
   return rows[0] ? getProductById(id) : null;
 }
@@ -293,6 +373,19 @@ export async function deleteProduct(id) {
     }
     throw err;
   }
+}
+
+// Ștergere în masă. Produsele cu istoric de comenzi se dezactivează (nu se pot șterge).
+// Întoarce ce s-a șters efectiv și ce s-a dezactivat.
+export async function bulkDeleteProducts(ids) {
+  const deletedIds = [];
+  const deactivatedIds = [];
+  for (const id of ids) {
+    const r = await deleteProduct(id);
+    if (r.deleted) deletedIds.push(id);
+    else if (r.deactivated) deactivatedIds.push(id);
+  }
+  return { deletedIds, deactivatedIds };
 }
 
 // ─── Categorii (admin) ───
@@ -365,15 +458,18 @@ export async function deleteCategory(id) {
 
 // Valori distincte folosite în catalog (pentru autocomplete în editor).
 export async function getProductFacets() {
-  const [occ, col, badges] = await Promise.all([
+  const [occ, col, badges, addons] = await Promise.all([
     query(`SELECT DISTINCT unnest(occasions) AS v FROM products WHERE NOT is_addon ORDER BY v`),
     query(`SELECT DISTINCT unnest(colors) AS v FROM products WHERE NOT is_addon ORDER BY v`),
     query(`SELECT DISTINCT badge AS v FROM products WHERE badge IS NOT NULL AND NOT is_addon ORDER BY v`),
+    // slug-urile extra-opțiunilor — sugestii în editor pentru `addon_slugs`
+    query(`SELECT slug AS v FROM products WHERE is_addon AND is_active ORDER BY slug`),
   ]);
   return {
     occasions: occ.rows.map((r) => r.v),
     colors: col.rows.map((r) => r.v),
     badges: badges.rows.map((r) => r.v),
+    addonSlugs: addons.rows.map((r) => r.v),
   };
 }
 

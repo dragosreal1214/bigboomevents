@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /checkout
+Disallow: /multumim
+Disallow: /api/
+
+Sitemap: https://thebigboomevents.ro/sitemap.xml

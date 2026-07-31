@@ -60,9 +60,21 @@ CREATE TABLE IF NOT EXISTS products (
 );
 -- Idempotent pentru baze existente (CREATE TABLE IF NOT EXISTS nu adaugă coloane noi):
 ALTER TABLE products ADD COLUMN IF NOT EXISTS is_addon BOOLEAN NOT NULL DEFAULT FALSE;
+-- Tip aranjament (Bujori, Trandafiri, Aranjamente în cutie/vază, Coșuri, Mixt) — filtru în shop.
+ALTER TABLE products ADD COLUMN IF NOT EXISTS product_type TEXT;
+-- Scope add-on: categoriile în care apare extra-opțiunea (ex. heliul doar pe 'baloane').
+-- NULL = apare pe toate produsele (comportament vechi pentru felicitare/bomboane...).
+ALTER TABLE products ADD COLUMN IF NOT EXISTS addon_scope TEXT[];
+-- Extra-opțiuni setate explicit pe un produs anume (slug-uri): heliul la tariful
+-- lui (diferă pe tip de balon) sau buchetele oferite lângă seturile baby shower.
+ALTER TABLE products ADD COLUMN IF NOT EXISTS addon_slugs TEXT[];
+-- Add-on-uri de categorie care NU se aplică produsului (ex. heliul de 50 lei al
+-- cifrelor de 100 cm nu are ce căuta pe un balon mic).
+ALTER TABLE products ADD COLUMN IF NOT EXISTS addon_exclude_slugs TEXT[];
 
 CREATE INDEX IF NOT EXISTS idx_products_category ON products(category_id);
 CREATE INDEX IF NOT EXISTS idx_products_addon    ON products(is_addon);
+CREATE INDEX IF NOT EXISTS idx_products_type     ON products(product_type);
 CREATE INDEX IF NOT EXISTS idx_products_active   ON products(is_active);
 CREATE INDEX IF NOT EXISTS idx_products_price    ON products(price_cents);
 CREATE INDEX IF NOT EXISTS idx_products_occasions ON products USING GIN (occasions);
@@ -181,6 +193,24 @@ CREATE INDEX IF NOT EXISTS idx_leads_created ON leads(created_at DESC);
 DROP TRIGGER IF EXISTS trg_leads_updated ON leads;
 CREATE TRIGGER trg_leads_updated BEFORE UPDATE ON leads
   FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+
+-- ─────────────────────────────────────────────────────────────
+--  Setări site (cheie → JSON). Ex: bannerul promo din capul paginii.
+-- ─────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS settings (
+  key        TEXT PRIMARY KEY,
+  value      JSONB NOT NULL DEFAULT '{}'::jsonb,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+DROP TRIGGER IF EXISTS trg_settings_updated ON settings;
+CREATE TRIGGER trg_settings_updated BEFORE UPDATE ON settings
+  FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+
+-- Banner implicit (dezactivat), doar dacă nu există deja — nu suprascrie configul.
+INSERT INTO settings (key, value) VALUES
+  ('banner', '{"enabled": false, "text": "Livrare gratuită la comenzi peste 250 lei", "bgColor": "#111111", "textColor": "#ffffff", "speed": 30}'::jsonb)
+ON CONFLICT (key) DO NOTHING;
 
 -- ─────────────────────────────────────────────────────────────
 --  Secvență pentru numere de comandă (per zi)
