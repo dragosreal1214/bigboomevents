@@ -14,7 +14,8 @@
     "db:seed": "node scripts/run-sql.js db/seed.sql",
     "db:reset": "node scripts/run-sql.js db/schema.sql && node scripts/run-sql.js db/seed.sql",
     "smoke": "node scripts/smoke.js",
-    "prerender": "node scripts/prerender-decoratiuni.js"
+    "prerender": "node scripts/prerender-decoratiuni.js",
+    "apply-content": "node scripts/apply-content.js"
   },
   "dependencies": {
     "compression": "^1.7.5",

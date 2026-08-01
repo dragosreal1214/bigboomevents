@@ -187,6 +187,9 @@ rsync -az -e "$SSH" --exclude node_modules --exclude .env --exclude .git \
 rsync -az -e "$SSH" public/ "$TARGET:$WEB_DIR/"
 # repornire backend
 $SSH "$TARGET" "cd $APP_DIR && npm install --omit=dev && pm2 restart bigboom-api"
+# OBLIGATORIU: reaplică textele/pozele editate de client din panou.
+# rsync-ul de mai sus a suprascris paginile cu versiunea din repo.
+$SSH "$TARGET" "cd $APP_DIR && npm run apply-content"
 ```
 pm2 e configurat să pornească la boot (`pm2 startup` + `pm2 save`); Postgres și nginx sunt servicii systemd.
 

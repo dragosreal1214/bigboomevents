@@ -47,6 +47,17 @@ Flux: `routes → models → db.js (pool pg)`, cu efecte secundare prin `service
 
 Upload-urile se salvează în `config.uploadsDir` (env `UPLOAD_DIR`) dacă e setat, altfel în `public/assets/uploads/`. În producție `UPLOAD_DIR` = directorul servit de nginx, ca pozele urcate din panou să fie servite ca static. **CSP `imgSrc: ['self', 'data:']`** (helmet în `server.js`): toate imaginile de produs trebuie servite same-origin — nu pune URL-uri remote în `products.images`; descarcă imaginea local (în `public/assets/products/` sau uploads) și referențiază calea relativă.
 
+## Editor de pagini (mini-CMS)
+
+Tabul **„Pagini"** din panou lasă clientul să schimbe textele și pozele paginilor statice. Arhitectura e dictată de o constrângere: conținutul trebuie să rămână **în HTML-ul servit** (altfel pierdem pre-randarea SEO din `scripts/prerender-decoratiuni.js`), dar `rsync public/` de la deploy **suprascrie fișierele**. Deci:
+
+- **Sursa de adevăr = tabelul `page_content`** (`page`, `key`, `value`). Salvarea din panou scrie în DB **și** în fișier, ca schimbarea să fie live imediat.
+- **După deploy se rulează `npm run apply-content`**, care rescrie fișierele din DB. Fără el, editările clientului dispar.
+- Elementele editabile se marchează în HTML cu `data-cms="cheie"` + `data-cms-label` + `data-cms-group` (sau `data-cms-img` la imagini). Eticheta stă lângă element ca să nu existe un registru paralel care se desincronizează. `src/services/pageEditor.js` le scanează și le rescrie.
+- **Nu marca elemente care conțin alt tag de același fel** (`<p>` în `<p>`) — înlocuirea se face pe potrivire non-lacomă până la primul tag de închidere; scanner-ul detectează cazul și îl raportează în loc să strice pagina.
+- Textul e sanitizat la salvare: se păstrează doar `strong/b/em/i/br/small/a`, se elimină `script`/handlerele `on*` și `href`-urile `javascript:`. Altfel panoul ar fi o cale directă de XSS stocat.
+- Butonul „Vezi pe pagină" deschide `<url>?cms=<cheie>`; `app.js` derulează la element și îl conturează. Derularea se repetă (`load` + 400/1200/2200 ms) pentru că produsele și recenziile se încarcă după și mută layoutul.
+
 ## Frontend architecture (`public/`)
 
 Pagini statice multiple; **`js/app.js` e stratul comun** încărcat peste tot. La `DOMContentLoaded` injectează nav + footer (+ cart drawer doar pe paginile de shop), gestionează coșul/favoritele în `localStorage` și expune obiectul global **`window.BBE`** (`API`, `Cart`, `Favs`, `fmtLei`, `esc`, `urls`, ...) folosit de scripturile per-pagină (`shop.js`, `produs.js`, `cards.js`, `checkout.js`, `leadform.js`...).
@@ -69,6 +80,7 @@ Live: **https://thebigboomevents.ro** + **https://shop.thebigboomevents.ro**. VP
 - Backend: `$APP_DIR` (pm2 `bigboom-api`, pornește la boot). Frontend: `$WEB_DIR`. Secrete doar în `$APP_DIR/.env` (chmod 600) — NU în git.
 - nginx: `/etc/nginx/sites-available/bigboom` + snippets în `/etc/nginx/snippets/` (securitate, proxy) + `/etc/nginx/conf.d/bigboom-global.conf`. Headere securitate (HSTS/CSP/X-Frame-Options/nosniff), `server_tokens off`, rate-limit pe `/api/admin/login`. CSP-ul din nginx trebuie să rămână aliniat cu CSP-ul helmet din `server.js`.
 - Re-deploy: rsync `src db scripts package.json` → `$APP_DIR/` (exclude `node_modules .env .git`) și `public/` → `$WEB_DIR/` (FĂRĂ `--delete` — ar șterge `assets/uploads`), apoi `cd $APP_DIR && npm install --omit=dev && pm2 restart bigboom-api`.
+- **După fiecare deploy: `npm run apply-content`.** rsync-ul suprascrie `public/*.html`, deci șterge textele și pozele pe care clientul le-a schimbat din panoul „Pagini". Sursa de adevăr e tabelul `page_content`; scriptul o reaplică în fișiere. Fără pasul ăsta, modificările clientului dispar la primul deploy.
 - **Migrări DB pe prod:** `schema.sql` e idempotent (`ALTER ... ADD COLUMN IF NOT EXISTS`) — sigur de rulat (`node scripts/run-sql.js db/schema.sql`). **NU rula `seed.sql` întreg pe prod** — re-adaugă produsele demo `baloane`/`fun` și ar suprascrie orice ai schimbat din admin; folosește `seed-addons.sql` (atinge doar categoria `extra` + add-on-urile).
 - **Conținutul `seed.sql`:** categoria `florarie` = **catalogul real BigBoomEvents** (18 produse, imagini locale în `public/assets/products/*.jpg`); `baloane`/`fun` = încă demo (servicii reale, dar fără date reale de catalog). E idempotent (upsert pe `slug`).
 - **Ștergerea produselor respectă FK-ul `order_items_product_id_fkey` (`ON DELETE RESTRICT`):** un produs care a fost vreodată comandat NU poate fi `DELETE`-uit. Pattern sigur (vezi cleanup-ul demo din `seed.sql`): `UPDATE ... SET is_active=FALSE WHERE id IN (SELECT product_id FROM order_items)` (ascunde din shop, păstrează istoricul) + `DELETE ... WHERE id NOT IN (SELECT product_id FROM order_items)`.

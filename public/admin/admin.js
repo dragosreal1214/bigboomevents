@@ -171,6 +171,7 @@
     if (name === 'categories') loadCategories();
     if (name === 'orders') loadOrders();
     if (name === 'leads') loadLeads();
+    if (name === 'pages') loadPages();
     if (name === 'banner') loadBanner();
   }
   $$('.tab').forEach((t) => t.addEventListener('click', () => switchTab(t.dataset.tab)));
@@ -1257,6 +1258,184 @@
   });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !drawerEl.hidden) closeDrawer();
+  });
+
+  // ---------- EDITOR PAGINI (mini-CMS) ----------
+  // UX în doi pași: întâi alegi pagina dintr-o listă grupată (Site / Magazin /
+  // Legale), apoi editezi câmpurile grupate pe secțiuni, în ordinea în care
+  // apar pe pagină. Fiecare câmp are „Vezi pe pagină", care deschide site-ul
+  // și evidențiază exact acel element — asta răspunde la „unde e chestia asta?"
+  // fără să ceară clientului să caute prin pagină.
+  let pgSlug = null;
+  let pgItems = [];
+  let pgDirty = new Map();
+
+  function pgMarkDirty() {
+    const btn = $('#pg-save');
+    btn.disabled = pgDirty.size === 0;
+    btn.textContent = pgDirty.size ? `Salvează (${pgDirty.size})` : 'Salvează';
+  }
+
+  async function loadPages() {
+    const wrap = $('#pages-list');
+    $('#page-editor').hidden = true;
+    wrap.hidden = false;
+    wrap.innerHTML = '<div class="spinner">Se încarcă…</div>';
+    try {
+      const { pages } = await api('/admin/pages');
+      const groups = {};
+      pages.forEach((p) => (groups[p.group] = groups[p.group] || []).push(p));
+      wrap.innerHTML = Object.entries(groups)
+        .map(([g, list]) => `
+          <div class="pg-group">
+            <h3 class="pg-group-title">${esc(g)}</h3>
+            <div class="pg-cards">
+              ${list.map((p) => `
+                <button class="pg-card" data-page="${esc(p.slug)}">
+                  <span class="pg-card-name">${esc(p.name)}</span>
+                  <span class="pg-card-url">${esc(p.url)}</span>
+                  ${p.warn ? '<span class="pg-card-warn">pagină legală</span>' : ''}
+                </button>`).join('')}
+            </div>
+          </div>`).join('');
+      $$('#pages-list .pg-card').forEach((b) =>
+        b.addEventListener('click', () => openPage(b.dataset.page))
+      );
+    } catch (err) {
+      wrap.innerHTML = `<p class="muted">${esc(err.message)}</p>`;
+    }
+  }
+
+  async function openPage(slug) {
+    pgSlug = slug;
+    pgDirty = new Map();
+    $('#pages-list').hidden = true;
+    $('#page-editor').hidden = false;
+    $('#pg-fields').innerHTML = '<div class="spinner">Se încarcă…</div>';
+    $('#pg-status').hidden = true;
+    try {
+      const { page, items } = await api('/admin/pages/' + encodeURIComponent(slug));
+      pgItems = items;
+      $('#pg-name').textContent = page.name;
+      $('#pg-view').href = page.url;
+      const warn = $('#pg-warn');
+      warn.hidden = !page.warn;
+      if (page.warn) warn.textContent = page.warn;
+      renderPageFields(page, items);
+    } catch (err) {
+      $('#pg-fields').innerHTML = `<p class="muted">${esc(err.message)}</p>`;
+    }
+  }
+
+  function renderPageFields(page, items) {
+    const groups = [];
+    items.forEach((it) => {
+      let g = groups.find((x) => x.name === it.group);
+      if (!g) groups.push((g = { name: it.group, items: [] }));
+      g.items.push(it);
+    });
+
+    $('#pg-fields').innerHTML = groups.map((g) => `
+      <section class="pg-section">
+        <h4 class="pg-section-title">${esc(g.name)}</h4>
+        ${g.items.map((it) => fieldHTML(page, it)).join('')}
+      </section>`).join('');
+
+    $$('#pg-fields [data-cms-input]').forEach((el) =>
+      el.addEventListener('input', () => {
+        const key = el.dataset.cmsInput;
+        const orig = pgItems.find((i) => i.key === key);
+        if (el.value === orig.value) pgDirty.delete(key);
+        else pgDirty.set(key, el.value);
+        el.closest('.pg-field').classList.toggle('is-dirty', pgDirty.has(key));
+        pgMarkDirty();
+      })
+    );
+    $$('#pg-fields [data-upload-for]').forEach((btn) =>
+      btn.addEventListener('click', () => uploadForField(btn.dataset.uploadFor))
+    );
+    pgMarkDirty();
+  }
+
+  function fieldHTML(page, it) {
+    if (it.error) {
+      return `<div class="pg-field"><label>${esc(it.label)}</label>
+        <p class="muted">${esc(it.error)}</p></div>`;
+    }
+    const see = `<a class="pg-see" href="${esc(page.url)}?cms=${encodeURIComponent(it.key)}"
+        target="_blank" rel="noopener" title="Deschide pagina și evidențiază acest element">Vezi pe pagină</a>`;
+    const edited = it.isEdited
+      ? '<span class="pg-edited" title="Modificat față de textul original">modificat</span>' : '';
+
+    if (it.type === 'image') {
+      return `<div class="pg-field pg-field-img">
+        <div class="pg-field-head"><label>${esc(it.label)}</label>${edited}${see}</div>
+        <div class="pg-img-row">
+          <img src="${esc(it.value)}" alt="" class="pg-img-preview" />
+          <div class="pg-img-actions">
+            <input class="input" data-cms-input="${esc(it.key)}" value="${esc(it.value)}" readonly />
+            <button type="button" class="btn btn-ghost btn-sm" data-upload-for="${esc(it.key)}">Schimbă poza…</button>
+          </div>
+        </div>
+      </div>`;
+    }
+    const input = it.multiline
+      ? `<textarea class="textarea" rows="3" data-cms-input="${esc(it.key)}">${esc(it.value)}</textarea>`
+      : `<input class="input" data-cms-input="${esc(it.key)}" value="${esc(it.value)}" />`;
+    return `<div class="pg-field">
+      <div class="pg-field-head"><label>${esc(it.label)}</label>${edited}${see}</div>
+      ${input}
+    </div>`;
+  }
+
+  // Reutilizează /admin/uploads — același endpoint ca la pozele de produs.
+  function uploadForField(key) {
+    const inp = document.createElement('input');
+    inp.type = 'file';
+    inp.accept = 'image/jpeg,image/png,image/webp,image/gif';
+    inp.addEventListener('change', async () => {
+      if (!inp.files || !inp.files.length) return;
+      const fd = new FormData();
+      fd.append('images', inp.files[0]);
+      try {
+        const { urls } = await api('/admin/uploads', { method: 'POST', body: fd });
+        const field = $(`[data-cms-input="${CSS.escape(key)}"]`);
+        field.value = urls[0];
+        field.closest('.pg-field').querySelector('.pg-img-preview').src = urls[0];
+        field.closest('.pg-field').classList.add('is-dirty');
+        pgDirty.set(key, urls[0]);
+        pgMarkDirty();
+      } catch (err) {
+        toast(err.message);
+      }
+    });
+    inp.click();
+  }
+
+  $('#pg-back').addEventListener('click', () => {
+    if (pgDirty.size && !confirm('Ai modificări nesalvate. Le pierzi dacă ieși acum. Continui?')) return;
+    loadPages();
+  });
+
+  $('#pg-save').addEventListener('click', async () => {
+    if (!pgDirty.size) return;
+    const btn = $('#pg-save');
+    btn.disabled = true;
+    btn.textContent = 'Se salvează…';
+    try {
+      const values = Object.fromEntries(pgDirty);
+      const { saved } = await api('/admin/pages/' + encodeURIComponent(pgSlug), {
+        method: 'PUT', body: { values },
+      });
+      const st = $('#pg-status');
+      st.hidden = false;
+      st.textContent = `Salvat. ${saved} ${saved === 1 ? 'modificare aplicată' : 'modificări aplicate'} pe site.`;
+      await openPage(pgSlug);
+    } catch (err) {
+      toast(err.message);
+      btn.disabled = false;
+      pgMarkDirty();
+    }
   });
 
   // ---------- BANNER PROMO ----------

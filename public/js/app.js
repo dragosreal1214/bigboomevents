@@ -303,6 +303,7 @@
     bindLayoutEvents();
     trackNavHeight();
     setupReveal();
+    highlightCmsTarget();
     // Link „Setări cookies" din footer → redeschide dialogul de consimțământ.
     document.querySelectorAll('[data-open-consent]').forEach((a) =>
       a.addEventListener('click', (e) => { e.preventDefault(); Consent.open(); })
@@ -545,6 +546,27 @@
   function cookieBanner() { showConsent(false); }
 
   // ---------- EXPOSE ----------
+  // ---------- EVIDENȚIERE PENTRU EDITORUL DIN PANOU ----------
+  // Panoul deschide pagina cu ?cms=<cheie>. Găsim elementul marcat, îl aducem
+  // în ecran și îl conturăm câteva secunde. Fără asta, clientul ar trebui să
+  // ghicească la ce element din pagină corespunde un câmp din formular.
+  function highlightCmsTarget() {
+    const key = new URLSearchParams(location.search).get('cms');
+    if (!key) return;
+    const el = document.querySelector(
+      `[data-cms="${CSS.escape(key)}"], [data-cms-img="${CSS.escape(key)}"]`
+    );
+    if (!el) return;
+    el.classList.add('cms-highlight');
+    // Produsele și recenziile se încarcă DUPĂ acest moment și mută layoutul,
+    // deci o singură derulare ajunge în gol. Repetăm până se așază pagina.
+    const adu = () => el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    adu();
+    window.addEventListener('load', adu, { once: true });
+    [400, 1200, 2200].forEach((t) => setTimeout(adu, t));
+    setTimeout(() => el.classList.remove('cms-highlight'), 8000);
+  }
+
   window.BBE = { API, Cart, Favs, Consent, toast, fmt, fmtLei, esc, catClass, urls: U, openCart: () => document.querySelector('[data-open-cart]')?.click() };
 
   // ---------- FAVICON ----------

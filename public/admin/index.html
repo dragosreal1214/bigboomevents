@@ -40,6 +40,7 @@
         <button class="tab" data-tab="categories">Categorii</button>
         <button class="tab" data-tab="orders">Comenzi</button>
         <button class="tab" data-tab="leads">Cereri</button>
+        <button class="tab" data-tab="pages">Pagini</button>
         <button class="tab" data-tab="banner">Banner</button>
       </nav>
       <div class="admin-bar-right">
@@ -117,6 +118,34 @@
     </section>
 
     <!-- BANNER -->
+    <!-- ══ EDITOR PAGINI ══ -->
+    <section class="view" data-view="pages" hidden>
+      <div class="view-head">
+        <div>
+          <h2>Pagini</h2>
+          <p class="muted">Schimbă textele și pozele de pe site. Alege o pagină, apoi modifică ce vrei.</p>
+        </div>
+      </div>
+
+      <!-- pasul 1: alegerea paginii -->
+      <div id="pages-list"></div>
+
+      <!-- pasul 2: editorul paginii alese -->
+      <div id="page-editor" hidden>
+        <div class="pg-bar">
+          <button class="btn btn-ghost btn-sm" id="pg-back">← Toate paginile</button>
+          <div class="pg-bar-title">
+            <strong id="pg-name"></strong>
+            <a id="pg-view" class="muted" target="_blank" rel="noopener">Vezi pagina ↗</a>
+          </div>
+          <button class="btn btn-primary btn-sm" id="pg-save" disabled>Salvează</button>
+        </div>
+        <div id="pg-warn" class="notice err" hidden></div>
+        <div id="pg-status" class="notice ok" hidden></div>
+        <div id="pg-fields"></div>
+      </div>
+    </section>
+
     <section class="view" data-view="banner" hidden>
       <div class="view-head"><h2 class="view-title">Banner promo (bara de sus)</h2></div>
       <form id="banner-form" class="banner-form">

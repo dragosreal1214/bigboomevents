@@ -1417,3 +1417,17 @@ a.add { text-decoration: none; }
   .promo-banner { view-transition-name: bbe-promo; }
   ::view-transition-old(bbe-promo), ::view-transition-new(bbe-promo) { animation: none; }
 }
+
+/* Evidențierea folosită de editorul din panou (?cms=<cheie>). Nu apare
+   niciodată pentru vizitatori — doar când panoul trimite parametrul. */
+.cms-highlight {
+  outline: 3px solid #E8A33D !important;
+  outline-offset: 4px;
+  border-radius: 4px;
+  animation: cms-pulse 1.1s ease-in-out 3;
+}
+@keyframes cms-pulse {
+  0%, 100% { outline-color: #E8A33D; }
+  50%      { outline-color: transparent; }
+}
+@media (prefers-reduced-motion: reduce) { .cms-highlight { animation: none; } }

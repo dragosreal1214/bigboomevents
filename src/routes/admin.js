@@ -30,6 +30,8 @@ import {
 } from '../models/orders.js';
 import { listLeadsAdmin, updateLeadStatus } from '../models/leads.js';
 import config from '../config.js';
+import { PAGES, getPage, scanPage, writePage } from '../services/pageEditor.js';
+import { getPageOverrides, savePageOverrides, resetPageKey } from '../models/pageContent.js';
 import {
   requireAdmin,
   checkPassword,
@@ -367,6 +369,73 @@ router.post(
     const urls = (req.files || []).map((f) => `/assets/uploads/${f.filename}`);
     res.status(201).json({ urls });
   }
+);
+
+// ═══ Editor de pagini (mini-CMS) ═══════════════════════════════════
+// GET /api/admin/pages — lista paginilor editabile, grupate pentru meniu
+router.get('/admin/pages', requireAdmin, (_req, res) => {
+  res.json({
+    pages: PAGES.map(({ slug, name, url, group, warn }) => ({ slug, name, url, group, warn })),
+  });
+});
+
+// GET /api/admin/pages/:slug — elementele editabile, cu valoarea CURENTA.
+// Valoarea curenta = suprascrierea din DB daca exista, altfel textul din fisier.
+// `isEdited` spune panoului ce a fost modificat fata de original, ca sa poata
+// oferi „Revino la textul initial".
+router.get(
+  '/admin/pages/:slug',
+  requireAdmin,
+  asyncHandler(async (req, res) => {
+    const page = getPage(req.params.slug);
+    if (!page) throw notFound('Pagină inexistentă');
+    const overrides = await getPageOverrides(page.slug);
+    const items = scanPage(page).map((it) => ({
+      ...it,
+      original: it.value,
+      value: it.key in overrides ? overrides[it.key] : it.value,
+      isEdited: it.key in overrides,
+    }));
+    res.json({ page: { slug: page.slug, name: page.name, url: page.url, warn: page.warn }, items });
+  })
+);
+
+// PUT /api/admin/pages/:slug — salveaza in DB (sursa de adevar) SI in fisier,
+// ca modificarea sa fie vizibila imediat pe site, nu dupa urmatorul deploy.
+router.put(
+  '/admin/pages/:slug',
+  requireAdmin,
+  asyncHandler(async (req, res) => {
+    const page = getPage(req.params.slug);
+    if (!page) throw notFound('Pagină inexistentă');
+    const values = req.body && typeof req.body.values === 'object' ? req.body.values : null;
+    if (!values) throw new HttpError(400, 'Lipsesc valorile de salvat.');
+
+    const known = new Set(scanPage(page).map((i) => i.key));
+    const clean = {};
+    for (const [k, v] of Object.entries(values)) {
+      if (known.has(k) && typeof v === 'string') clean[k] = v;
+    }
+    if (!Object.keys(clean).length) throw new HttpError(400, 'Nicio valoare validă de salvat.');
+
+    const applied = writePage(page, clean);
+    // Salvam in DB exact ce a ajuns in fisier (sanitizat), nu ce a trimis clientul.
+    const afterWrite = Object.fromEntries(scanPage(page).map((i) => [i.key, i.value]));
+    await savePageOverrides(page.slug, Object.fromEntries(applied.map((k) => [k, afterWrite[k]])));
+    res.json({ saved: applied.length, keys: applied });
+  })
+);
+
+// DELETE /api/admin/pages/:slug/:key — revine la textul din fisierul original
+router.delete(
+  '/admin/pages/:slug/:key',
+  requireAdmin,
+  asyncHandler(async (req, res) => {
+    const page = getPage(req.params.slug);
+    if (!page) throw notFound('Pagină inexistentă');
+    await resetPageKey(page.slug, req.params.key);
+    res.json({ ok: true });
+  })
 );
 
 export default router;

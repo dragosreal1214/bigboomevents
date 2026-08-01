@@ -81,6 +81,19 @@ ALTER TABLE products ADD COLUMN IF NOT EXISTS sort_order INT NOT NULL DEFAULT 0;
 -- categoria `florarie`, dar nu sunt perisabile, deci chiar pot fi returnate.
 ALTER TABLE products ADD COLUMN IF NOT EXISTS returnable BOOLEAN;
 
+-- ═══ Continut editabil din panou (mini-CMS) ═══════════════════════════
+-- Sursa de ADEVAR pentru textele/imaginile paginilor statice. Fisierele din
+-- public/ sunt doar reflexia ei: `rsync public/` de la deploy le suprascrie,
+-- deci dupa fiecare deploy se ruleaza `npm run apply-content`, care le rescrie
+-- din tabelul asta. Vezi src/services/pageEditor.js.
+CREATE TABLE IF NOT EXISTS page_content (
+  page       TEXT NOT NULL,
+  key        TEXT NOT NULL,
+  value      TEXT NOT NULL,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  PRIMARY KEY (page, key)
+);
+
 -- Facturare pe firma (B2B). Clientul poate comanda ca persoana fizica (implicit)
 -- sau in numele unei firme, caz in care avem nevoie de datele de facturare.
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS billing_type    TEXT NOT NULL DEFAULT 'person';
