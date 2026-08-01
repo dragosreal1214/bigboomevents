@@ -66,6 +66,8 @@ Pagini statice multiple; **`js/app.js` e stratul comun** încărcat peste tot. L
 
 `js/portal.js` (doar pe homepage) injectează ecranul de start „portal" (overlay full-screen cu 4 direcții) — se afișează la **fiecare** încărcare a homepage-ului (fără flag de „văzut"); markup-ul e în `index.html` cu `hidden` (degradează curat fără JS, CSP `scriptSrc 'self'` interzice inline). `Cart.meta()`/`Cart.setMeta()` din `app.js` țin opțiunile de comandă (felicitare/livrare) separat de produse și se golesc la `Cart.clear()`.
 
+**Cache-busting — include ȘI panoul.** Fișierele `public/admin/admin.js` și `admin.css` sunt referite din `public/admin/index.html` și au nevoie de același `?v=` ca restul. nginx + Cloudflare le cachează 4 ore; fără bump, panoul rulează cod vechi în timp ce HTML-ul e nou — simptomul e o funcție care „nu face nimic" (ex. previzualizarea a rămas goală pentru că `admin.js` cachează versiunea dinaintea iframe-ului). Un `sed` peste `public/*.html` NU atinge `public/admin/index.html`.
+
 Atributul HTML `hidden` se folosește pentru a ascunde/afișa elemente din JS (`loadMoreBtn`, portal, drawer). **Regulă critică:** `styles.css` are `[hidden] { display: none !important; }` — fără `!important`, o clasă care setează `display` (ex. `.btn`) învinge regula UA `[hidden]` și elementul rămâne vizibil. Nu seta `display` inline peste `hidden`.
 
 Convenții care necesită mai multe fișiere pentru a fi înțelese:
