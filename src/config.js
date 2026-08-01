@@ -86,6 +86,13 @@ const config = {
   // În producție = directorul servit de nginx (ex: /var/www/bigboom/assets/uploads).
   uploadsDir: process.env.UPLOAD_DIR || '',
 
+  // Directorul cu paginile HTML servite. In productie nginx serveste staticul
+  // din alt loc decat directorul aplicatiei (`/var/www/bigboom`), iar rsync-ul
+  // NU copiaza `public/` in ~/bigboom-api. Editorul de pagini din panou scrie
+  // in fisierele reale, deci are nevoie de calea corecta — la fel ca UPLOAD_DIR.
+  // Gol => `public/` din aplicatie (dev).
+  webDir: process.env.WEB_DIR || '',
+
   admin: {
     // Parola pentru panoul de administrare (/admin). Schim-o în .env!
     password: process.env.ADMIN_PASSWORD || 'admin',

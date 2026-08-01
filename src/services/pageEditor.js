@@ -21,9 +21,20 @@
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import config from '../config.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const publicDir = join(__dirname, '..', '..', 'public');
+// In productie paginile sunt in directorul servit de nginx (WEB_DIR), NU in
+// aplicatie: rsync-ul trimite `public/` in /var/www/bigboom, iar `src/` in
+// ~/bigboom-api. Fara asta, editorul citea dintr-un director inexistent.
+const publicDir = config.webDir || join(__dirname, '..', '..', 'public');
+
+if (!fs.existsSync(publicDir)) {
+  console.warn(
+    `[pageEditor] Directorul paginilor nu exista: ${publicDir}\n` +
+    `             Seteaza WEB_DIR in .env (in productie: directorul servit de nginx).`
+  );
+}
 
 // Paginile oferite spre editare, cu nume pe înțelesul clientului.
 // `url` = unde se vede pagina (pentru butonul „Vezi pagina").
