@@ -65,17 +65,20 @@
     var html = '<header class="hero decor-ev-hero"><div class="wrap hero-content">' +
       '<span class="eyebrow">Decorațiuni Evenimente</span>' +
       '<h1>Decor ' + esc(e.name) + ' Iași</h1>' +
-      '<p class="lead">' + esc(e.description) + '</p>' +
+      '<p class="lead" data-cms="descriere">' + esc(e.description) + '</p>' +
       '<div class="hero-cta"><a href="/contact" class="btn btn-primary">Cere o ofertă</a></div>' +
       '</div></header>';
 
     e.categories.forEach(function (cat, i) {
       html += '<section class="section"' + (i % 2 ? ' style="background:linear-gradient(180deg, transparent, color-mix(in srgb, var(--rose) 8%, transparent))"' : '') + '>' +
-        '<div class="wrap wide"><div class="section-head"><h2>' + esc(cat.name) + '</h2></div>' +
-        '<div class="decor-gallery">' + cat.items.map(function (it) {
+        '<div class="wrap wide"><div class="section-head"><h2 data-cms="categorie-' + i + '-nume">' + esc(cat.name) + '</h2></div>' +
+        '<div class="decor-gallery">' + cat.items.map(function (it, j) {
+          // Marcajele data-cms* trebuie sa fie IDENTICE cu cele din
+          // src/services/decorPrerender.js — altfel, dupa hidratare, editorul
+          // din panou nu mai gaseste elementele pe care le pre-randasem.
           return '<figure class="decor-shot' + (it.portrait ? ' is-portrait' : '') + '">' +
-            '<div class="decor-shot-img"><img src="' + esc(it.img) + '" alt="' + esc(it.alt) + '" loading="lazy" /></div>' +
-            (it.desc ? '<figcaption>' + esc(it.desc) + '</figcaption>' : '') +
+            '<div class="decor-shot-img"><img data-cms-img="poza-' + i + '-' + j + '-img" src="' + esc(it.img) + '" alt="' + esc(it.alt) + '" loading="lazy" /></div>' +
+            (it.desc ? '<figcaption data-cms="poza-' + i + '-' + j + '-desc">' + esc(it.desc) + '</figcaption>' : '') +
             '</figure>';
         }).join('') + '</div></div></section>';
     });

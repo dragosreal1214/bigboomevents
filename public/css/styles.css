@@ -1445,6 +1445,10 @@ a.add { text-decoration: none; }
   outline: 2px solid #E8A33D;
   background-color: rgba(232, 163, 61, .1);
 }
+/* In previzualizarea din panou, bannerul de cookies si ecranul de start doar
+   acopera continutul pe care clientul incearca sa-l editeze. */
+.cms-edit-mode [data-consent-panel],
+.cms-edit-mode .portal { display: none !important; }
 .cms-edit-mode .cms-activ {
   outline: 3px solid #E8A33D !important;
   background-color: rgba(232, 163, 61, .14);

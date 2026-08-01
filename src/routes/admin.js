@@ -32,6 +32,8 @@ import { listLeadsAdmin, updateLeadStatus } from '../models/leads.js';
 import config from '../config.js';
 import { PAGES, getPage, scanPage, writePage } from '../services/pageEditor.js';
 import { getPageOverrides, savePageOverrides, resetPageKey } from '../models/pageContent.js';
+import { listDecorPages, scanDecorPage, writeDecorPage } from '../services/decorEditor.js';
+import { prerenderDecor } from '../services/decorPrerender.js';
 import {
   requireAdmin,
   checkPassword,
@@ -375,7 +377,12 @@ router.post(
 // GET /api/admin/pages — lista paginilor editabile, grupate pentru meniu
 router.get('/admin/pages', requireAdmin, (_req, res) => {
   res.json({
-    pages: PAGES.map(({ slug, name, url, group, warn }) => ({ slug, name, url, group, warn })),
+    pages: [
+      ...PAGES.map(({ slug, name, url, group, warn, altHost }) => ({ slug, name, url, group, warn, altHost: !!altHost })),
+      // Subpaginile de decor sunt generate din decoratiuni-data.js — vin din
+      // alt editor, dar clientul nu trebuie sa stie asta: apar ca orice pagina.
+      ...listDecorPages(),
+    ],
   });
 });
 
@@ -387,6 +394,20 @@ router.get(
   '/admin/pages/:slug',
   requireAdmin,
   asyncHandler(async (req, res) => {
+    if (req.params.slug.startsWith('decor-')) {
+      const d = scanDecorPage(req.params.slug);
+      if (!d) throw notFound('Subpagină inexistentă');
+      const ov = await getPageOverrides(req.params.slug);
+      return res.json({
+        page: {
+          slug: req.params.slug, name: `Decor ${d.event.name}`,
+          url: `/decoratiuni/${d.event.slug}`, kind: 'decor',
+        },
+        items: d.items.map((it) => ({
+          ...it, original: it.value, isEdited: it.key in ov,
+        })),
+      });
+    }
     const page = getPage(req.params.slug);
     if (!page) throw notFound('Pagină inexistentă');
     const overrides = await getPageOverrides(page.slug);
@@ -409,10 +430,21 @@ router.put(
   '/admin/pages/:slug',
   requireAdmin,
   asyncHandler(async (req, res) => {
-    const page = getPage(req.params.slug);
-    if (!page) throw notFound('Pagină inexistentă');
     const values = req.body && typeof req.body.values === 'object' ? req.body.values : null;
     if (!values) throw new HttpError(400, 'Lipsesc valorile de salvat.');
+
+    if (req.params.slug.startsWith('decor-')) {
+      const applied = writeDecorPage(req.params.slug, values);
+      // Fisierul de date e sursa; paginile statice trebuie regenerate imediat,
+      // altfel clientul salveaza si nu vede nicio schimbare pe site.
+      prerenderDecor();
+      const dupa = Object.fromEntries(scanDecorPage(req.params.slug).items.map((i) => [i.key, i.value]));
+      await savePageOverrides(req.params.slug, Object.fromEntries(applied.map((k) => [k, dupa[k]])));
+      return res.json({ saved: applied.length, keys: applied });
+    }
+
+    const page = getPage(req.params.slug);
+    if (!page) throw notFound('Pagină inexistentă');
 
     const known = new Set(scanPage(page).map((i) => i.key));
     const clean = {};
@@ -434,6 +466,12 @@ router.delete(
   '/admin/pages/:slug/:key',
   requireAdmin,
   asyncHandler(async (req, res) => {
+    if (req.params.slug.startsWith('decor-')) {
+      // Suprascrierea dispare, dar fisierul de date ramane cum e — nu avem
+      // varianta „originala" a lui in cod. Il schimba clientul inapoi manual.
+      await resetPageKey(req.params.slug, req.params.key);
+      return res.json({ ok: true });
+    }
     const page = getPage(req.params.slug);
     if (!page) throw notFound('Pagină inexistentă');
     await resetPageKey(page.slug, req.params.key);

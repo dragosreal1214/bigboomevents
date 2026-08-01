@@ -148,7 +148,7 @@ window.DECOR_EVENTS = [
  {
   "name": "Botez",
   "slug": "botez",
-  "description": "Transformăm botezul într-un eveniment plin de emoție și rafinament. Realizăm decoruri personalizate cu flori naturale, baloane și elemente decorative adaptate tematicii alese. Oferim servicii complete pentru biserica și restaurant, astfel încât fiecare detaliu să fie perfect.",
+  "description": "Transformăm botezul într-un eveniment plin de emoție și rafinament. Realizăm decoruri personalizate cu flori naturale, baloane și elemente decorative adaptate tematicii alese. Oferim servicii complete pentru biserică și restaurant, astfel încât fiecare detaliu să fie perfect.",
   "seoTitle": "Decor Botez Iași — Aranjamente florale & baloane | The Big Boom Events",
   "seoKeywords": "decor botez Iași, baloane botez, aranjamente florale botez, decor restaurant botez, flori naturale.",
   "hero": "/assets/decoratiuni/botez-lumanari-01.webp",

@@ -56,6 +56,8 @@ Tabul **„Pagini"** din panou lasă clientul să schimbe textele și pozele pag
 - Elementele editabile se marchează în HTML cu `data-cms="cheie"` + `data-cms-label` + `data-cms-group` (sau `data-cms-img` la imagini). Eticheta stă lângă element ca să nu existe un registru paralel care se desincronizează. `src/services/pageEditor.js` le scanează și le rescrie.
 - **Nu marca elemente care conțin alt tag de același fel** (`<p>` în `<p>`) — înlocuirea se face pe potrivire non-lacomă până la primul tag de închidere; scanner-ul detectează cazul și îl raportează în loc să strice pagina.
 - Textul e sanitizat la salvare: se păstrează doar `strong/b/em/i/br/small/a`, se elimină `script`/handlerele `on*` și `href`-urile `javascript:`. Altfel panoul ar fi o cale directă de XSS stocat.
+- **Subpaginile `/decoratiuni/<slug>` se editează altfel**: ele NU sunt scrise de mână, ci generate de `prerenderDecor()` din `public/js/decoratiuni-data.js`. Editarea HTML-ului s-ar pierde la prima re-randare, deci `src/services/decorEditor.js` scrie în **fișierul de date** (JSON, nu regex pe markup), iar ruta re-randează imediat după salvare. În panou apar ca pagini normale, cu slug `decor-<eveniment>`.
+- **`decorPrerender.js` și `public/js/decoratiuni.js` trebuie să producă markup IDENTIC**, inclusiv atributele `data-cms*`. Randarea din browser înlocuiește nodul pre-randat la hidratare; dacă marcajele diferă, editorul nu mai găsește elementele în previzualizare.
 - Butonul „Vezi pe pagină" deschide `<url>?cms=<cheie>`; `app.js` derulează la element și îl conturează. Derularea se repetă (`load` + 400/1200/2200 ms) pentru că produsele și recenziile se încarcă după și mută layoutul.
 
 ## Frontend architecture (`public/`)
