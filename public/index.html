@@ -10,7 +10,7 @@
 <!-- Imaginile portal de sus (LCP) — preîncărcate ca să nu aștepte portal.js. -->
 <link rel="preload" href="/assets/portal/florarie.webp?v2" as="image" fetchpriority="high">
 <link rel="preload" href="/assets/portal/baloane.webp?v2" as="image" fetchpriority="high">
-<link rel="stylesheet" href="/css/styles.css?v=cms16p" />
+<link rel="stylesheet" href="/css/styles.css?v=cms17q" />
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
 <meta property="og:type" content="website" />
@@ -45,28 +45,28 @@
 
     <div class="choices">
       <!-- Florărie → shop?category=florarie -->
-      <a class="choice c-florarie" href="/florarie" data-dest="florarie">
+      <a class="choice c-florarie" style="--portal-img:url('/assets/portal/florarie.webp?v2')" data-cms-bg="portal-img-florarie" data-cms-label="Poza cardului „Florărie”" data-cms-group="Ecranul de start (portal)" href="/florarie" data-dest="florarie">
         <div class="text">
           <h2>Florărie</h2>
         </div>
       </a>
 
       <!-- Baloane & Accesorii Party → shop?category=baloane -->
-      <a class="choice c-baloane" href="/baloane" data-dest="baloane">
+      <a class="choice c-baloane" style="--portal-img:url('/assets/portal/baloane.webp?v2')" data-cms-bg="portal-img-baloane" data-cms-label="Poza cardului „Baloane & Party Shop”" data-cms-group="Ecranul de start (portal)" href="/baloane" data-dest="baloane">
         <div class="text">
           <h2>Baloane &amp; Accesorii Party</h2>
         </div>
       </a>
 
       <!-- Decorațiuni Evenimente → /decoratiuni -->
-      <a class="choice c-decoratiuni" href="/decoratiuni" data-dest="decoratiuni">
+      <a class="choice c-decoratiuni" style="--portal-img:url('/assets/portal/decoratiuni.webp?v2')" data-cms-bg="portal-img-decoratiuni" data-cms-label="Poza cardului „Decorațiuni Evenimente”" data-cms-group="Ecranul de start (portal)" href="/decoratiuni" data-dest="decoratiuni">
         <div class="text">
           <h2>Decorațiuni Evenimente</h2>
         </div>
       </a>
 
       <!-- Wedding Planner → /wedding -->
-      <a class="choice c-wedding" href="/wedding" data-dest="wedding">
+      <a class="choice c-wedding" style="--portal-img:url('/assets/portal/wedding.webp?v2')" data-cms-bg="portal-img-wedding" data-cms-label="Poza cardului „Wedding Planner”" data-cms-group="Ecranul de start (portal)" href="/wedding" data-dest="wedding">
         <div class="text">
           <h2>Wedding Planner</h2>
         </div>
@@ -136,10 +136,10 @@
 
 <!-- portal.js PRIMUL: afișează overlay-ul de start (elementul LCP) imediat,
      fără să aștepte execuția celorlalte scripturi. E null-safe fără BBE. -->
-<script defer src="/js/portal.js?v=cms16p"></script>
-<script defer src="/js/app.js?v=cms16p"></script>
-<script defer src="/js/cards.js?v=cms16p"></script>
-<script defer src="/js/home.js?v=cms16p"></script>
-<script defer src="/js/reviews.js?v=cms16p"></script>
+<script defer src="/js/portal.js?v=cms17q"></script>
+<script defer src="/js/app.js?v=cms17q"></script>
+<script defer src="/js/cards.js?v=cms17q"></script>
+<script defer src="/js/home.js?v=cms17q"></script>
+<script defer src="/js/reviews.js?v=cms17q"></script>
 </body>
 </html>

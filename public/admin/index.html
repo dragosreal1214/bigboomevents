@@ -123,7 +123,7 @@
       <div class="view-head">
         <div>
           <h2>Pagini</h2>
-          <p class="muted">Schimbă textele și pozele de pe site. Alege o pagină, apoi modifică ce vrei.</p>
+          <p class="muted">Schimbă textele și pozele de pe site, fără să atingi codul. Alege pagina pe care vrei s-o modifici.</p>
         </div>
       </div>
 
@@ -136,13 +136,31 @@
           <button class="btn btn-ghost btn-sm" id="pg-back">← Toate paginile</button>
           <div class="pg-bar-title">
             <strong id="pg-name"></strong>
-            <a id="pg-view" class="muted" target="_blank" rel="noopener">Vezi pagina ↗</a>
+            <a id="pg-view" class="muted" target="_blank" rel="noopener">Deschide pagina ↗</a>
           </div>
+          <span id="pg-dirty" class="pg-dirty-badge" hidden></span>
           <button class="btn btn-primary btn-sm" id="pg-save" disabled>Salvează</button>
         </div>
+
+        <p class="pg-hint">
+          👉 <strong>Dă clic pe orice text sau poză din previzualizarea din dreapta</strong>
+          și îți deschid câmpul potrivit în stânga. Nimic nu se schimbă pe site
+          până nu apeși <strong>Salvează</strong>.
+        </p>
+
         <div id="pg-warn" class="notice err" hidden></div>
         <div id="pg-status" class="notice ok" hidden></div>
-        <div id="pg-fields"></div>
+
+        <div class="pg-split">
+          <div id="pg-fields" class="pg-pane-fields"></div>
+          <div class="pg-pane-preview">
+            <div class="pg-preview-bar">
+              <span>Cum arată pagina</span>
+              <button type="button" class="btn btn-ghost btn-sm" id="pg-reload">Reîmprospătează</button>
+            </div>
+            <iframe id="pg-frame" title="Previzualizarea paginii"></iframe>
+          </div>
+        </div>
       </div>
     </section>
 

@@ -978,10 +978,10 @@ a:focus-visible, button:focus-visible, .chip:focus-visible, input:focus-visible,
 .choice h2 { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 26px; line-height: 1.12;
   color: #fff; text-shadow: 0 2px 14px rgba(0,0,0,.5); transition: transform .25s; }
 .choice:hover h2 { transform: translateY(-2px); }
-.choice.c-florarie::before    { background-image: url("/assets/portal/florarie.webp?v2"); }
-.choice.c-baloane::before     { background-image: url("/assets/portal/baloane.webp?v2"); }
-.choice.c-decoratiuni::before { background-image: url("/assets/portal/decoratiuni.webp?v2"); }
-.choice.c-wedding::before     { background-image: url("/assets/portal/wedding.webp?v2"); }
+/* Poza fiecarui card vine din variabila `--portal-img`, setata inline in HTML.
+   Asa poate fi schimbata din panou (editorul scrie in atributul style), fara
+   sa umblam in CSS si fara probleme de cache pe un nume de fisier fix. */
+.choice::before { background-image: var(--portal-img); }
 
 .portal-skip {
   margin-top: 26px; background: none; border: 0; cursor: pointer;
@@ -1431,3 +1431,21 @@ a.add { text-decoration: none; }
   50%      { outline-color: transparent; }
 }
 @media (prefers-reduced-motion: reduce) { .cms-highlight { animation: none; } }
+
+/* ── Mod „editare" (doar în previzualizarea din panou, ?cms=edit) ────── */
+.cms-edit-mode { cursor: default; }
+.cms-edit-mode .cms-editable {
+  outline: 2px dashed rgba(232, 163, 61, .55);
+  outline-offset: 3px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: outline-color .15s, background-color .15s;
+}
+.cms-edit-mode .cms-editable:hover {
+  outline: 2px solid #E8A33D;
+  background-color: rgba(232, 163, 61, .1);
+}
+.cms-edit-mode .cms-activ {
+  outline: 3px solid #E8A33D !important;
+  background-color: rgba(232, 163, 61, .14);
+}

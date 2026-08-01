@@ -396,7 +396,10 @@ router.get(
       value: it.key in overrides ? overrides[it.key] : it.value,
       isEdited: it.key in overrides,
     }));
-    res.json({ page: { slug: page.slug, name: page.name, url: page.url, warn: page.warn }, items });
+    res.json({
+      page: { slug: page.slug, name: page.name, url: page.url, warn: page.warn, altHost: !!page.altHost },
+      items,
+    });
   })
 );
 

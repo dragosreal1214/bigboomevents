@@ -39,14 +39,18 @@ if (!fs.existsSync(publicDir)) {
 // Paginile oferite spre editare, cu nume pe înțelesul clientului.
 // `url` = unde se vede pagina (pentru butonul „Vezi pagina").
 // `warn` apare ca avertisment în panou pentru paginile cu implicații legale.
+// `altHost` = pagina stă pe subdomeniul magazinului. Panoul (de pe domeniul
+// principal) NU o poate încărca în iframe: nginx trimite X-Frame-Options
+// SAMEORIGIN + frame-ancestors 'self'. N-o slăbim pentru două pagini — panoul
+// arată în schimb un mesaj și un buton de deschidere în filă nouă.
 export const PAGES = [
   { slug: 'index',        file: 'index.html',        name: 'Prima pagină',            url: '/',              group: 'Site principal' },
   { slug: 'evenimente',   file: 'evenimente.html',   name: 'Evenimente',              url: '/evenimente',    group: 'Site principal' },
   { slug: 'decoratiuni',  file: 'decoratiuni.html',  name: 'Decorațiuni Evenimente',  url: '/decoratiuni',   group: 'Site principal' },
   { slug: 'wedding',      file: 'wedding.html',      name: 'Wedding Planner',         url: '/wedding',       group: 'Site principal' },
   { slug: 'contact',      file: 'contact.html',      name: 'Contact',                 url: '/contact',       group: 'Site principal' },
-  { slug: 'florarie',     file: 'florarie.html',     name: 'Florărie (magazin)',      url: '/florarie',      group: 'Magazin' },
-  { slug: 'baloane',      file: 'baloane.html',      name: 'Baloane & Party Shop',    url: '/baloane',       group: 'Magazin' },
+  { slug: 'florarie',     file: 'florarie.html',     name: 'Florărie (magazin)',      url: '/florarie',      group: 'Magazin', altHost: true },
+  { slug: 'baloane',      file: 'baloane.html',      name: 'Baloane & Party Shop',    url: '/baloane',       group: 'Magazin', altHost: true },
   { slug: 'livrare',      file: 'livrare.html',      name: 'Politica de livrare',     url: '/livrare',       group: 'Pagini legale',
     warn: 'Pagină legală — textul e cerut de ANPC și de Netopia. Modifică doar dacă știi ce schimbi.' },
   { slug: 'anulare',      file: 'anulare.html',      name: 'Politica de anulare',     url: '/anulare',       group: 'Pagini legale',
@@ -72,6 +76,10 @@ function attr(tag, name) {
 // asta și semnalează dacă cineva marchează un element imbricat.
 const TEXT_RX = /<(h1|h2|h3|p|span|div|li|a)\b([^>]*\bdata-cms\s*=\s*"[^"]*"[^>]*)>([\s\S]*?)<\/\1>/g;
 const IMG_RX = /<img\b([^>]*\bdata-cms-img\s*=\s*"[^"]*"[^>]*)>/g;
+// Unele poze sunt fundaluri CSS, nu <img> (cardurile din portal). URL-ul stă
+// inline in `style="--portal-img:url('...')"`, ca sa poata fi editat de aici.
+const BG_RX = /<(a|div|section|header)\b([^>]*\bdata-cms-bg\s*=\s*"[^"]*"[^>]*)>/g;
+const BG_URL_RX = /--portal-img\s*:\s*url\(\s*['\"]?([^'\")]+)['\"]?\s*\)/;
 
 // Textele pot conține formatare simplă (unele paragrafe legale au deja
 // <strong>), deci nu escapăm tot — dar orice altceva e scos. Fără asta,
@@ -134,6 +142,20 @@ export function scanPage(page) {
     });
   }
 
+  for (const m of html.matchAll(BG_RX)) {
+    const attrs = m[2];
+    const key = attr(attrs, 'data-cms-bg');
+    if (!key) continue;
+    const style = attr(attrs, 'style');
+    const url = (style.match(BG_URL_RX) || [])[1] || '';
+    items.push({
+      key, type: 'image',
+      label: attr(attrs, 'data-cms-label') || key,
+      group: attr(attrs, 'data-cms-group') || 'Imagini',
+      value: url,
+    });
+  }
+
   return items;
 }
 
@@ -161,6 +183,17 @@ export function writePage(page, values) {
     // înlocuim DOAR src, restul atributelor (alt, width, loading) rămân
     const next = attrs.replace(/\bsrc\s*=\s*"[^"]*"/, `src="${values[key]}"`);
     return `<img${next}>`;
+  });
+
+  html = html.replace(BG_RX, (full, tag, attrs) => {
+    const key = attr(attrs, 'data-cms-bg');
+    if (!(key in values)) return full;
+    applied.push(key);
+    const style = attr(attrs, 'style');
+    const next = style.match(BG_URL_RX)
+      ? style.replace(BG_URL_RX, `--portal-img:url('${values[key]}')`)
+      : `--portal-img:url('${values[key]}');${style}`;
+    return `<${tag}${attrs.replace(/\bstyle\s*=\s*"[^"]*"/, `style="${next}"`)}>`;
   });
 
   fs.writeFileSync(path, html);

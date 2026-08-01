@@ -1272,8 +1272,14 @@
 
   function pgMarkDirty() {
     const btn = $('#pg-save');
+    const insigna = $('#pg-dirty');
     btn.disabled = pgDirty.size === 0;
-    btn.textContent = pgDirty.size ? `Salvează (${pgDirty.size})` : 'Salvează';
+    btn.textContent = 'Salvează';
+    if (insigna) {
+      insigna.hidden = pgDirty.size === 0;
+      insigna.textContent =
+        pgDirty.size === 1 ? '1 modificare nesalvată' : `${pgDirty.size} modificări nesalvate`;
+    }
   }
 
   async function loadPages() {
@@ -1322,6 +1328,7 @@
       warn.hidden = !page.warn;
       if (page.warn) warn.textContent = page.warn;
       renderPageFields(page, items);
+      pgPreview(page);
     } catch (err) {
       $('#pg-fields').innerHTML = `<p class="muted">${esc(err.message)}</p>`;
     }
@@ -1341,7 +1348,8 @@
         ${g.items.map((it) => fieldHTML(page, it)).join('')}
       </section>`).join('');
 
-    $$('#pg-fields [data-cms-input]').forEach((el) =>
+    $$('#pg-fields [data-cms-input]').forEach((el) => {
+      el.addEventListener('focus', () => pgArata(el.dataset.cmsInput));
       el.addEventListener('input', () => {
         const key = el.dataset.cmsInput;
         const orig = pgItems.find((i) => i.key === key);
@@ -1349,10 +1357,28 @@
         else pgDirty.set(key, el.value);
         el.closest('.pg-field').classList.toggle('is-dirty', pgDirty.has(key));
         pgMarkDirty();
-      })
-    );
-    $$('#pg-fields [data-upload-for]').forEach((btn) =>
-      btn.addEventListener('click', () => uploadForField(btn.dataset.uploadFor))
+      });
+    });
+    $$('#pg-fields [data-upload-for]').forEach((zona) => {
+      const key = zona.dataset.uploadFor;
+      zona.addEventListener('click', () => uploadForField(key));
+      zona.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); uploadForField(key); }
+      });
+      ['dragenter', 'dragover'].forEach((ev) =>
+        zona.addEventListener(ev, (e) => { e.preventDefault(); zona.classList.add('is-over'); })
+      );
+      ['dragleave', 'drop'].forEach((ev) =>
+        zona.addEventListener(ev, () => zona.classList.remove('is-over'))
+      );
+      zona.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const f = e.dataTransfer?.files?.[0];
+        if (f) trimitePoza(key, f);
+      });
+    });
+    $$('#pg-fields [data-reset-for]').forEach((b) =>
+      b.addEventListener('click', () => pgReseteaza(b.dataset.resetFor))
     );
     pgMarkDirty();
   }
@@ -1367,16 +1393,27 @@
     const edited = it.isEdited
       ? '<span class="pg-edited" title="Modificat față de textul original">modificat</span>' : '';
 
+    const reset = it.isEdited
+      ? `<button type="button" class="pg-reset" data-reset-for="${esc(it.key)}"
+           title="Revino la varianta inițială">Revino la original</button>` : '';
+
     if (it.type === 'image') {
+      // Zona de „trage poza aici" e mai ușoară decât un buton de fișier pentru
+      // cineva care nu stă mult pe calculator — dar clicul funcționează la fel.
       return `<div class="pg-field pg-field-img">
         <div class="pg-field-head"><label>${esc(it.label)}</label>${edited}${see}</div>
-        <div class="pg-img-row">
+        <div class="pg-drop" data-upload-for="${esc(it.key)}" tabindex="0"
+             role="button" aria-label="Schimbă poza: ${esc(it.label)}">
           <img src="${esc(it.value)}" alt="" class="pg-img-preview" />
-          <div class="pg-img-actions">
-            <input class="input" data-cms-input="${esc(it.key)}" value="${esc(it.value)}" readonly />
-            <button type="button" class="btn btn-ghost btn-sm" data-upload-for="${esc(it.key)}">Schimbă poza…</button>
+          <div class="pg-drop-text">
+            <strong>Trage o poză aici</strong>
+            <span>sau dă clic ca să alegi una de pe calculator</span>
+            <small>JPG, PNG sau WEBP</small>
           </div>
+          <div class="pg-drop-over">Dă drumul pozei</div>
         </div>
+        <input type="hidden" data-cms-input="${esc(it.key)}" value="${esc(it.value)}" />
+        ${reset}
       </div>`;
     }
     const input = it.multiline
@@ -1385,31 +1422,105 @@
     return `<div class="pg-field">
       <div class="pg-field-head"><label>${esc(it.label)}</label>${edited}${see}</div>
       ${input}
+      ${reset}
     </div>`;
   }
 
   // Reutilizează /admin/uploads — același endpoint ca la pozele de produs.
+  async function trimitePoza(key, file) {
+    if (!file.type.startsWith('image/')) {
+      toast('Fișierul nu e o poză. Alege un JPG, PNG sau WEBP.');
+      return;
+    }
+    const box = $(`[data-cms-input="${CSS.escape(key)}"]`).closest('.pg-field');
+    box.classList.add('is-uploading');
+    const fd = new FormData();
+    fd.append('images', file);
+    try {
+      const { urls } = await api('/admin/uploads', { method: 'POST', body: fd });
+      const field = $(`[data-cms-input="${CSS.escape(key)}"]`);
+      field.value = urls[0];
+      box.querySelector('.pg-img-preview').src = urls[0];
+      box.classList.add('is-dirty');
+      pgDirty.set(key, urls[0]);
+      pgMarkDirty();
+      toast('Poză încărcată. Apasă Salvează ca s-o pui pe site.');
+    } catch (err) {
+      toast(err.message);
+    } finally {
+      box.classList.remove('is-uploading');
+    }
+  }
+
   function uploadForField(key) {
     const inp = document.createElement('input');
     inp.type = 'file';
     inp.accept = 'image/jpeg,image/png,image/webp,image/gif';
-    inp.addEventListener('change', async () => {
-      if (!inp.files || !inp.files.length) return;
-      const fd = new FormData();
-      fd.append('images', inp.files[0]);
-      try {
-        const { urls } = await api('/admin/uploads', { method: 'POST', body: fd });
-        const field = $(`[data-cms-input="${CSS.escape(key)}"]`);
-        field.value = urls[0];
-        field.closest('.pg-field').querySelector('.pg-img-preview').src = urls[0];
-        field.closest('.pg-field').classList.add('is-dirty');
-        pgDirty.set(key, urls[0]);
-        pgMarkDirty();
-      } catch (err) {
-        toast(err.message);
-      }
+    inp.addEventListener('change', () => {
+      if (inp.files && inp.files.length) trimitePoza(key, inp.files[0]);
     });
     inp.click();
+  }
+
+  // Previzualizarea live merge doar pentru paginile de pe același domeniu cu
+  // panoul. Cele de pe subdomeniul magazinului sunt blocate de protecția
+  // anti-clickjacking, deci acolo oferim deschiderea într-o filă nouă.
+  function pgPreview(page) {
+    const frame = $('#pg-frame');
+    const panou = $('.pg-pane-preview');
+    const vechi = panou.querySelector('.pg-noframe');
+    if (vechi) vechi.remove();
+    if (!page.altHost) {
+      frame.hidden = false;
+      frame.src = page.url + '?cms=edit';
+      return;
+    }
+    frame.hidden = true;
+    frame.removeAttribute('src');
+    panou.insertAdjacentHTML(
+      'beforeend',
+      `<div class="pg-noframe">
+         <p><strong>Pagina asta stă pe magazin</strong>, pe altă adresă decât panoul,
+            așa că nu o pot arăta aici.</p>
+         <p>Deschide-o într-o filă nouă — butonul „Vezi pe pagină" de la fiecare câmp
+            îți arată tot exact unde e elementul.</p>
+         <a class="btn btn-primary btn-sm" href="${esc(page.url)}" target="_blank" rel="noopener">Deschide pagina ↗</a>
+       </div>`
+    );
+  }
+
+  // Trimite previzualizării cererea de a evidenția un element.
+  function pgArata(cheie) {
+    const f = $('#pg-frame');
+    if (f && f.contentWindow) f.contentWindow.postMessage({ tip: 'cms-arata', cheie }, '*');
+  }
+
+  // Clic în previzualizare → deschide câmpul corespunzător.
+  window.addEventListener('message', (e) => {
+    if (e.data?.tip !== 'cms-clic' || !e.data.cheie) return;
+    const camp = $(`[data-cms-input="${CSS.escape(e.data.cheie)}"]`);
+    if (!camp) return;
+    const box = camp.closest('.pg-field');
+    $$('#pg-fields .pg-field.is-activ').forEach((x) => x.classList.remove('is-activ'));
+    box.classList.add('is-activ');
+    box.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    if (!camp.readOnly) camp.focus();
+    pgArata(e.data.cheie);
+  });
+
+  $('#pg-reload')?.addEventListener('click', () => {
+    const f = $('#pg-frame');
+    if (f.src) f.src = f.src;
+  });
+
+  // Revino la textul/poza din varianta originală a paginii.
+  async function pgReseteaza(cheie) {
+    if (!confirm('Revii la varianta inițială a acestui element?')) return;
+    try {
+      await api(`/admin/pages/${encodeURIComponent(pgSlug)}/${encodeURIComponent(cheie)}`, { method: 'DELETE' });
+      await openPage(pgSlug);
+      $('#pg-frame').src = $('#pg-frame').src;
+    } catch (err) { toast(err.message); }
   }
 
   $('#pg-back').addEventListener('click', () => {

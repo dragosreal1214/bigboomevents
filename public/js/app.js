@@ -304,6 +304,7 @@
     trackNavHeight();
     setupReveal();
     highlightCmsTarget();
+    cmsEditMode();
     // Link „Setări cookies" din footer → redeschide dialogul de consimțământ.
     document.querySelectorAll('[data-open-consent]').forEach((a) =>
       a.addEventListener('click', (e) => { e.preventDefault(); Consent.open(); })
@@ -550,6 +551,54 @@
   // Panoul deschide pagina cu ?cms=<cheie>. Găsim elementul marcat, îl aducem
   // în ecran și îl conturăm câteva secunde. Fără asta, clientul ar trebui să
   // ghicească la ce element din pagină corespunde un câmp din formular.
+  // Mod „editare" pentru previzualizarea din panou: pagina se încarcă într-un
+  // iframe cu ?cms=edit. Conturăm tot ce e editabil, iar la clic trimitem cheia
+  // către panou, care deschide câmpul potrivit. Așa clientul nu trebuie să
+  // caute în formular — arată pe pagină ce vrea să schimbe.
+  function cmsEditMode() {
+    if (new URLSearchParams(location.search).get('cms') !== 'edit') return;
+    document.body.classList.add('cms-edit-mode');
+
+    const cheia = (el) =>
+      el.getAttribute('data-cms') || el.getAttribute('data-cms-img') || el.getAttribute('data-cms-bg');
+
+    const marcheaza = () => {
+      document.querySelectorAll('[data-cms], [data-cms-img], [data-cms-bg]').forEach((el) => {
+        if (el.dataset.cmsBound) return;
+        el.dataset.cmsBound = '1';
+        el.classList.add('cms-editable');
+      });
+    };
+    marcheaza();
+    // conținutul injectat (nav/footer) și cel încărcat prin fetch apare mai târziu
+    new MutationObserver(marcheaza).observe(document.body, { childList: true, subtree: true });
+
+    document.addEventListener(
+      'click',
+      (e) => {
+        // În previzualizare, linkurile nu trebuie să navigheze — ar scoate
+        // clientul din pagina pe care o edita.
+        const link = e.target.closest('a');
+        const tinta = e.target.closest('[data-cms], [data-cms-img], [data-cms-bg]');
+        if (link || tinta) { e.preventDefault(); e.stopPropagation(); }
+        if (tinta) parent.postMessage({ tip: 'cms-clic', cheie: cheia(tinta) }, '*');
+      },
+      true
+    );
+
+    // panoul cere evidențierea unui element (când clientul intră într-un câmp)
+    window.addEventListener('message', (e) => {
+      if (e.data?.tip !== 'cms-arata' || !e.data.cheie) return;
+      const el = document.querySelector(
+        `[data-cms="${CSS.escape(e.data.cheie)}"], [data-cms-img="${CSS.escape(e.data.cheie)}"], [data-cms-bg="${CSS.escape(e.data.cheie)}"]`
+      );
+      if (!el) return;
+      document.querySelectorAll('.cms-activ').forEach((x) => x.classList.remove('cms-activ'));
+      el.classList.add('cms-activ');
+      el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    });
+  }
+
   function highlightCmsTarget() {
     const key = new URLSearchParams(location.search).get('cms');
     if (!key) return;
