@@ -632,6 +632,7 @@
           <button type="button" class="btn btn-ghost btn-sm" id="apply-disc">Aplică −%</button>
           <button type="button" class="btn btn-ghost btn-sm" id="clear-disc">Fără reducere</button>
         </div>
+        <div class="discount-note" id="disc-note" hidden></div>
 
         <div class="grid-2">
           <div class="field">
@@ -828,22 +829,55 @@
     $('#clear-disc').addEventListener('click', () => {
       $('#f-oldprice').value = '';
       if ($('[name="badge"]').value === 'reducere') $('[name="badge"]').value = '';
+      syncDiscNote();
     });
+
+    // „Preț vechi" e prețul tăiat de pe eticheta de reducere, deci are sens doar cât
+    // timp e mai mare decât prețul curent. Când clientul urcă prețul peste el (nu mai
+    // e reducere), nu-l blocăm cu eroarea serverului — îi spunem că reducerea dispare.
+    function syncDiscNote() {
+      const note = $('#disc-note');
+      const price = parseFloat($('#f-price').value);
+      const oldRaw = $('#f-oldprice').value.trim();
+      const old = parseFloat(oldRaw);
+      if (!oldRaw || !Number.isFinite(old) || !Number.isFinite(price) || old > price) {
+        note.hidden = true;
+        note.textContent = '';
+        return;
+      }
+      note.hidden = false;
+      note.textContent =
+        'Prețul vechi nu e mai mare decât prețul curent, deci produsul nu mai e la reducere. La salvare prețul vechi se șterge automat.';
+    }
+    $('#f-price').addEventListener('input', syncDiscNote);
+    $('#f-oldprice').addEventListener('input', syncDiscNote);
+    syncDiscNote();
 
     // submit
     $('#prod-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const fd = new FormData(e.target);
+      const price = Number(fd.get('price'));
+      let oldPrice = String(fd.get('oldPrice') || '').trim() === '' ? null : Number(fd.get('oldPrice'));
+      let badge = fd.get('badge') || '';
+      // Un preț vechi rămas de la o reducere veche nu trebuie să blocheze o mărire de preț:
+      // dacă nu mai e mai mare decât prețul curent, reducerea pur și simplu nu mai există.
+      let droppedOld = false;
+      if (oldPrice != null && !(oldPrice > price)) {
+        oldPrice = null;
+        if (badge === 'reducere') badge = '';
+        droppedOld = true;
+      }
       const body = {
         name: fd.get('name'),
         slug: fd.get('slug'),
         description: fd.get('description'),
         categoryId: Number(fd.get('categoryId')),
         productType: fd.get('productType') || '',
-        price: Number(fd.get('price')),
-        oldPrice: fd.get('oldPrice') === '' ? null : Number(fd.get('oldPrice')),
+        price,
+        oldPrice,
         stock: Number(fd.get('stock')) || 0,
-        badge: fd.get('badge') || '',
+        badge,
         occasions: occ.get(),
         colors: col.get(),
         images,
@@ -860,7 +894,10 @@
           ? await api('/admin/products/' + p.id, { method: 'PUT', body })
           : await api('/admin/products', { method: 'POST', body });
         closeDrawer();
-        toast(isEdit ? 'Produs salvat ✓' : 'Produs adăugat ✓');
+        toast(
+          (isEdit ? 'Produs salvat ✓' : 'Produs adăugat ✓') +
+            (droppedOld ? ' — prețul vechi a fost șters (nu mai e reducere).' : '')
+        );
         // Async, fără flash: actualizează doar rândul editat / adaugă rândul nou în tabel.
         if (res && res.product) applyProductRow(res.product, isEdit);
         else loadProducts({ silent: true });

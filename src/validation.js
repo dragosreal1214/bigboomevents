@@ -145,10 +145,12 @@ export const adminProductSchema = z.object({
   productType: z.string().trim().max(40).optional().or(z.literal('')).transform((v) => (v ? v : null)),
   // prețuri în LEI (le convertim în bani la salvare)
   price: z.coerce.number().min(0, 'Preț invalid').max(1000000),
+  // 0 = „fără preț vechi", la fel ca gol — altfel un 0 rămas în formular ar cădea
+  // pe refine-ul de mai jos și ar bloca salvarea fără motiv.
   oldPrice: z
     .union([z.coerce.number().min(0).max(1000000), z.literal(''), z.null()])
     .optional()
-    .transform((v) => (v === '' || v == null ? null : v)),
+    .transform((v) => (v === '' || v == null || v === 0 ? null : v)),
   stock: z.coerce.number().int().min(0, 'Stoc invalid').max(1000000).default(0),
   badge: z
     .enum(['nou', 'reducere', 'popular', ''])
@@ -179,7 +181,8 @@ export const adminProductSchema = z.object({
   addonExcludeSlugs: tagList.optional().default([]),
 })
   .refine((d) => d.oldPrice == null || d.oldPrice > d.price, {
-    message: 'Prețul vechi trebuie să fie mai mare decât prețul curent.',
+    message:
+      'Prețul vechi trebuie să fie mai mare decât prețul curent (e prețul tăiat de la reducere). Lasă-l gol dacă produsul nu e la reducere.',
     path: ['oldPrice'],
   });
 
