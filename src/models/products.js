@@ -177,17 +177,23 @@ export async function listProducts(f) {
     where.push(`p.badge = 'nou'`);
   }
 
-  // `recomandat` = ordinea curata din `sort_order` (cifre 0-9, litere A-Z, apoi
-  // figurine/ocazii/accesorii). Produsele neordonate au sort_order 0 si trebuie
-  // sa cada la FINAL, nu la inceput — de aici primul criteriu boolean.
+  // `recomandat` = produsele cu badge-ul `popular` primele, apoi restul in ordinea
+  // curata din `sort_order` (cifre 0-9, litere A-Z, apoi figurine/ocazii/accesorii).
+  // `IS DISTINCT FROM` (nu `<>`) pentru ca badge-ul e NULL la majoritatea produselor,
+  // iar `NULL <> 'popular'` ar da NULL, nu TRUE. Boolean ASC = false inainte de true,
+  // deci populare -> false -> primele. Produsele neordonate au sort_order 0 si trebuie
+  // sa cada la FINAL, nu la inceput — de aici al doilea criteriu boolean. Ordonarea
+  // dupa sort_order se aplica si in interiorul grupului `popular`.
+  const recomandat =
+    `(p.badge IS DISTINCT FROM 'popular'), (p.sort_order = 0), p.sort_order, p.name`;
   const orderBy =
     {
-      recomandat: '(p.sort_order = 0), p.sort_order, p.name',
+      recomandat,
       'pret-asc': 'p.price_cents ASC',
       'pret-desc': 'p.price_cents DESC',
       nume: 'p.name ASC',
       nou: 'p.created_at DESC',
-    }[f.sort] || '(p.sort_order = 0), p.sort_order, p.name';
+    }[f.sort] || recomandat;
 
   const whereSql = where.length ? `WHERE ${where.join(' AND ')}` : '';
   const base = `FROM products p JOIN categories c ON c.id = p.category_id ${whereSql}`;
