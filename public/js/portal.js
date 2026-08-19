@@ -1,58 +1,37 @@
-/* portal.js — ecranul de start (overlay) de pe homepage.
-   - Apare DOAR la prima intrare din exterior (Google / link direct / bookmark),
-     o singură dată pe sesiune. NU apare la navigare internă sau la Back.
-   - La Back (bfcache) curăță „veil"-ul rămas din animația de alegere și ține
-     overlay-ul ascuns (altfel rămânea o culoare plină pe ecran).
-   Încărcat doar pe homepage (după app.js, deci window.BBE există). */
+/* portal.js — ecranul de start de pe homepage.
+   NU mai e overlay modal: secțiunea stă în pagină, sub meniu (vezi index.html +
+   `.portal` din styles.css), deci meniul și antetul se văd din prima și apare
+   la FIECARE intrare pe homepage — inclusiv la navigare internă sau Back.
+   Fișierul adaugă doar comportamentul: animația de alegere, parallax-ul discret
+   și butonul care coboară la restul paginii. Fără JS, secțiunea funcționează ca
+   un set normal de link-uri.
+   Încărcat doar pe homepage (înaintea lui app.js, ca elementul LCP să apară imediat). */
 (function () {
   var portal = document.getElementById('portal');
   if (!portal) return;
 
-  // Curăță orice stare de animație rămasă (veil + clase), fără a afecta `hidden`.
+  // Curăță starea animației de alegere (veil + clase). Necesară la Back din
+  // bfcache: pagina e restaurată exact cum a fost părăsită, deci cu culoarea
+  // categoriei încă întinsă peste ecran.
   function cleanupVeil() {
     var v = portal.querySelector('.portal-veil');
     if (v && v.parentNode) v.parentNode.removeChild(v);
-    portal.classList.remove('is-choosing', 'is-out');
+    portal.classList.remove('is-choosing');
     var picked = portal.querySelector('.choice.is-picked');
     if (picked) picked.classList.remove('is-picked');
+    busy = false;
   }
 
-  // La Back/Forward din bfcache: pagina e restaurată cu veil-ul încă pe ecran →
-  // îl curățăm și ținem overlay-ul ascuns (nu-l reafișăm la revenire).
   window.addEventListener('pageshow', function (e) {
-    if (e.persisted) { cleanupVeil(); portal.setAttribute('hidden', ''); document.body.classList.remove('menu-open'); }
+    if (e.persisted) { cleanupVeil(); document.body.classList.remove('menu-open'); }
   });
 
-  // Referrer intern? (venim din interiorul site-ului, nu din Google/direct)
-  function internalReferrer() {
-    var ref = document.referrer;
-    if (!ref) return false; // direct / bookmark → nu e intern
-    try {
-      var rh = new URL(ref).hostname;
-      return rh === location.hostname || /(?:^|\.)thebigboomevents\.ro$/i.test(rh);
-    } catch (e) { return false; }
-  }
-
-  var seen = false;
-  try { seen = sessionStorage.getItem('bbe_portal_seen') === '1'; } catch (e) {}
-
-  // Nu-l arăta dacă a fost deja văzut în sesiune sau dacă vii din navigare internă.
-  if (seen || internalReferrer()) {
-    cleanupVeil();
-    portal.setAttribute('hidden', '');
-    return;
-  }
-  try { sessionStorage.setItem('bbe_portal_seen', '1'); } catch (e) {}
-  // Overlay-ul e `aria-modal` → fundalul nu trebuie să deruleze sub el.
-  document.body.classList.add('menu-open');
-
-  // ─── de aici: setup-ul interactiv + afișarea overlay-ului ───
-
   var cards = portal.querySelectorAll('.choice');
+
   // Rescrie link-urile cu URL-urile absolute din BBE (evită un redirect pe prod).
-  // portal.js rulează ÎNAINTEA lui app.js (ca portalul să apară repede), deci la
-  // primul apel BBE poate lipsi — reîncercăm după ce app.js rulează (setTimeout 0).
-  // Fără BBE, cardurile păstrează hrefs relative, care funcționează ca fallback.
+  // portal.js rulează ÎNAINTEA lui app.js, deci la primul apel BBE poate lipsi —
+  // reîncercăm după ce app.js rulează (setTimeout 0). Fără BBE, cardurile
+  // păstrează href-urile relative, care funcționează ca fallback.
   function rewriteLinks() {
     var U = (window.BBE && window.BBE.urls) || null;
     if (!U) return false;
@@ -105,22 +84,6 @@
     setTimeout(function () { window.location.href = go; }, 620);
   }
 
-  function close() {
-    portal.classList.add('is-out');
-    document.body.classList.remove('menu-open');
-    setTimeout(function () { portal.setAttribute('hidden', ''); cleanupVeil(); }, 520);
-  }
-
-  // Focus trap: cu Tab se ieșea din overlay direct în nav-ul de dedesubt.
-  portal.addEventListener('keydown', function (e) {
-    if (e.key !== 'Tab') return;
-    var f = portal.querySelectorAll('a[href], button:not([disabled])');
-    if (!f.length) return;
-    var first = f[0], last = f[f.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-  });
-
   Array.prototype.forEach.call(cards, function (a) {
     a.addEventListener('click', function (e) {
       e.preventDefault();
@@ -145,13 +108,17 @@
     });
   }
 
+  // „Mergi direct la site" nu mai închide un overlay — coboară la restul
+  // homepage-ului, care acum e sub secțiune.
   var skip = document.getElementById('portalSkip');
-  if (skip) skip.addEventListener('click', function () { close(); });
+  if (skip) {
+    skip.addEventListener('click', function () {
+      var next = portal.nextElementSibling;
+      if (!next) return;
+      try { next.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }); }
+      catch (e) { next.scrollIntoView(); }
+    });
+  }
 
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && !portal.classList.contains('is-out')) close();
-  });
-
-  cleanupVeil();               // pornim dintr-o stare curată
-  portal.removeAttribute('hidden');
+  cleanupVeil();
 })();

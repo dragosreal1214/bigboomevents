@@ -194,6 +194,31 @@ export const adminCategorySchema = z.object({
   sortOrder: z.coerce.number().int().min(0).max(9999).optional().default(0),
 });
 
+const flag = z.union([z.boolean(), z.string()])
+  .transform((v) => v === true || v === 'true' || v === 'on' || v === '1');
+
+// ─── ADMIN: tip de produs (sub-categorie) ───
+// `slug` e opțional: la creare se derivă din nume. La editare, schimbarea lui
+// rescrie și `products.product_type` (vezi models/productTypes.js).
+export const adminProductTypeSchema = z.object({
+  categoryId: z.coerce.number().int().positive(),
+  name: z.string().trim().min(2, 'Nume prea scurt').max(60),
+  slug: z.string().trim().max(40).optional().or(z.literal('')),
+  groupLabel: z.string().trim().max(60).optional().or(z.literal('')).transform((v) => (v ? v : null)),
+  // NU z.coerce.boolean(): string-ul "false" ar deveni TRUE (orice string
+  // ne-gol e truthy), deci un checkbox debifat trimis ca text ar salva pe dos.
+  isQuick: flag.optional().default(false),
+  inSidebar: flag.optional().default(true),
+  sortOrder: z.coerce.number().int().min(0).max(9999).optional().default(0),
+});
+
+export const adminTypeReorderSchema = z.object({
+  items: z.array(z.object({
+    id: z.coerce.number().int().positive(),
+    sortOrder: z.coerce.number().int().min(0).max(9999),
+  })).max(200),
+});
+
 // ─── ADMIN: actualizare comandă (status / AWB) ───
 export const ORDER_STATUSES = [
   'pending', 'paid', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded',

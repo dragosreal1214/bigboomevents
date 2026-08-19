@@ -324,3 +324,18 @@ table.admin-table { width: 100%; border-collapse: collapse; }
 .pg-noframe { padding: 26px; text-align: center; display: flex; flex-direction: column;
   gap: 10px; align-items: center; color: var(--muted, #7a7a7a); font-size: 14px; line-height: 1.6; }
 .pg-noframe strong { color: var(--ink, #3B2E3A); }
+
+/* ---------- Tipuri de produs (drawer din tabul Categorii) ---------- */
+/* Drawerul e îngust: tabelul primește scroll orizontal propriu, altfel
+   coloana de acțiuni iese din ecran și butonul „Șterge" devine inaccesibil. */
+.types-scroll { overflow-x: auto; margin: 0 -4px; padding: 0 4px; }
+.types-table { min-width: 520px; }
+.types-table th, .types-table td { vertical-align: middle; padding-top: 9px; padding-bottom: 9px; }
+.types-table .cell-name { min-width: 150px; }
+.types-table .ta-c { text-align: center; }
+.types-table .nowrap { white-space: nowrap; }
+.types-table .icon-btn[disabled] { opacity: .35; cursor: default; }
+.types-table .cell-name small { display: block; color: var(--ink-soft); font-size: 12px; margin-top: 2px; }
+.drawer-body > .hint { font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+.drawer-body .checkline { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; cursor: pointer; font-size: 14px; }
+.drawer-body .checkline input { width: 17px; height: 17px; }

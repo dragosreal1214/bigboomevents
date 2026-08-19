@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Mesaj pe panglică">
+  <rect width="400" height="300" fill="#EFE7F2"/>
+  <g transform="translate(200 150)" stroke="#3B2E3A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- panglica: bandă cu capete despicate -->
+    <path d="M-96 -34 H96 L74 0 L96 34 H-96 L-74 0 Z" fill="#fff"/>
+    <!-- rândurile de text scrise pe panglică -->
+    <path d="M-58 -10 h116 M-58 10 h78" stroke="#C9B6D8"/>
+  </g>
+</svg>

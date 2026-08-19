@@ -66,10 +66,21 @@
       </button>`;
   }
 
+  // Add-on-ul care schimbă zona de text: la florile funerare nu se scrie o
+  // felicitare, ci un mesaj pe panglica aranjamentului. Comutarea se face după
+  // extra-opțiunile primite de la server, nu după numele produsului — deci
+  // clientul o activează atașând add-on-ul, fără modificări în cod.
+  const RIBBON_ADDON = 'addon-mesaj-panglica';
+
   function optionsHTML(addons, category) {
     const meta = Cart.meta();
     // La party shop (baloane) nu are sens un text de felicitare (buchet) — se ascunde.
     const showGift = category !== 'baloane';
+    const ribbon = addons.some((a) => a.slug === RIBBON_ADDON);
+    const giftTitle = ribbon ? 'Mesaj pentru panglică' : 'Text pentru felicitare';
+    const giftPlaceholder = ribbon
+      ? 'Scrie aici mesajul care va fi trecut pe panglică (opțional)…'
+      : 'Scrie aici mesajul care va însoți buchetul (opțional)…';
     const addonsBlock = addons.length ? `
       <div class="opt-block">
         <h3 class="opt-title">Adaugă extraopțiuni</h3>
@@ -88,9 +99,9 @@
       ${addonsBlock}
       ${showGift ? `
       <div class="opt-block">
-        <h3 class="opt-title">Text pentru felicitare</h3>
+        <h3 class="opt-title">${esc(giftTitle)}</h3>
         <textarea class="input" data-gift rows="3" maxlength="300"
-          placeholder="Scrie aici mesajul care va însoți buchetul (opțional)…">${esc(meta.giftMessage || '')}</textarea>
+          placeholder="${esc(giftPlaceholder)}">${esc(meta.giftMessage || '')}</textarea>
       </div>` : ''}
       <div class="opt-block">
         <h3 class="opt-title">Alege data și ora livrării</h3>

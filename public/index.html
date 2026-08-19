@@ -10,7 +10,7 @@
 <!-- Imaginile portal de sus (LCP) — preîncărcate ca să nu aștepte portal.js. -->
 <link rel="preload" href="/assets/portal/florarie.webp?v2" as="image" fetchpriority="high">
 <link rel="preload" href="/assets/portal/baloane.webp?v2" as="image" fetchpriority="high">
-<link rel="stylesheet" href="/css/styles.css?v=cart-edit1" />
+<link rel="stylesheet" href="/css/styles.css?v=start1" />
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
 <meta property="og:type" content="website" />
@@ -32,11 +32,13 @@
 <body data-page="index">
 <div data-include="promo"></div>
 
-<!-- Ecranul de start (overlay) — logica în js/portal.js. `hidden` din start:
-     îl afișează JS doar la prima vizită; fără JS, homepage-ul apare normal.
-     Linkurile sunt relative ca fallback; portal.js le rescrie cu BBE.urls
-     (corecte cross-subdomeniu în producție). -->
-<div class="portal" id="portal" role="dialog" aria-modal="true" aria-labelledby="portalTitle" hidden>
+<div data-include="nav"></div>
+
+<main>
+  <!-- Ecranul de start — PRIMA secțiune a homepage-ului, sub meniu (nu overlay).
+       E în markup static, vizibil și fără JS; portal.js adaugă doar animația de
+       alegere și rescrie link-urile cu BBE.urls (corecte cross-subdomeniu). -->
+  <section class="portal" id="portal" aria-labelledby="portalTitle">
   <div class="portal-inner">
     <span class="portal-welcome"><i aria-hidden="true"></i>Bine ai venit la<i aria-hidden="true"></i></span>
     <p id="portalTitle" class="portal-title">The Big <span class="portal-accent">Boom</span> Events</p>
@@ -75,11 +77,8 @@
 
     <button class="portal-skip" id="portalSkip" type="button">Mergi direct la site →</button>
   </div>
-</div>
+  </section>
 
-<div data-include="nav"></div>
-
-<main>
   <!-- HERO -->
   <header class="hero">
     <div class="wrap hero-content">
@@ -136,10 +135,10 @@
 
 <!-- portal.js PRIMUL: afișează overlay-ul de start (elementul LCP) imediat,
      fără să aștepte execuția celorlalte scripturi. E null-safe fără BBE. -->
-<script defer src="/js/portal.js?v=cart-edit1"></script>
-<script defer src="/js/app.js?v=cart-edit1"></script>
-<script defer src="/js/cards.js?v=cart-edit1"></script>
-<script defer src="/js/home.js?v=cart-edit1"></script>
-<script defer src="/js/reviews.js?v=cart-edit1"></script>
+<script defer src="/js/portal.js?v=start1"></script>
+<script defer src="/js/app.js?v=start1"></script>
+<script defer src="/js/cards.js?v=start1"></script>
+<script defer src="/js/home.js?v=start1"></script>
+<script defer src="/js/reviews.js?v=start1"></script>
 </body>
 </html>

@@ -36,6 +36,34 @@ CREATE TRIGGER trg_categories_updated BEFORE UPDATE ON categories
   FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
 -- ─────────────────────────────────────────────────────────────
+--  product_types — tipurile (sub-categoriile) fiecărei categorii
+--  Sursa de adevăr pentru: filtrul din panou, arborele de filtre din shop
+--  și butoanele rapide din capul paginii. Înainte erau hardcodate în trei
+--  fișiere JS, deci clientul nu putea adăuga un tip nou fără deploy.
+--  `slug` = valoarea scrisă în products.product_type (legătura e pe text,
+--  nu pe FK, ca produsele să nu se rupă dacă un tip e șters).
+-- ─────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS product_types (
+  id          SERIAL PRIMARY KEY,
+  category_id INT  NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
+  slug        TEXT NOT NULL,
+  name        TEXT NOT NULL,
+  group_label TEXT,                             -- gruparea din bara laterală (NULL = tip de sine stătător)
+  is_quick    BOOLEAN NOT NULL DEFAULT FALSE,    -- apare ca buton rapid sus în shop
+  in_sidebar  BOOLEAN NOT NULL DEFAULT TRUE,     -- apare ca filtru în bara laterală
+  sort_order  INT  NOT NULL DEFAULT 0,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (category_id, slug)
+);
+
+CREATE INDEX IF NOT EXISTS idx_product_types_cat ON product_types(category_id, sort_order);
+
+DROP TRIGGER IF EXISTS trg_product_types_updated ON product_types;
+CREATE TRIGGER trg_product_types_updated BEFORE UPDATE ON product_types
+  FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+
+-- ─────────────────────────────────────────────────────────────
 --  products
 --  Prețuri în BANI (integer) ca să evităm erorile de virgulă mobilă.
 --  100 lei  => 10000

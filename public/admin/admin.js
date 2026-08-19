@@ -15,27 +15,31 @@
   const PRODUCT_PAGE_SIZE = 24;
   const selectedIds = new Set(); // produse bifate pentru ștergere în masă
 
-  // Tipuri (product_type) pe categorie — pentru filtrul din lista de produse.
-  const TYPES_BY_CAT = {
-    florarie: [
-      ['buchet', 'Flori în buchet'], ['cutie', 'Flori în cutie'], ['cos', 'Flori în coș'],
-    ],
-    baloane: [
-      ['folie-cifra', 'Folie · Cifră'], ['folie-litera', 'Folie · Literă'],
-      ['folie-figurina', 'Folie · Figurină'], ['folie-ocazii', 'Folie · Ocazii speciale'],
-      ['baloane-latex', 'Baloane latex'],
-      ['pachet-1-an', 'Set · Pachet 1 An'], ['pachet-18-ani', 'Set · Pachet 18 Ani'],
-      ['pachet-30-ani', 'Set · Pachet 30 Ani'], ['pachet-50-ani', 'Set · Pachet 50 Ani'],
-      ['pachet-80-ani', 'Set · Pachet 80 Ani'], ['baby-shower', 'Set · Baby Shower'],
-      ['pachet-bride', 'Set · Pachet Bride'], ['pachet-5-ani', 'Set · Pachet 5 Ani'],
-      ['pachet-25-ani', 'Set · Pachet 25 Ani'], ['set-baloane', 'Set · Altele'],
-      ['lumanari-tort', 'Lumânări tort'],
-    ],
-  };
+  // Tipurile (sub-categoriile) vin din DB — tabelul `product_types`, administrat
+  // din tabul „Categorii". Erau hardcodate aici; acum clientul le poate adăuga
+  // singur, iar shopul le citește din aceeași sursă (`GET /api/product-types`).
+  let productTypes = [];            // rândurile brute
+  const TYPES_BY_CAT = {};          // { slugCategorie: [[slugTip, eticheta], ...] }
+
+  // Eticheta din panou include grupul, ca „Cifră" să nu apară de două ori în
+  // listă când două categorii au tipuri cu același nume.
+  const typeLabel = (t) => (t.groupLabel ? `${t.groupLabel} · ${t.name}` : t.name);
+
+  async function fetchProductTypes(force = false) {
+    if (productTypes.length && !force) return productTypes;
+    const r = await api('/admin/product-types');
+    productTypes = r.types || [];
+    Object.keys(TYPES_BY_CAT).forEach((k) => delete TYPES_BY_CAT[k]);
+    for (const t of productTypes) {
+      (TYPES_BY_CAT[t.category] = TYPES_BY_CAT[t.category] || []).push([t.slug, typeLabel(t)]);
+    }
+    return productTypes;
+  }
 
   // Încarcă categoriile + valorile disponibile (ocazii/culori) înainte de editor.
   async function ensureProductMeta() {
     if (!categories.length) await fetchCategories().catch(() => {});
+    await fetchProductTypes().catch(() => {});
     if (!facetsLoaded) {
       try {
         facets = await api('/admin/facets');
@@ -229,6 +233,7 @@
     wrap.innerHTML = '<div class="spinner">Se încarcă…</div>';
     try {
       await fetchCategories();
+      await fetchProductTypes(true).catch(() => {});
       if (!categories.length) {
         wrap.innerHTML = '<table class="admin-table"><tr class="muted-row"><td>Nicio categorie. Adaugă una.</td></tr></table>';
         return;
@@ -246,6 +251,7 @@
                 <td>${c.productCount}</td>
                 <td>${c.sortOrder}</td>
                 <td><div class="row-actions">
+                  <button class="icon-btn" data-types-cat="${c.id}">Tipuri (${(TYPES_BY_CAT[c.slug] || []).length})</button>
                   <button class="icon-btn" data-edit-cat="${c.id}">Editează</button>
                   <button class="icon-btn danger" data-del-cat="${c.id}">Șterge</button>
                 </div></td>
@@ -254,6 +260,9 @@
               .join('')}
           </tbody>
         </table>`;
+      $$('[data-types-cat]', wrap).forEach((b) =>
+        b.addEventListener('click', () => openTypesManager(categories.find((c) => c.id == b.dataset.typesCat)))
+      );
       $$('[data-edit-cat]', wrap).forEach((b) =>
         b.addEventListener('click', () => openCategoryEditor(categories.find((c) => c.id == b.dataset.editCat)))
       );
@@ -329,6 +338,198 @@
     }
   }
 
+  // ---------- TIPURI DE PRODUS (sub-categorii) ----------
+  // Un tip = o valoare din `products.product_type`. Ordinea de aici dictează
+  // trei lucruri deodată: ordinea din filtrele shopului, ordinea butoanelor
+  // rapide din capul paginii ȘI ordinea blocurilor de produse în listarea
+  // implicită („recomandat"). De-aia săgețile ↑↓ contează, nu sunt decor.
+
+  function typesOf(catSlug) {
+    return productTypes
+      .filter((t) => t.category === catSlug)
+      .sort((a, b) => a.sortOrder - b.sortOrder || a.name.localeCompare(b.name, 'ro'));
+  }
+
+  async function openTypesManager(cat) {
+    if (!cat) return;
+    await fetchProductTypes(true).catch(() => {});
+    renderTypesManager(cat);
+  }
+
+  function renderTypesManager(cat) {
+    const list = typesOf(cat.slug);
+    const rows = list.map((t, idx) => `
+      <tr data-id="${t.id}">
+        <td class="cell-name">${esc(t.name)}<small>${esc(t.groupLabel || 'fără grup')} · <code>${esc(t.slug)}</code></small></td>
+        <td class="ta-c">${t.productCount}</td>
+        <td class="ta-c"><label class="switch"><input type="checkbox" data-quick="${t.id}" ${t.isQuick ? 'checked' : ''}><span class="slider"></span></label></td>
+        <td class="ta-c"><label class="switch"><input type="checkbox" data-side="${t.id}" ${t.inSidebar ? 'checked' : ''}><span class="slider"></span></label></td>
+        <td class="ta-c nowrap">
+          <button class="icon-btn" data-up="${t.id}" ${idx === 0 ? 'disabled' : ''} title="Mai sus">↑</button>
+          <button class="icon-btn" data-down="${t.id}" ${idx === list.length - 1 ? 'disabled' : ''} title="Mai jos">↓</button>
+        </td>
+        <td><div class="row-actions">
+          <button class="icon-btn" data-edit-type="${t.id}">Editează</button>
+          <button class="icon-btn danger" data-del-type="${t.id}">Șterge</button>
+        </div></td>
+      </tr>`).join('');
+
+    openDrawer(`Tipuri — ${cat.name}`, `
+      <p class="hint" style="margin-bottom:14px">
+        Ordinea de mai jos e ordinea în care apar în magazin: filtrele din stânga,
+        butoanele rapide de sus și blocurile de produse din listare.
+        <strong>Sus</strong> = apare ca buton rapid în capul paginii.
+        <strong>Filtru</strong> = apare în bara laterală.
+      </p>
+      <button class="btn btn-primary" id="new-type" style="margin-bottom:16px">+ Tip nou</button>
+      ${list.length ? `
+      <div class="types-scroll">
+      <table class="admin-table types-table">
+        <thead><tr><th>Tip</th><th class="ta-c">Produse</th><th class="ta-c">Sus</th><th class="ta-c">Filtru</th><th class="ta-c">Ordine</th><th></th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      </div>` : '<p class="muted">Categoria nu are încă tipuri. Adaugă primul.</p>'}
+      <div class="drawer-actions">
+        <button type="button" class="btn btn-ghost" data-drawer-close>Închide</button>
+      </div>
+    `);
+    bindDrawerClose();
+
+    $('#new-type').addEventListener('click', () => openTypeEditor(cat, null));
+    $$('[data-edit-type]').forEach((b) =>
+      b.addEventListener('click', () => openTypeEditor(cat, list.find((t) => t.id == b.dataset.editType))));
+    $$('[data-del-type]').forEach((b) =>
+      b.addEventListener('click', () => deleteType(cat, list.find((t) => t.id == b.dataset.delType))));
+    $$('[data-quick]').forEach((c) =>
+      c.addEventListener('change', () => saveTypeFlags(cat, list.find((t) => t.id == c.dataset.quick), { isQuick: c.checked })));
+    $$('[data-side]').forEach((c) =>
+      c.addEventListener('change', () => saveTypeFlags(cat, list.find((t) => t.id == c.dataset.side), { inSidebar: c.checked })));
+    $$('[data-up]').forEach((b) => b.addEventListener('click', () => moveType(cat, b.dataset.up, -1)));
+    $$('[data-down]').forEach((b) => b.addEventListener('click', () => moveType(cat, b.dataset.down, 1)));
+  }
+
+  // Trimite mereu obiectul complet: schema de pe server cere name + categoryId,
+  // deci un PATCH parțial ar fi respins.
+  function typePayload(t, patch = {}) {
+    return {
+      categoryId: t.categoryId, name: t.name, slug: t.slug, groupLabel: t.groupLabel || '',
+      isQuick: t.isQuick, inSidebar: t.inSidebar, sortOrder: t.sortOrder, ...patch,
+    };
+  }
+
+  async function saveTypeFlags(cat, t, patch) {
+    if (!t) return;
+    try {
+      await api('/admin/product-types/' + t.id, { method: 'PUT', body: typePayload(t, patch) });
+      Object.assign(t, patch);
+      toast('Salvat ✓');
+    } catch (err) {
+      toast(err.message, true);
+      renderTypesManager(cat); // readuce comutatorul la starea reală
+    }
+  }
+
+  // Mutarea schimbă ordinea CU VECINUL, nu doar valoarea proprie: două tipuri cu
+  // același `sortOrder` s-ar așeza apoi alfabetic, ceea ce ar face săgeata să
+  // pară că nu funcționează.
+  async function moveType(cat, id, dir) {
+    const list = typesOf(cat.slug);
+    const i = list.findIndex((t) => String(t.id) === String(id));
+    const j = i + dir;
+    if (i < 0 || j < 0 || j >= list.length) return;
+    const a = list[i]; const b = list[j];
+    const items = [{ id: a.id, sortOrder: b.sortOrder }, { id: b.id, sortOrder: a.sortOrder }];
+    // Ordine identică (ex. ambele 0) → dăm valori distincte pe toată lista.
+    if (a.sortOrder === b.sortOrder) {
+      list.splice(i, 1); list.splice(j, 0, a);
+      items.length = 0;
+      list.forEach((t, k) => items.push({ id: t.id, sortOrder: (k + 1) * 10 }));
+    }
+    try {
+      await api('/admin/product-types-order', { method: 'PUT', body: { items } });
+      await fetchProductTypes(true);
+      renderTypesManager(cat);
+    } catch (err) {
+      toast(err.message, true);
+    }
+  }
+
+  async function deleteType(cat, t) {
+    if (!t) return;
+    if (!confirm(`Ștergi tipul „${t.name}"?`)) return;
+    try {
+      await api('/admin/product-types/' + t.id, { method: 'DELETE' });
+      toast('Tip șters ✓');
+      await fetchProductTypes(true);
+      renderTypesManager(cat);
+      loadCategories();
+    } catch (err) {
+      toast(err.message, true); // ex. „Tipul e folosit de 32 de produse"
+    }
+  }
+
+  function openTypeEditor(cat, t) {
+    const isEdit = !!t;
+    const groups = [...new Set(typesOf(cat.slug).map((x) => x.groupLabel).filter(Boolean))];
+    openDrawer(isEdit ? `Editează tip — ${cat.name}` : `Tip nou — ${cat.name}`, `
+      <form id="type-form">
+        <div class="field">
+          <label>Nume *</label>
+          <input class="input" name="name" value="${esc(t?.name || '')}" required placeholder="ex. Figurină" />
+        </div>
+        <div class="field">
+          <label>Grup (opțional)</label>
+          <input class="input" name="groupLabel" value="${esc(t?.groupLabel || '')}" list="type-groups" placeholder="ex. Baloane folie" />
+          <datalist id="type-groups">${groups.map((g) => `<option value="${esc(g)}"></option>`).join('')}</datalist>
+          <div class="hint">Tipurile cu același grup apar împreună, sub un titlu comun, în filtrele din magazin.</div>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label>Slug</label>
+            <input class="input" name="slug" value="${esc(t?.slug || '')}" placeholder="auto din nume" />
+            <div class="hint">${isEdit ? 'Dacă îl schimbi, produsele cu acest tip se actualizează automat.' : 'Lasă gol → se generează din nume.'}</div>
+          </div>
+          <div class="field">
+            <label>Ordine</label>
+            <input class="input" type="number" name="sortOrder" value="${t?.sortOrder ?? (typesOf(cat.slug).length + 1) * 10}" min="0" />
+          </div>
+        </div>
+        <div class="field">
+          <label class="checkline"><input type="checkbox" name="isQuick" ${t?.isQuick ? 'checked' : ''} /> Buton rapid în capul paginii de magazin</label>
+          <label class="checkline"><input type="checkbox" name="inSidebar" ${!t || t.inSidebar ? 'checked' : ''} /> Filtru în bara laterală</label>
+        </div>
+        <div class="drawer-actions">
+          <button type="button" class="btn btn-ghost" id="type-back">Înapoi</button>
+          <button type="submit" class="btn btn-primary">${isEdit ? 'Salvează' : 'Adaugă'}</button>
+        </div>
+      </form>
+    `);
+    $('#type-back').addEventListener('click', () => renderTypesManager(cat));
+    $('#type-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const body = {
+        categoryId: cat.id,
+        name: fd.get('name'),
+        slug: fd.get('slug') || '',
+        groupLabel: fd.get('groupLabel') || '',
+        isQuick: !!fd.get('isQuick'),
+        inSidebar: !!fd.get('inSidebar'),
+        sortOrder: Number(fd.get('sortOrder')) || 0,
+      };
+      try {
+        if (isEdit) await api('/admin/product-types/' + t.id, { method: 'PUT', body });
+        else await api('/admin/product-types', { method: 'POST', body });
+        toast(isEdit ? 'Tip actualizat ✓' : 'Tip adăugat ✓');
+        await fetchProductTypes(true);
+        renderTypesManager(cat);
+        loadCategories();
+      } catch (err) {
+        toast(err.message, true);
+      }
+    });
+  }
+
   // ---------- PRODUCTS ----------
   let searchTimer;
   $('#product-search').addEventListener('input', () => {
@@ -346,6 +547,7 @@
   async function loadProducts(opts = {}) {
     const wrap = $('#products-list');
     if (!categories.length) await fetchCategories().catch(() => {});
+    if (!productTypes.length) { await fetchProductTypes().catch(() => {}); populateTypeFilter(); }
     // „silent" = nu arăta spinner-ul (evită flash-ul după salvare); altfel spinner.
     if (!opts.silent) wrap.innerHTML = '<div class="spinner">Se încarcă…</div>';
     const q = $('#product-search').value.trim();

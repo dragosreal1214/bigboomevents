@@ -10,29 +10,46 @@
   const countEl = document.querySelector('[data-count]');
   const loadMoreBtn = document.querySelector('[data-load-more]');
 
-  // Liste de filtre (statice — pot fi extinse din date).
-  // „Categorii" baloane — 2 niveluri: categorie principală (mai multe sub-tipuri) + sub-categorii.
-  // Florăria are chip-uri rapide (buchet/cutie) sus, deci nu are arbore în sidebar.
-  const CATEGORY_TREE = {
-    baloane: [
-      { label: 'Set baloane',
-        types: 'pachet-1-an,pachet-18-ani,pachet-30-ani,pachet-50-ani,pachet-80-ani,baby-shower,pachet-bride,pachet-5-ani,pachet-25-ani,set-baloane',
-        subs: [['pachet-1-an', 'Pachet 1 An'], ['pachet-18-ani', 'Pachet 18 Ani'], ['pachet-30-ani', 'Pachet 30 Ani'],
-               ['pachet-50-ani', 'Pachet 50 Ani'], ['pachet-80-ani', 'Pachet 80 Ani'], ['baby-shower', 'Baby Shower']] },
-      { label: 'Baloane folie', types: 'folie-cifra,folie-litera,folie-figurina,folie-ocazii',
-        subs: [['folie-cifra', 'Cifră'], ['folie-litera', 'Literă'], ['folie-figurina', 'Figurină'], ['folie-ocazii', 'Ocazii speciale']] },
-      { label: 'Baloane latex', types: 'baloane-latex', subs: [] },
-      { label: 'Lumânări tort', types: 'lumanari-tort', subs: [] },
-      { label: 'Accesorii petrecere',
-        types: 'acc-cake-topper,acc-farfurii,acc-pahare,acc-servetele,acc-coifuri,acc-photo-props,acc-ghirlande,acc-gender-reveal,acc-placute,acc-tablite,acc-pungi,accesorii-party',
-        subs: [['acc-cake-topper', 'Cake topper'], ['acc-farfurii', 'Farfurii'], ['acc-pahare', 'Pahare'],
-               ['acc-servetele', 'Șervețele'], ['acc-coifuri', 'Coifuri'], ['acc-photo-props', 'Photo props'],
-               ['acc-ghirlande', 'Ghirlande'], ['acc-gender-reveal', 'Gender reveal'],
-               ['acc-placute', 'Plăcuțe cadou'], ['acc-tablite', 'Tăblițe Groom & Bride'],
-               ['acc-pungi', 'Pungi cadou']] },
-    ],
-  };
-  const treeFor = (cat) => CATEGORY_TREE[cat] || [];
+  // Tipurile (sub-categoriile) vin din DB — `GET /api/product-types`, administrate
+  // din panou. Erau hardcodate aici; acum clientul poate adăuga un tip nou și
+  // apare singur în filtre, fără deploy.
+  //   - `groupLabel` → nodul-părinte din bara laterală (mai multe tipuri sub un titlu)
+  //   - `inSidebar`  → apare ca sub-filtru (un tip poate face parte din grup fără
+  //                    să aibă rând propriu, ex. „Altele")
+  //   - `isQuick`    → apare ca buton rapid în capul paginii
+  let TYPES = [];
+
+  const typesFor = (cat) => (cat ? TYPES.filter((t) => t.category === cat) : []);
+
+  async function loadTypes() {
+    try {
+      const r = await API.get('/product-types');
+      TYPES = Array.isArray(r?.types) ? r.types : [];
+    } catch { TYPES = []; }
+  }
+
+  // Arborele din bara laterală: grupurile în ordinea în care apar tipurile lor,
+  // fiecare grup filtrând pe TOATE tipurile din el (listă CSV, suportată de API).
+  function treeFor(cat) {
+    const list = typesFor(cat);
+    const nodes = [];
+    const byGroup = new Map();
+    for (const t of list) {
+      if (!t.groupLabel) {
+        if (t.inSidebar) nodes.push({ label: t.name, types: t.slug, subs: [] });
+        continue;
+      }
+      let node = byGroup.get(t.groupLabel);
+      if (!node) {
+        node = { label: t.groupLabel, types: [], subs: [] };
+        byGroup.set(t.groupLabel, node);
+        nodes.push(node);
+      }
+      node.types.push(t.slug);
+      if (t.inSidebar) node.subs.push([t.slug, t.name]);
+    }
+    return nodes.map((n) => ({ ...n, types: Array.isArray(n.types) ? n.types.join(',') : n.types }));
+  }
 
   // Intro afișat sus când e activă o categorie (înlocuiește antetul generic).
   const CATEGORY_INTRO = {
@@ -183,6 +200,7 @@
         buildOccasionFilter();     // categoriile-ocazii diferite pe florărie vs. rest
         updatePriceSlider();       // preț maxim mai mare pe florărie (1500)
         renderCatIntro();          // intro-ul de categorie sus (florărie etc.)
+        buildQuickFilters();       // chip-urile diferă pe categorie (tipuri vs colecții)
         refreshSidebar();          // ascunde selectorul de categorie / ocaziile după caz
         reset();
       }
@@ -207,7 +225,15 @@
       node.subs.forEach(([v, l]) => { html += radio(v, l, 'cat-sub'); });
     });
     box.innerHTML = html;
-    box.onchange = (e) => { if (e.target.name === 'typ') { state.type = e.target.value; reset(); } };
+    // Alegerea din bara laterală anulează colecția și actualizează chip-urile de
+    // sus, altfel ar rămâne aprins „Toate" peste un filtru activ.
+    box.onchange = (e) => {
+      if (e.target.name !== 'typ') return;
+      state.type = e.target.value;
+      state.collection = '';
+      buildQuickFilters();
+      reset();
+    };
   }
 
   // Prețul maxim din slider — mai mare pe florărie (buchete premium / TRIO).
@@ -253,27 +279,48 @@
     box.addEventListener('change', (e) => { if (e.target.name === 'col') { state.color = e.target.value; reset(); } });
   }
 
-  // Filtre rapide, în funcție de categorie:
-  //  - florărie → Toate / Flori în buchet / Flori în cutie / Flori în coș (filtrează pe tip)
-  //  - restul   → Toate / Populare / Reduceri / Noutăți (filtrează pe colecție)
+  // Butoanele rapide din capul paginii.
+  //   - dacă în categoria curentă există tipuri bifate „sus" în panou, ele sunt
+  //     chip-urile (clientul alege care apar și în ce ordine);
+  //   - altfel se cade pe colecții (Populare / Reduceri / Noutăți), ca pe shopul
+  //     general sau pe o categorie fără tipuri.
+  // Fiecare chip știe pe ce filtrează (`kind`), pentru că cele două feluri nu se
+  // pot combina: alegerea unuia îl anulează pe celălalt.
+  function quickItems() {
+    const quick = typesFor(state.category).filter((t) => t.isQuick);
+    if (quick.length) {
+      return [{ kind: '', val: '', label: 'Toate' }]
+        .concat(quick.map((t) => ({ kind: 'type', val: t.slug, label: t.name })));
+    }
+    return [
+      { kind: '', val: '', label: 'Toate' },
+      { kind: 'collection', val: 'popular', label: 'Populare' },
+      { kind: 'collection', val: 'reduceri', label: 'Reduceri' },
+      { kind: 'collection', val: 'nou', label: 'Noutăți' },
+    ];
+  }
+
   function buildQuickFilters() {
     const box = document.querySelector('[data-quick-filters]');
     if (!box) return;
-    const isFlor = state.category === 'florarie';
-    const kind = isFlor ? 'type' : 'collection';
-    const items = isFlor
-      ? [['', 'Toate'], ['buchet', 'Flori în buchet'], ['cutie', 'Flori în cutie'], ['cos', 'Flori în coș']]
-      : [['', 'Toate'], ['popular', 'Populare'], ['reduceri', 'Reduceri'], ['nou', 'Noutăți']];
-    const activeVal = () => (kind === 'type' ? state.type : state.collection);
-    box.innerHTML = items.map(([v, l]) =>
-      `<button type="button" class="chip" data-qf="${esc(v)}" aria-pressed="${activeVal() === v ? 'true' : 'false'}">${esc(l)}</button>`
+    const items = quickItems();
+    const isActive = (it) =>
+      (it.kind === 'type' && state.type === it.val) ||
+      (it.kind === 'collection' && state.collection === it.val) ||
+      (!it.kind && !state.type && !state.collection);
+    box.innerHTML = items.map((it, i) =>
+      `<button type="button" class="chip" data-qf="${i}" aria-pressed="${isActive(it) ? 'true' : 'false'}">${esc(it.label)}</button>`
     ).join('');
     box.onclick = (e) => {
       const btn = e.target.closest('[data-qf]');
       if (!btn) return;
-      const val = btn.dataset.qf;
-      if (kind === 'type') state.type = val; else state.collection = val;
-      box.querySelectorAll('[data-qf]').forEach((b) => b.setAttribute('aria-pressed', b.dataset.qf === val ? 'true' : 'false'));
+      const it = items[Number(btn.dataset.qf)];
+      if (!it) return;
+      state.type = it.kind === 'type' ? it.val : '';
+      state.collection = it.kind === 'collection' ? it.val : '';
+      box.querySelectorAll('[data-qf]').forEach((b) =>
+        b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+      buildTypeFilter();   // radio-urile din bara laterală trebuie să urmeze chip-ul
       reset();
     };
   }
@@ -368,7 +415,7 @@
   // ---------- INIT ----------
   document.addEventListener('DOMContentLoaded', async () => {
     readURL();
-    await buildCategoryFilter();
+    await Promise.all([buildCategoryFilter(), loadTypes()]);
     buildTypeFilter();
     renderCatIntro();
     buildOccasionFilter();

@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { asyncHandler, notFound } from '../utils/http.js';
 import { parseOrThrow, productQuerySchema } from '../validation.js';
 import { listProducts, getProductBySlug, listCategories, listAddons } from '../models/products.js';
+import { listProductTypes } from '../models/productTypes.js';
 import { getBanner } from '../models/settings.js';
 import config from '../config.js';
 
@@ -27,6 +28,18 @@ router.get(
   '/categories',
   asyncHandler(async (_req, res) => {
     res.json({ categories: await listCategories() });
+  })
+);
+
+// GET /api/product-types?category=slug — tipurile (sub-categoriile) definite în
+// panou. Shopul își construiește din ele arborele de filtre din bara laterală
+// și butoanele rapide din capul paginii, deci un tip adăugat de client apare
+// fără deploy.
+router.get(
+  '/product-types',
+  asyncHandler(async (req, res) => {
+    const cat = typeof req.query.category === 'string' ? req.query.category.trim().slice(0, 40) : '';
+    res.json({ types: await listProductTypes(cat || null) });
   })
 );
 

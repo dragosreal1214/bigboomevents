@@ -16,6 +16,8 @@ import {
   adminLoginSchema,
   adminProductSchema,
   adminCategorySchema,
+  adminProductTypeSchema,
+  adminTypeReorderSchema,
   adminOrderUpdateSchema,
   adminLeadStatusSchema,
   bannerSchema,
@@ -54,6 +56,13 @@ import {
   getAdminStats,
   getProductFacets,
 } from '../models/products.js';
+import {
+  listProductTypesAdmin,
+  createProductType,
+  updateProductType,
+  deleteProductType,
+  reorderProductTypes,
+} from '../models/productTypes.js';
 
 const router = Router();
 
@@ -286,6 +295,56 @@ router.delete(
       res.json(result);
     } catch (err) {
       if (err.code === 'CATEGORY_NOT_EMPTY') throw new HttpError(409, err.message);
+      throw err;
+    }
+  })
+);
+
+// ───────────────────────────────────────────────
+//  TIPURI DE PRODUS (sub-categorii)
+// ───────────────────────────────────────────────
+router.get(
+  '/admin/product-types',
+  asyncHandler(async (_req, res) => {
+    res.json({ types: await listProductTypesAdmin() });
+  })
+);
+
+router.post(
+  '/admin/product-types',
+  asyncHandler(async (req, res) => {
+    const data = parseOrThrow(adminProductTypeSchema, req.body);
+    res.status(201).json({ type: await createProductType(data) });
+  })
+);
+
+router.put(
+  '/admin/product-types/:id',
+  asyncHandler(async (req, res) => {
+    const data = parseOrThrow(adminProductTypeSchema, req.body);
+    const ok = await updateProductType(intId(req.params.id), data);
+    if (!ok) throw notFound('Tip inexistent');
+    res.json({ ok: true });
+  })
+);
+
+// Reordonare în bloc (drag & drop din panou). Cale separată, cu cratimă, nu
+// `/product-types/reorder` — aceea ar fi fost prinsă de ruta cu `:id`.
+router.put(
+  '/admin/product-types-order',
+  asyncHandler(async (req, res) => {
+    const { items } = parseOrThrow(adminTypeReorderSchema, req.body);
+    res.json({ updated: await reorderProductTypes(items) });
+  })
+);
+
+router.delete(
+  '/admin/product-types/:id',
+  asyncHandler(async (req, res) => {
+    try {
+      res.json(await deleteProductType(intId(req.params.id)));
+    } catch (err) {
+      if (err.code === 'TYPE_IN_USE') throw new HttpError(409, err.message);
       throw err;
     }
   })
