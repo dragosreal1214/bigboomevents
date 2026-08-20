@@ -2,9 +2,10 @@
    NU mai e overlay modal: secțiunea stă în pagină, sub meniu (vezi index.html +
    `.portal` din styles.css), deci meniul și antetul se văd din prima și apare
    la FIECARE intrare pe homepage — inclusiv la navigare internă sau Back.
-   Fișierul adaugă doar comportamentul: animația de alegere, parallax-ul discret
-   și butonul care coboară la restul paginii. Fără JS, secțiunea funcționează ca
-   un set normal de link-uri.
+   Homepage-ul e format DOAR din această secțiune (+ meniu și subsol), deci nu
+   mai există nimic sub ea. Fișierul adaugă doar comportamentul: animația de
+   alegere și parallax-ul discret. Fără JS, secțiunea funcționează ca un set
+   normal de link-uri.
    Încărcat doar pe homepage (înaintea lui app.js, ca elementul LCP să apară imediat). */
 (function () {
   var portal = document.getElementById('portal');
@@ -105,18 +106,6 @@
         card.style.setProperty('--px', '0px');
         card.style.setProperty('--py', '0px');
       });
-    });
-  }
-
-  // „Mergi direct la site" nu mai închide un overlay — coboară la restul
-  // homepage-ului, care acum e sub secțiune.
-  var skip = document.getElementById('portalSkip');
-  if (skip) {
-    skip.addEventListener('click', function () {
-      var next = portal.nextElementSibling;
-      if (!next) return;
-      try { next.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }); }
-      catch (e) { next.scrollIntoView(); }
     });
   }
 

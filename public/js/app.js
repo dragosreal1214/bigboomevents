@@ -346,10 +346,25 @@
   // Nav-ul e sticky și își schimbă înălțimea (meniul se rupe pe 2 rânduri pe
   // lățimi medii). Publicăm înălțimea reală în `--nav-h`, ca elementele sticky
   // de dedesubt (sidebar shop, sumar checkout) să nu ajungă sub el.
+  // Reținută ca să poată fi reapelată după injectarea bannerului promo.
+  let applyHeights = () => {};
+
   function trackNavHeight() {
     const nav = document.querySelector('.nav');
     if (!nav) return;
-    const apply = () => document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px');
+    // `--promo-h` separat de `--nav-h`: bannerul promo stă DEASUPRA nav-ului și
+    // se derulează odată cu pagina, deci nu are ce căuta în offset-ul pentru
+    // elementele `sticky`. E însă necesar acolo unde măsurăm cât din ecran a
+    // rămas liber sub antet (ecranul de start de pe homepage).
+    // Bannerul se randează ASINCRON (după `GET /api/settings`), deci la primul
+    // apel încă nu există în DOM — de aceea îl căutăm de fiecare dată, iar
+    // `renderBanner` reapelează măsurarea după ce îl injectează.
+    const apply = () => {
+      const promo = document.querySelector('.promo-banner');
+      document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px');
+      document.documentElement.style.setProperty('--promo-h', (promo ? promo.offsetHeight : 0) + 'px');
+    };
+    applyHeights = apply;
     // Citirea offsetHeight imediat după ce am injectat layout-ul forța un reflow
     // sincron (blochează firul principal). O amânăm în rAF: browserul face
     // layout-ul o dată, apoi citim — fără reflow forțat pe calea critică.
@@ -663,6 +678,7 @@
       if (host) { host.innerHTML = ''; host.classList.add('promo-empty'); }
       else { const ex = document.querySelector('.promo-banner'); if (ex) ex.remove(); }
       document.body.classList.remove('has-promo');
+      applyHeights();
       return;
     }
     const html = bannerMarkup(b);
@@ -672,6 +688,9 @@
       if (ex) ex.outerHTML = html; else document.body.insertAdjacentHTML('afterbegin', html);
     }
     document.body.classList.add('has-promo');
+    // Înălțimea bannerului intră în `--promo-h`, folosită de ecranul de start ca
+    // să ocupe exact ecranul rămas liber.
+    applyHeights();
   }
 
   function injectBanner() {

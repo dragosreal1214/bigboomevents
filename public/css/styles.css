@@ -699,6 +699,9 @@ textarea.input { min-height: 84px; resize: vertical; }
 
 /* ---------- FOOTER ---------- */
 footer { background: var(--ink); color: #fff; padding: 58px 0 26px; margin-top: 40px; }
+/* Homepage = doar ecranul de start, care are fundal propriu până jos. Marginea
+   globală de deasupra subsolului ar lăsa o dungă crem între cele două. */
+body[data-page="index"] footer { margin-top: 0; }
 .foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 30px; }
 footer .brand { color: #fff; }
 footer p { color: #ffffffb0; font-size: 15px; max-width: 280px; }
@@ -848,7 +851,7 @@ a:focus-visible, button:focus-visible, .chip:focus-visible, input:focus-visible,
    secțiunea să umple exact ce se vede, fără să taie nav-ul. */
 .portal {
   position: relative;
-  min-height: calc(100dvh - var(--nav-h, 132px));
+  min-height: calc(100dvh - var(--nav-h, 132px) - var(--promo-h, 0px));
   display: grid; place-items: center;
   grid-template-columns: minmax(0, 1fr); /* coloana nu depășește ecranul → titlul se rupe pe mobil */
   padding: clamp(20px, 5vw, 48px);
