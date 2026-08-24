@@ -3,6 +3,7 @@ import { asyncHandler, notFound } from '../utils/http.js';
 import { parseOrThrow, productQuerySchema } from '../validation.js';
 import { listProducts, getProductBySlug, listCategories, listAddons } from '../models/products.js';
 import { listProductTypes } from '../models/productTypes.js';
+import { listGallery, listGalleryTags } from '../models/gallery.js';
 import { getBanner } from '../models/settings.js';
 import config from '../config.js';
 
@@ -28,6 +29,18 @@ router.get(
   '/categories',
   asyncHandler(async (_req, res) => {
     res.json({ categories: await listCategories() });
+  })
+);
+
+// GET /api/gallery?tag= — galeria foto de pe pagina Evenimente.
+// Întoarce și etichetele disponibile, ca pagina să-și construiască filtrele
+// dintr-un singur apel (fără al doilea request doar pentru chip-uri).
+router.get(
+  '/gallery',
+  asyncHandler(async (req, res) => {
+    const tag = typeof req.query.tag === 'string' ? req.query.tag.trim().slice(0, 40) : '';
+    const [images, tags] = await Promise.all([listGallery(tag || null), listGalleryTags()]);
+    res.json({ images, tags });
   })
 );
 

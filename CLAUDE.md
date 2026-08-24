@@ -71,6 +71,16 @@ Tabul **„Pagini"** din panou lasă clientul să schimbe textele și pozele pag
 - **`decorPrerender.js` și `public/js/decoratiuni.js` trebuie să producă markup IDENTIC**, inclusiv atributele `data-cms*`. Randarea din browser înlocuiește nodul pre-randat la hidratare; dacă marcajele diferă, editorul nu mai găsește elementele în previzualizare.
 - Butonul „Vezi pe pagină" deschide `<url>?cms=<cheie>`; `app.js` derulează la element și îl conturează. Derularea se repetă (`load` + 400/1200/2200 ms) pentru că produsele și recenziile se încarcă după și mută layoutul.
 
+## Galerie foto (pagina Evenimente)
+
+Tabelul `gallery_images` (`url` UNIQUE, `alt`, `tag`, `sort_order`, `is_active`) alimentează galeria de pe `/evenimente`; se administrează din panou → tabul **„Galerie"** (încărcare multiplă, text alternativ, categorie, ordine, ascundere, ștergere). Public: `GET /api/gallery?tag=` (întoarce și etichetele cu numărul de poze, ca pagina să-și facă filtrele dintr-un singur apel); admin: CRUD pe `/api/admin/gallery` + `PUT /api/admin/gallery-order`.
+
+- **Pozele inițiale se importă din `public/js/decoratiuni-data.js`** cu `node scripts/seed-gallery.js` — de acolo, nu din folderul cu imagini, pentru că fișierul are pentru fiecare poză textul alternativ scris de om și evenimentul din care face parte (deci galeria pornește cu descrieri și filtre corecte). Idempotent: `url` e UNIQUE, iar inserarea face `ON CONFLICT DO UPDATE`. Sigur de rulat pe prod; nu atinge pozele adăugate din panou.
+- **Încărcarea refolosește `/admin/uploads`** (multer, max 12 fișiere/cerere — panoul trimite în serii), deci fișierele ajung în `UPLOAD_DIR` și sunt servite ca static, la fel ca pozele de produs.
+- **Ștergerea scoate doar rândul din DB, nu și fișierul de pe disc**: aceeași poză poate fi folosită și de un produs sau de o pagină de decorațiuni, iar un `unlink` ar lăsa acolo o imagine ruptă.
+- Schema de validare acceptă **doar căi relative** (`/...`) pentru `url`: o adresă externă ar fi blocată oricum de CSP (`imgSrc: ['self','data:']`) și ar apărea ca imagine ruptă.
+- Filtrarea pe categorii se face **local, în `galerie.js`**, pe lista deja descărcată — sunt zeci de poze, nu mii, iar un request per chip ar face filtrele să pară lente degeaba. Etichetele necunoscute primesc automat un nume lizibil derivat din slug, deci o categorie nouă adăugată din panou nu cere modificări în cod.
+
 ## Conformare (ANPC / Netopia) — constrângeri externe
 
 Reguli impuse din afara codului; se strică ușor fără să se vadă.

@@ -6,7 +6,7 @@
 <title>Evenimente — The Big Boom Events</title>
 <meta name="description" content="Decor complet pentru nunți, botezuri, aniversări și evenimente corporate. Concept, montaj, demontaj. Cere o ofertă personalizată." />
 <link rel="canonical" href="https://thebigboomevents.ro/evenimente" />
-<link rel="stylesheet" href="/css/styles.css?v=home2" />
+<link rel="stylesheet" href="/css/styles.css?v=galerie1" />
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
 <meta property="og:type" content="website" />
@@ -96,15 +96,13 @@
       <div class="section-head">
         <span class="eyebrow">Portofoliu</span>
         <h2 data-cms="sectiune-3-titlu" data-cms-label="Titlu: „Din evenimentele noastre”" data-cms-group="Secțiunea 3">Din evenimentele noastre</h2>
-        <p data-cms="sectiune-3-text" data-cms-label="Text: „Galerie demonstrativă — se înlocui…”" data-cms-group="Secțiunea 3">Galerie demonstrativă — se înlocuiește cu poze reale din evenimente.</p>
+        <p data-cms="sectiune-3-text" data-cms-label="Text: „Decoruri realizate de noi…”" data-cms-group="Secțiunea 3">Decoruri realizate de noi — nunți, botezuri, majorate, gender reveal și evenimente corporate.</p>
       </div>
-      <div class="portfolio">
-        <div class="item"><svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="#3B2E3A88" stroke-width="1.2"><ellipse cx="12" cy="8" rx="5" ry="6"/><path d="M12 14v3"/></svg></div>
-        <div class="item"><svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="#3B2E3A88" stroke-width="1.2"><circle cx="12" cy="9" r="3"/><path d="M12 12v9"/></svg></div>
-        <div class="item"><svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="#3B2E3A88" stroke-width="1.2"><path d="M12 2l2.4 7.4H22l-6 4.4 2.3 7.2-6.3-4.6-6.3 4.6L7.9 13.8 2 9.4h7.6z"/></svg></div>
-        <div class="item"><svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="#3B2E3A88" stroke-width="1.2"><ellipse cx="12" cy="8" rx="5" ry="6"/></svg></div>
-        <div class="item"><svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="#3B2E3A88" stroke-width="1.2"><circle cx="12" cy="9" r="3"/><path d="M12 12v9"/></svg></div>
-        <div class="item"><svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="#3B2E3A88" stroke-width="1.2"><path d="M12 2l2.4 7.4H22l-6 4.4"/></svg></div>
+      <!-- Galeria se încarcă din DB (`GET /api/gallery`) și se administrează din
+           panou → tabul „Galerie". Fără JS rămâne mesajul de mai jos. -->
+      <div class="gallery-filters" data-gallery-filters role="group" aria-label="Filtrează galeria"></div>
+      <div class="gallery-grid" data-gallery>
+        <p class="muted gallery-empty">Se încarcă galeria…</p>
       </div>
     </div>
   </section>
@@ -178,7 +176,8 @@
      app.js îl mută în footer, lângă bannerele ANPC. -->
 <div data-netopia><script src="https://mny.ro/npId.js?p=167581" data-version="orizontal" data-contrast-color="#3b2e3a"></script></div>
 
-<script defer src="/js/app.js?v=home2"></script>
-<script defer src="/js/leadform.js?v=home2"></script>
+<script defer src="/js/app.js?v=galerie1"></script>
+<script defer src="/js/leadform.js?v=galerie1"></script>
+<script defer src="/js/galerie.js?v=galerie1"></script>
 </body>
 </html>

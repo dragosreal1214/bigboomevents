@@ -18,6 +18,9 @@ import {
   adminCategorySchema,
   adminProductTypeSchema,
   adminTypeReorderSchema,
+  adminGalleryAddSchema,
+  adminGalleryUpdateSchema,
+  adminGalleryReorderSchema,
   adminOrderUpdateSchema,
   adminLeadStatusSchema,
   bannerSchema,
@@ -63,6 +66,13 @@ import {
   deleteProductType,
   reorderProductTypes,
 } from '../models/productTypes.js';
+import {
+  listGalleryAdmin,
+  addGalleryImages,
+  updateGalleryImage,
+  deleteGalleryImage,
+  reorderGallery,
+} from '../models/gallery.js';
 
 const router = Router();
 
@@ -347,6 +357,51 @@ router.delete(
       if (err.code === 'TYPE_IN_USE') throw new HttpError(409, err.message);
       throw err;
     }
+  })
+);
+
+// ───────────────────────────────────────────────
+//  GALERIE (pagina Evenimente)
+// ───────────────────────────────────────────────
+router.get(
+  '/admin/gallery',
+  asyncHandler(async (_req, res) => {
+    res.json({ images: await listGalleryAdmin() });
+  })
+);
+
+// Pozele se încarcă întâi pe `/admin/uploads` (multer), apoi căile primite se
+// trimit aici. Așa galeria folosește exact același flux de upload ca produsele.
+router.post(
+  '/admin/gallery',
+  asyncHandler(async (req, res) => {
+    const { images } = parseOrThrow(adminGalleryAddSchema, req.body);
+    res.status(201).json({ added: await addGalleryImages(images) });
+  })
+);
+
+router.put(
+  '/admin/gallery/:id',
+  asyncHandler(async (req, res) => {
+    const data = parseOrThrow(adminGalleryUpdateSchema, req.body);
+    const ok = await updateGalleryImage(intId(req.params.id), data);
+    if (!ok) throw notFound('Poză inexistentă');
+    res.json({ ok: true });
+  })
+);
+
+router.put(
+  '/admin/gallery-order',
+  asyncHandler(async (req, res) => {
+    const { items } = parseOrThrow(adminGalleryReorderSchema, req.body);
+    res.json({ updated: await reorderGallery(items) });
+  })
+);
+
+router.delete(
+  '/admin/gallery/:id',
+  asyncHandler(async (req, res) => {
+    res.json(await deleteGalleryImage(intId(req.params.id)));
   })
 );
 

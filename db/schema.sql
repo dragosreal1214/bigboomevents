@@ -36,6 +36,30 @@ CREATE TRIGGER trg_categories_updated BEFORE UPDATE ON categories
   FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
 -- ─────────────────────────────────────────────────────────────
+--  gallery_images — galeria foto de pe pagina Evenimente
+--  Pozele existente vin din `public/js/decoratiuni-data.js` (sursa paginilor
+--  de decorațiuni), încărcate o dată cu `node scripts/seed-gallery.js`; cele
+--  adăugate ulterior din panou ajung în UPLOAD_DIR ca orice altă poză.
+--  `url` e UNIQUE ca re-rularea seed-ului să nu dubleze pozele.
+-- ─────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS gallery_images (
+  id          SERIAL PRIMARY KEY,
+  url         TEXT NOT NULL UNIQUE,
+  alt         TEXT NOT NULL DEFAULT '',
+  tag         TEXT,                              -- 'nunta', 'botez', 'corporate'... (NULL = fără filtru)
+  sort_order  INT  NOT NULL DEFAULT 0,
+  is_active   BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_gallery_order ON gallery_images(sort_order, id);
+
+DROP TRIGGER IF EXISTS trg_gallery_updated ON gallery_images;
+CREATE TRIGGER trg_gallery_updated BEFORE UPDATE ON gallery_images
+  FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+
+-- ─────────────────────────────────────────────────────────────
 --  product_types — tipurile (sub-categoriile) fiecărei categorii
 --  Sursa de adevăr pentru: filtrul din panou, arborele de filtre din shop
 --  și butoanele rapide din capul paginii. Înainte erau hardcodate în trei

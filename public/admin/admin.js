@@ -176,6 +176,7 @@
     if (name === 'orders') loadOrders();
     if (name === 'leads') loadLeads();
     if (name === 'pages') loadPages();
+    if (name === 'gallery') loadGallery();
     if (name === 'banner') loadBanner();
   }
   $$('.tab').forEach((t) => t.addEventListener('click', () => switchTab(t.dataset.tab)));
@@ -337,6 +338,158 @@
       toast(err.message, true);
     }
   }
+
+  // ---------- GALERIE (pagina Evenimente) ----------
+  // Pozele stau in `gallery_images` si apar pe /evenimente in ordinea de aici.
+  // Incarcarea foloseste ACELASI endpoint ca pozele de produs (`/admin/uploads`,
+  // multer) — de aceea fisierele ajung in UPLOAD_DIR si sunt servite ca static.
+  let galleryImages = [];
+
+  // Etichetele existente + numele lor lizibile. Lista se completeaza singura cu
+  // ce e deja folosit in galerie, ca sa nu fie nevoie de o modificare in cod
+  // cand clientul inventeaza o categorie noua.
+  const GAL_TAGS = {
+    nunta: 'Nuntă', botez: 'Botez', majorat: 'Majorat',
+    corporate: 'Corporate', 'gender-reveal': 'Gender Reveal',
+  };
+  const galTagName = (t) => GAL_TAGS[t] || (t ? t.replace(/-/g, ' ') : '');
+
+  function galTagOptions(selected) {
+    const tags = [...new Set([...Object.keys(GAL_TAGS), ...galleryImages.map((g) => g.tag).filter(Boolean)])];
+    return '<option value="">— fără categorie —</option>' +
+      tags.map((t) => `<option value="${esc(t)}" ${selected === t ? 'selected' : ''}>${esc(galTagName(t))}</option>`).join('');
+  }
+
+  async function loadGallery() {
+    const wrap = $('#gallery-list');
+    wrap.innerHTML = '<div class="spinner">Se încarcă…</div>';
+    try {
+      const r = await api('/admin/gallery');
+      galleryImages = r.images || [];
+      renderGallery();
+    } catch (err) {
+      wrap.innerHTML = `<p class="muted" style="padding:20px">${esc(err.message)}</p>`;
+    }
+  }
+
+  function renderGallery() {
+    const wrap = $('#gallery-list');
+    if (!galleryImages.length) {
+      wrap.innerHTML = '<p class="muted" style="padding:20px">Nicio poză încă. Apasă „Încarcă poze".</p>';
+      return;
+    }
+    wrap.innerHTML = `
+      <p class="muted" style="margin:0 0 12px">${galleryImages.length} poze în galerie</p>
+      <div class="gal-admin">
+        ${galleryImages.map((g, i) => `
+          <div class="gal-card ${g.isActive ? '' : 'is-hidden'}" data-id="${g.id}">
+            <div class="gal-thumb"><img src="${esc(g.url)}" alt="" loading="lazy" /></div>
+            <div class="gal-body">
+              <input class="input gal-alt" value="${esc(g.alt)}" maxlength="300" placeholder="Descriere (pentru Google și cititoarele de ecran)" />
+              <div class="gal-row">
+                <select class="select gal-tag">${galTagOptions(g.tag)}</select>
+                <label class="switch" title="Vizibilă pe site"><input type="checkbox" class="gal-active" ${g.isActive ? 'checked' : ''}><span class="slider"></span></label>
+              </div>
+              <div class="gal-row">
+                <button class="icon-btn" data-gal-up ${i === 0 ? 'disabled' : ''} title="Mai sus">↑</button>
+                <button class="icon-btn" data-gal-down ${i === galleryImages.length - 1 ? 'disabled' : ''} title="Mai jos">↓</button>
+                <button class="icon-btn" data-gal-save>Salvează</button>
+                <button class="icon-btn danger" data-gal-del>Șterge</button>
+              </div>
+            </div>
+          </div>`).join('')}
+      </div>`;
+
+    $$('.gal-card', wrap).forEach((card) => {
+      const id = Number(card.dataset.id);
+      const img = galleryImages.find((g) => g.id === id);
+      const read = () => ({
+        alt: card.querySelector('.gal-alt').value,
+        tag: card.querySelector('.gal-tag').value,
+        isActive: card.querySelector('.gal-active').checked,
+        sortOrder: img.sortOrder,
+      });
+      card.querySelector('[data-gal-save]').addEventListener('click', () => saveGalleryImage(img, read()));
+      // Comutatorul de vizibilitate salveaza pe loc: e o actiune, nu o editare
+      // pe care clientul sa fie nevoit sa o confirme cu „Salveaza".
+      card.querySelector('.gal-active').addEventListener('change', () => saveGalleryImage(img, read()));
+      card.querySelector('[data-gal-del]').addEventListener('click', () => deleteGalleryImage(img));
+      card.querySelector('[data-gal-up]').addEventListener('click', () => moveGalleryImage(id, -1));
+      card.querySelector('[data-gal-down]').addEventListener('click', () => moveGalleryImage(id, 1));
+    });
+  }
+
+  async function saveGalleryImage(img, data) {
+    try {
+      await api('/admin/gallery/' + img.id, { method: 'PUT', body: data });
+      Object.assign(img, data);
+      toast('Salvat ✓');
+    } catch (err) {
+      toast(err.message, true);
+      loadGallery();
+    }
+  }
+
+  async function deleteGalleryImage(img) {
+    if (!confirm('Ștergi poza din galerie? Fișierul rămâne pe server, dispare doar din pagina Evenimente.')) return;
+    try {
+      await api('/admin/gallery/' + img.id, { method: 'DELETE' });
+      toast('Poză ștearsă ✓');
+      loadGallery();
+    } catch (err) {
+      toast(err.message, true);
+    }
+  }
+
+  // Mutarea rescrie ordinea INTREGII liste (10, 20, 30...), nu doar a celor doua
+  // poze schimbate: pozele importate au putut ramane cu valori egale, iar atunci
+  // un simplu schimb intre vecini nu ar misca nimic vizibil.
+  async function moveGalleryImage(id, dir) {
+    const i = galleryImages.findIndex((g) => g.id === id);
+    const j = i + dir;
+    if (i < 0 || j < 0 || j >= galleryImages.length) return;
+    const list = galleryImages.slice();
+    const [mutata] = list.splice(i, 1);
+    list.splice(j, 0, mutata);
+    const items = list.map((g, k) => ({ id: g.id, sortOrder: (k + 1) * 10 }));
+    try {
+      await api('/admin/gallery-order', { method: 'PUT', body: { items } });
+      list.forEach((g, k) => { g.sortOrder = (k + 1) * 10; });
+      galleryImages = list;
+      renderGallery();
+    } catch (err) {
+      toast(err.message, true);
+    }
+  }
+
+  $('#gal-upload')?.addEventListener('click', () => $('#gal-file').click());
+  $('#gal-file')?.addEventListener('change', async (e) => {
+    const files = [...e.target.files];
+    if (!files.length) return;
+    const btn = $('#gal-upload');
+    btn.disabled = true;
+    const original = btn.textContent;
+    btn.textContent = `Se încarcă ${files.length} poze…`;
+    try {
+      // Serverul accepta max 12 fisiere pe cerere (multer), deci trimitem in serii.
+      const urls = [];
+      for (let i = 0; i < files.length; i += 12) {
+        const fd = new FormData();
+        files.slice(i, i + 12).forEach((f) => fd.append('images', f));
+        const r = await api('/admin/uploads', { method: 'POST', body: fd });
+        urls.push(...(r.urls || []));
+      }
+      await api('/admin/gallery', { method: 'POST', body: { images: urls.map((u) => ({ url: u })) } });
+      toast(`${urls.length} poză(e) adăugate în galerie ✓`);
+      loadGallery();
+    } catch (err) {
+      toast(err.message, true);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = original;
+      e.target.value = '';
+    }
+  });
 
   // ---------- TIPURI DE PRODUS (sub-categorii) ----------
   // Un tip = o valoare din `products.product_type`. Ordinea de aici dictează

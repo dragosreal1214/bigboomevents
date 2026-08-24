@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/css/styles.css" />
-<link rel="stylesheet" href="/admin/admin.css?v=home2" />
+<link rel="stylesheet" href="/admin/admin.css?v=galerie1" />
 </head>
 <body>
 
@@ -41,6 +41,7 @@
         <button class="tab" data-tab="orders">Comenzi</button>
         <button class="tab" data-tab="leads">Cereri</button>
         <button class="tab" data-tab="pages">Pagini</button>
+        <button class="tab" data-tab="gallery">Galerie</button>
         <button class="tab" data-tab="banner">Banner</button>
       </nav>
       <div class="admin-bar-right">
@@ -164,6 +165,21 @@
       </div>
     </section>
 
+    <section class="view" data-view="gallery" hidden>
+      <div class="view-head">
+        <h2 class="view-title">Galerie — pagina Evenimente</h2>
+        <div>
+          <input type="file" id="gal-file" accept="image/*" multiple hidden />
+          <button class="btn btn-primary" id="gal-upload">📷 Încarcă poze</button>
+        </div>
+      </div>
+      <p class="hint" style="margin:-6px 0 18px">
+        Pozele apar pe <strong>/evenimente</strong>, în ordinea de mai jos. Poți încărca mai multe deodată;
+        cele noi se adaugă la final. „Categorie" pune poza sub filtrul respectiv din pagină.
+      </p>
+      <div id="gallery-list"></div>
+    </section>
+
     <section class="view" data-view="banner" hidden>
       <div class="view-head"><h2 class="view-title">Banner promo (bara de sus)</h2></div>
       <form id="banner-form" class="banner-form">
@@ -220,6 +236,6 @@
 
 <div id="toast" class="admin-toast" hidden></div>
 
-<script src="/admin/admin.js?v=home2"></script>
+<script src="/admin/admin.js?v=galerie1"></script>
 </body>
 </html>

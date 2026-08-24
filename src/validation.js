@@ -219,6 +219,31 @@ export const adminTypeReorderSchema = z.object({
   })).max(200),
 });
 
+// ─── ADMIN: galerie foto (pagina Evenimente) ───
+export const adminGalleryAddSchema = z.object({
+  images: z.array(z.object({
+    // Doar căi relative de pe site: o adresă externă ar fi blocată oricum de CSP
+    // (`imgSrc: ['self','data:']`) și ar apărea ca imagine ruptă în pagină.
+    url: z.string().trim().min(2).max(300).regex(/^\/[^\s]*$/, 'Calea trebuie să fie relativă la site'),
+    alt: z.string().trim().max(300).optional().or(z.literal('')).default(''),
+    tag: z.string().trim().max(40).optional().or(z.literal('')).transform((v) => (v ? v : null)),
+  })).min(1).max(60),
+});
+
+export const adminGalleryUpdateSchema = z.object({
+  alt: z.string().trim().max(300).optional().or(z.literal('')).default(''),
+  tag: z.string().trim().max(40).optional().or(z.literal('')).transform((v) => (v ? v : null)),
+  isActive: flag.optional().default(true),
+  sortOrder: z.coerce.number().int().min(0).max(99999).optional().default(0),
+});
+
+export const adminGalleryReorderSchema = z.object({
+  items: z.array(z.object({
+    id: z.coerce.number().int().positive(),
+    sortOrder: z.coerce.number().int().min(0).max(99999),
+  })).max(500),
+});
+
 // ─── ADMIN: actualizare comandă (status / AWB) ───
 export const ORDER_STATUSES = [
   'pending', 'paid', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded',
