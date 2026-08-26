@@ -1,5 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════════
-   galerie.js — galeria foto de pe pagina Evenimente.
+   galerie.js — galeria foto din tabul „Galerie" al paginii
+   /decoratiuni-evenimente.
    Pozele vin din `GET /api/gallery` (tabelul `gallery_images`), deci clientul
    le administrează din panou → tabul „Galerie". Filtrarea se face LOCAL, pe
    lista deja descărcată: sunt zeci de poze, nu mii, iar un request la fiecare
@@ -159,6 +160,18 @@
       });
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', incarca);
-  else incarca();
+  // Galeria stă într-un tab ascuns: nu cerem pozele până nu e deschis. Prima
+  // deschidere emite `bbe:galerie` din decoratiuni.js; pe orice altă pagină
+  // (panou fără tab-uri) încărcăm direct.
+  var incarcata = false;
+  function incarcaOData() { if (!incarcata) { incarcata = true; incarca(); } }
+
+  function porneste() {
+    var panel = document.querySelector('[data-panel-galerie]');
+    if (panel && panel.hidden) document.addEventListener('bbe:galerie', incarcaOData);
+    else incarcaOData();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', porneste);
+  else porneste();
 })();

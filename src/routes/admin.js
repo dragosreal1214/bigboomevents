@@ -515,7 +515,7 @@ router.get(
       return res.json({
         page: {
           slug: req.params.slug, name: `Decor ${d.event.name}`,
-          url: `/decoratiuni/${d.event.slug}`, kind: 'decor',
+          url: `/decoratiuni-evenimente/${d.event.slug}`, kind: 'decor',
         },
         items: d.items.map((it) => ({
           ...it, original: it.value, isEdited: it.key in ov,

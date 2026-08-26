@@ -15,8 +15,7 @@
   const SHOP = PROD ? 'https://shop.thebigboomevents.ro' : '';
   const U = {
     home: MAIN + '/',
-    evenimente: MAIN + '/evenimente',
-    decoratiuni: MAIN + '/decoratiuni',
+    decoratiuni: MAIN + '/decoratiuni-evenimente',
     wedding: MAIN + '/wedding',
     contact: MAIN + '/contact',
     termeni: MAIN + '/termeni',

@@ -129,10 +129,10 @@ app.get('/sitemap.xml', async (_req, res) => {
   const urls = [
     [`${MAIN}/`, '1.0'],
     [`${SHOP}/florarie`, '0.9'], [`${SHOP}/baloane`, '0.9'], [`${SHOP}/shop`, '0.8'],
-    [`${MAIN}/decoratiuni`, '0.8'], [`${MAIN}/wedding`, '0.8'], [`${MAIN}/evenimente`, '0.7'],
-    [`${MAIN}/decoratiuni/botez`, '0.6'], [`${MAIN}/decoratiuni/nunta`, '0.6'],
-    [`${MAIN}/decoratiuni/corporate`, '0.6'], [`${MAIN}/decoratiuni/majorat`, '0.6'],
-    [`${MAIN}/decoratiuni/gender-reveal`, '0.6'],
+    [`${MAIN}/decoratiuni-evenimente`, '0.8'], [`${MAIN}/wedding`, '0.8'],
+    [`${MAIN}/decoratiuni-evenimente/botez`, '0.6'], [`${MAIN}/decoratiuni-evenimente/nunta`, '0.6'],
+    [`${MAIN}/decoratiuni-evenimente/corporate`, '0.6'], [`${MAIN}/decoratiuni-evenimente/majorat`, '0.6'],
+    [`${MAIN}/decoratiuni-evenimente/gender-reveal`, '0.6'],
     [`${MAIN}/contact`, '0.5'],
     [`${MAIN}/termeni`, '0.3'], [`${MAIN}/confidentialitate`, '0.3'],
     [`${MAIN}/retur`, '0.3'], [`${MAIN}/cookies`, '0.3'],
@@ -174,11 +174,11 @@ app.get('/produs/:slug', (_req, res) => res.sendFile(join(publicDir, 'produs.htm
 // Paginile de decor sunt pre-randate (`npm run prerender`) ca titlul/H1/galeria
 // să existe în HTML fără JS; dacă un slug nu are fișier, cade pe șablonul
 // randat client-side.
-app.get('/decoratiuni/:slug', (req, res) => {
+app.get('/decoratiuni-evenimente/:slug', (req, res) => {
   const slug = req.params.slug;
-  const file = join(publicDir, 'decoratiuni', `${slug}.html`);
+  const file = join(publicDir, 'decoratiuni-evenimente', `${slug}.html`);
   if (/^[a-z0-9-]+$/.test(slug) && existsSync(file)) return res.sendFile(file);
-  return res.sendFile(join(publicDir, 'decoratiuni-eveniment.html'));
+  return res.sendFile(join(publicDir, 'decor-eveniment-sablon.html'));
 });
 
 // SPA-ish fallback: orice rută necunoscută → index.html (paginile sunt totuși fișiere).

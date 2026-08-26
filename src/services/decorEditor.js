@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════
-//  Editor pentru subpaginile /decoratiuni/<slug>.
+//  Editor pentru subpaginile /decoratiuni-evenimente/<slug>.
 //
 //  DE CE SEPARAT de pageEditor.js: paginile astea NU sunt scrise de mână.
 //  `scripts/prerender-decoratiuni.js` le generează din `public/js/decoratiuni-data.js`.
@@ -36,7 +36,7 @@ export function listDecorPages() {
   return citeste().events.map((e) => ({
     slug: `decor-${e.slug}`,
     name: `Decor ${e.name}`,
-    url: `/decoratiuni/${e.slug}`,
+    url: `/decoratiuni-evenimente/${e.slug}`,
     group: 'Decorațiuni Evenimente',
     kind: 'decor',
   }));

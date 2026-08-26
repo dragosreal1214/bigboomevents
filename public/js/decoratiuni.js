@@ -1,6 +1,6 @@
 /* decoratiuni.js — pagina Decorațiuni Evenimente.
    - /decoratiuni: grilă cu carduri-imagine pentru fiecare eveniment.
-   - /decoratiuni/<slug>: subpagina evenimentului (hero + galerii pe categorii).
+   - /decoratiuni-evenimente/<slug>: subpagina evenimentului (hero + galerii pe categorii).
    - Submeniu (sub nav-ul principal) cu toate evenimentele, doar aici.
    Date: window.DECOR_EVENTS (decoratiuni-data.js). */
 (function () {
@@ -23,44 +23,65 @@
     c.setAttribute('href', location.origin + path);
   }
 
+  // Tab-urile secțiunii. „Galerie" e ultimul: nu e un tip de eveniment, ci o
+  // vedere peste toate. Trăiește pe pagina-listă, comutată din `?vezi=galerie`,
+  // ca să nu fie nevoie de încă o pagină pre-randată doar pentru ea.
+  // ATENȚIE: markup-ul trebuie să fie IDENTIC cu `submenuHTML` din
+  // src/services/decorPrerender.js, altfel submeniul „sare" la hidratare.
   function renderSubmenu(activeSlug) {
     var el = document.querySelector('[data-decor-submenu]');
     if (!el) return;
     el.innerHTML = '<div class="wrap decor-submenu-inner">' +
-      '<a href="/decoratiuni"' + (activeSlug ? '' : ' class="is-active"') + '>Toate</a>' +
+      '<a href="/decoratiuni-evenimente"' + (activeSlug ? '' : ' class="is-active"') + '>Toate</a>' +
       events.map(function (e) {
-        return '<a href="/decoratiuni/' + e.slug + '"' + (activeSlug === e.slug ? ' class="is-active"' : '') + '>' + esc(e.name) + '</a>';
-      }).join('') + '</div>';
+        return '<a href="/decoratiuni-evenimente/' + e.slug + '"' + (activeSlug === e.slug ? ' class="is-active"' : '') + '>' + esc(e.name) + '</a>';
+      }).join('') +
+      '<a href="/decoratiuni-evenimente?vezi=galerie"' + (activeSlug === 'galerie' ? ' class="is-active"' : '') + '>Galerie</a>' +
+      '</div>';
     el.hidden = false;
+  }
+
+  // Comută între panoul cu tipuri de evenimente și cel cu galeria. Panourile
+  // sunt amândouă în HTML (deci pre-randate, vizibile pentru crawler); aici doar
+  // se ascunde unul. Fără JS rămân ambele, una sub alta — degradare acceptabilă.
+  function showPanel(galerie) {
+    var tipuri = document.querySelector('[data-panel-tipuri]');
+    var gal = document.querySelector('[data-panel-galerie]');
+    if (!tipuri || !gal) return;
+    tipuri.hidden = galerie;
+    gal.hidden = !galerie;
+    if (galerie) document.dispatchEvent(new CustomEvent('bbe:galerie'));
   }
 
   function renderLanding() {
     var grid = document.querySelector('[data-decor-grid]');
     if (!grid) return;
     grid.innerHTML = events.map(function (e) {
-      return '<a class="decor-tile" href="/decoratiuni/' + e.slug + '">' +
+      return '<a class="decor-tile" href="/decoratiuni-evenimente/' + e.slug + '">' +
         '<img src="' + esc(e.hero) + '" alt="Decor ' + esc(e.name) + '" loading="lazy" />' +
         '<span class="decor-tile-body"><span class="decor-tile-name">' + esc(e.name) + '</span>' +
         '<span class="decor-tile-go">Vezi ' + ARROW + '</span></span></a>';
     }).join('');
-    renderSubmenu('');
+    var vrea = /(?:^|[?&])vezi=galerie(?:&|$)/.test(location.search);
+    showPanel(vrea);
+    renderSubmenu(vrea ? 'galerie' : '');
   }
 
   function renderEvent() {
     var box = document.querySelector('[data-decor-event]');
     if (!box) return;
-    var m = location.pathname.match(/\/decoratiuni\/([^/?#]+)/);
+    var m = location.pathname.match(/\/decoratiuni-evenimente\/([^/?#]+)/);
     var slug = m ? decodeURIComponent(m[1]) : '';
     var e = events.filter(function (x) { return x.slug === slug; })[0];
     if (!e) {
-      box.innerHTML = '<section class="section"><div class="wrap"><div class="empty-state">Eveniment inexistent. <a href="/decoratiuni">Înapoi la decorațiuni</a></div></div></section>';
+      box.innerHTML = '<section class="section"><div class="wrap"><div class="empty-state">Eveniment inexistent. <a href="/decoratiuni-evenimente">Înapoi la decorațiuni</a></div></div></section>';
       renderSubmenu('');
       return;
     }
     document.title = e.seoTitle;
     setMeta('description', e.description);
     setMeta('keywords', e.seoKeywords);
-    setCanonical('/decoratiuni/' + e.slug);
+    setCanonical('/decoratiuni-evenimente/' + e.slug);
 
     var html = '<header class="hero decor-ev-hero"><div class="wrap hero-content">' +
       '<span class="eyebrow">Decorațiuni Evenimente</span>' +

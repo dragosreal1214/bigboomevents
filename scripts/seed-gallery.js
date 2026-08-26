@@ -1,6 +1,6 @@
 // Importă în galeria de pe pagina Evenimente toate pozele de eveniment care
 // există deja pe site: sursa e `public/js/decoratiuni-data.js`, fișierul din
-// care se generează și subpaginile /decoratiuni/<slug>.
+// care se generează și subpaginile /decoratiuni-evenimente/<slug>.
 //
 // De ce de acolo și nu din folderul cu imagini: fișierul are pentru fiecare
 // poză și textul alternativ scris de om (accesibilitate + SEO) și evenimentul

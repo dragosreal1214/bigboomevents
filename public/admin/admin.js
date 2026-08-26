@@ -340,7 +340,8 @@
   }
 
   // ---------- GALERIE (pagina Evenimente) ----------
-  // Pozele stau in `gallery_images` si apar pe /evenimente in ordinea de aici.
+  // Pozele stau in `gallery_images` si apar in tabul „Galerie" de pe
+  // /decoratiuni-evenimente, in ordinea de aici.
   // Incarcarea foloseste ACELASI endpoint ca pozele de produs (`/admin/uploads`,
   // multer) — de aceea fisierele ajung in UPLOAD_DIR si sunt servite ca static.
   let galleryImages = [];

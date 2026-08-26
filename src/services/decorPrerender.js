@@ -1,4 +1,4 @@
-/* prerender-decoratiuni.js — generează HTML static pentru /decoratiuni/<slug>.
+/* prerender-decoratiuni.js — generează HTML static pentru /decoratiuni-evenimente/<slug>.
  *
  * De ce: paginile de decor erau randate integral din `js/decoratiuni.js`, deci
  * HTML-ul servit conținea ~250 de caractere de text și titlul generic al
@@ -9,7 +9,7 @@
  *
  * Rulează după orice modificare în `public/js/decoratiuni-data.js`:
  *   npm run prerender
- * Fișierele rezultate (`public/decoratiuni/*.html`) sunt generate — nu le edita
+ * Fișierele rezultate (`public/decoratiuni-evenimente/*.html`) sunt generate — nu le edita
  * manual, se suprascriu.
  */
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
@@ -45,13 +45,17 @@ const ARROW =
 function submenuHTML(events, activeSlug) {
   return (
     '<div class="wrap decor-submenu-inner">' +
-    `<a href="/decoratiuni"${activeSlug ? '' : ' class="is-active"'}>Toate</a>` +
+    `<a href="/decoratiuni-evenimente"${activeSlug ? '' : ' class="is-active"'}>Toate</a>` +
     events
       .map(
         (e) =>
-          `<a href="/decoratiuni/${e.slug}"${activeSlug === e.slug ? ' class="is-active"' : ''}>${esc(e.name)}</a>`
+          `<a href="/decoratiuni-evenimente/${e.slug}"${activeSlug === e.slug ? ' class="is-active"' : ''}>${esc(e.name)}</a>`
       )
       .join('') +
+    // „Galerie" e o vedere peste toate evenimentele, nu un tip — de aceea la
+    // final. Starea activă o pune doar JS-ul: aici nu putem ști parametrul din
+    // URL (`?vezi=galerie`), iar HTML-ul pre-randat e același pentru toți.
+    `<a href="/decoratiuni-evenimente?vezi=galerie"${activeSlug === 'galerie' ? ' class="is-active"' : ''}>Galerie</a>` +
     '</div>'
   );
 }
@@ -92,7 +96,7 @@ function eventHTML(e) {
 
 /** Breadcrumb + serviciul propriu-zis, ca Google să lege pagina de localitate. */
 function jsonLd(e) {
-  const url = `${SITE}/decoratiuni/${e.slug}`;
+  const url = `${SITE}/decoratiuni-evenimente/${e.slug}`;
   return JSON.stringify({
     '@context': 'https://schema.org',
     '@graph': [
@@ -100,7 +104,7 @@ function jsonLd(e) {
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Acasă', item: `${SITE}/` },
-          { '@type': 'ListItem', position: 2, name: 'Decorațiuni Evenimente', item: `${SITE}/decoratiuni` },
+          { '@type': 'ListItem', position: 2, name: 'Decorațiuni Evenimente', item: `${SITE}/decoratiuni-evenimente` },
           { '@type': 'ListItem', position: 3, name: `Decor ${e.name}`, item: url },
         ],
       },
@@ -123,15 +127,15 @@ function jsonLd(e) {
 
 export function prerenderDecor(log = () => {}) {
   const events = loadEvents();
-  const template = readFileSync(join(publicDir, 'decoratiuni-eveniment.html'), 'utf8');
+  const template = readFileSync(join(publicDir, 'decor-eveniment-sablon.html'), 'utf8');
   const OLD_TITLE = 'Decorațiuni Evenimente — The Big Boom Events';
   const OLD_DESC =
     'Decorațiuni personalizate pentru evenimente în Iași — flori naturale, baloane, photo corner și decor de sală.';
 
-  mkdirSync(join(publicDir, 'decoratiuni'), { recursive: true });
+  mkdirSync(join(publicDir, 'decoratiuni-evenimente'), { recursive: true });
 
   for (const e of events) {
-    const url = `${SITE}/decoratiuni/${e.slug}`;
+    const url = `${SITE}/decoratiuni-evenimente/${e.slug}`;
     let s = template;
 
     s = s.split(esc(OLD_TITLE)).join(esc(e.seoTitle));
@@ -158,24 +162,24 @@ export function prerenderDecor(log = () => {}) {
     );
     // conținutul, pre-randat (JS-ul îl rescrie identic la hidratare)
     s = s.replace(
-      '<nav class="decor-submenu" data-decor-submenu aria-label="Tipuri de evenimente" hidden></nav>',
-      `<nav class="decor-submenu" data-decor-submenu aria-label="Tipuri de evenimente">${submenuHTML(events, e.slug)}</nav>`
+      '<nav class="decor-submenu" data-decor-submenu aria-label="Secțiuni decorațiuni" hidden></nav>',
+      `<nav class="decor-submenu" data-decor-submenu aria-label="Secțiuni decorațiuni">${submenuHTML(events, e.slug)}</nav>`
     );
     s = s.replace('<main data-decor-event></main>', `<main data-decor-event>${eventHTML(e)}</main>`);
 
-    writeFileSync(join(publicDir, 'decoratiuni', `${e.slug}.html`), s);
-    log(`✔ /decoratiuni/${e.slug}  — ${e.seoTitle}`);
+    writeFileSync(join(publicDir, 'decoratiuni-evenimente', `${e.slug}.html`), s);
+    log(`✔ /decoratiuni-evenimente/${e.slug}  — ${e.seoTitle}`);
   }
 
   // Pagina-listă /decoratiuni: grila era și ea randată din JS, deci HTML-ul servit
   // nu conținea niciun link către subpagini — crawlerul nu avea pe unde intra.
   {
-    const p = join(publicDir, 'decoratiuni.html');
+    const p = join(publicDir, 'decoratiuni-evenimente.html');
     const src = readFileSync(p, 'utf8');
     const grid = events
       .map(
         (e) =>
-          `<a class="decor-tile" href="/decoratiuni/${e.slug}">` +
+          `<a class="decor-tile" href="/decoratiuni-evenimente/${e.slug}">` +
           `<img src="${esc(e.hero)}" alt="Decor ${esc(e.name)}" loading="lazy" />` +
           `<span class="decor-tile-body"><span class="decor-tile-name">${esc(e.name)}</span>` +
           `<span class="decor-tile-go">Vezi ${ARROW}</span></span></a>`
@@ -190,17 +194,17 @@ export function prerenderDecor(log = () => {}) {
       `<div class="decor-grid" data-decor-grid>${grid}</div>`
     );
     out = out.replace(
-      /<nav class="decor-submenu" data-decor-submenu aria-label="Tipuri de evenimente"[^>]*>[\s\S]*?<\/nav>/,
-      `<nav class="decor-submenu" data-decor-submenu aria-label="Tipuri de evenimente">${submenuHTML(events, '')}</nav>`
+      /<nav class="decor-submenu" data-decor-submenu aria-label="Secțiuni decorațiuni"[^>]*>[\s\S]*?<\/nav>/,
+      `<nav class="decor-submenu" data-decor-submenu aria-label="Secțiuni decorațiuni">${submenuHTML(events, '')}</nav>`
     );
     if (!/decor-tile/.test(out) || !/decor-submenu-inner/.test(out)) {
-      throw new Error('decoratiuni.html: nu găsesc grila/submeniul de pre-randat');
+      throw new Error('decoratiuni-evenimente.html: nu găsesc grila/submeniul de pre-randat');
     }
     writeFileSync(p, out);
-    log('✔ /decoratiuni (pagina-listă)');
+    log('✔ /decoratiuni-evenimente (pagina-listă)');
   }
 
-  log(`\n${events.length} pagini pre-randate în public/decoratiuni/.`);
+  log(`\n${events.length} pagini pre-randate în public/decoratiuni-evenimente/.`);
 
   return { pagini: events.length };
 }

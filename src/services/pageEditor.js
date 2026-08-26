@@ -45,8 +45,7 @@ if (!fs.existsSync(publicDir)) {
 // arată în schimb un mesaj și un buton de deschidere în filă nouă.
 export const PAGES = [
   { slug: 'index',        file: 'index.html',        name: 'Prima pagină',            url: '/',              group: 'Site principal' },
-  { slug: 'evenimente',   file: 'evenimente.html',   name: 'Evenimente',              url: '/evenimente',    group: 'Site principal' },
-  { slug: 'decoratiuni',  file: 'decoratiuni.html',  name: 'Decorațiuni Evenimente',  url: '/decoratiuni',   group: 'Site principal' },
+  { slug: 'decoratiuni',  file: 'decoratiuni-evenimente.html', name: 'Decorațiuni Evenimente', url: '/decoratiuni-evenimente', group: 'Site principal' },
   { slug: 'wedding',      file: 'wedding.html',      name: 'Wedding Planner',         url: '/wedding',       group: 'Site principal' },
   { slug: 'contact',      file: 'contact.html',      name: 'Contact',                 url: '/contact',       group: 'Site principal' },
   { slug: 'florarie',     file: 'florarie.html',     name: 'Florărie (magazin)',      url: '/florarie',      group: 'Magazin', altHost: true },
