@@ -127,7 +127,14 @@
       ['aniversare', 'Aniversări'], ['cerere', 'Cerere în căsătorie'], ['nunta', 'Nuntă'],
       ['botez', 'Botez'], ['majorat', 'Majorat'], ['mama', 'Pentru Mama'],
       ['ghiveci', 'În ghiveci'], ['funerare', 'Funerare'],
+      ['criogenate', 'Flori criogenate'],
     ],
+  };
+  // Ocaziile care apar ȘI ca buton rapid în capul paginii, după tipurile de produs.
+  // Sunt ocazii, nu tipuri, tocmai ca un buchet de nuntă să rămână și „Flori în
+  // buchet": `occasions` e listă pe produs, `product_type` e o singură valoare.
+  const QUICK_OCCASIONS_BY_CAT = {
+    florarie: ['nunta', 'botez', 'funerare', 'criogenate'],
   };
   const OCCASIONS_DEFAULT = [
     ['aniversare', 'Aniversare'], ['indragostiti', 'Îndrăgostiți'], ['cerere', 'Cerere în căsătorie'],
@@ -267,7 +274,12 @@
     box.innerHTML = list.map(([v, l]) => `
       <label class="checkline"><input type="radio" name="occ" value="${v}" ${state.occasion === v ? 'checked' : ''}/> ${l}</label>`).join('') +
       `<label class="checkline"><input type="radio" name="occ" value="" ${!state.occasion ? 'checked' : ''}/> Toate</label>`;
-    box.onchange = (e) => { if (e.target.name === 'occ') { state.occasion = e.target.value; reset(); } };
+    box.onchange = (e) => {
+      if (e.target.name !== 'occ') return;
+      state.occasion = e.target.value;
+      buildQuickFilters();  // chip-ul de sus trebuie să urmeze alegerea din sidebar
+      reset();
+    };
   }
 
   function buildColorFilter() {
@@ -286,11 +298,24 @@
   //     general sau pe o categorie fără tipuri.
   // Fiecare chip știe pe ce filtrează (`kind`), pentru că cele două feluri nu se
   // pot combina: alegerea unuia îl anulează pe celălalt.
+  // Ocaziile rapide, cu eticheta luată din `OCCASIONS_BY_CAT` — o singură sursă
+  // pentru numele afișat în chip și în bara laterală.
+  function quickOccasions(cat) {
+    const wanted = QUICK_OCCASIONS_BY_CAT[cat] || [];
+    if (!wanted.length) return [];
+    const labels = new Map(occasionsFor(cat));
+    return wanted
+      .filter((v) => labels.has(v))
+      .map((v) => ({ kind: 'occasion', val: v, label: labels.get(v) }));
+  }
+
   function quickItems() {
     const quick = typesFor(state.category).filter((t) => t.isQuick);
-    if (quick.length) {
+    const occs = quickOccasions(state.category);
+    if (quick.length || occs.length) {
       return [{ kind: '', val: '', label: 'Toate' }]
-        .concat(quick.map((t) => ({ kind: 'type', val: t.slug, label: t.name })));
+        .concat(quick.map((t) => ({ kind: 'type', val: t.slug, label: t.name })))
+        .concat(occs);
     }
     return [
       { kind: '', val: '', label: 'Toate' },
@@ -306,8 +331,9 @@
     const items = quickItems();
     const isActive = (it) =>
       (it.kind === 'type' && state.type === it.val) ||
+      (it.kind === 'occasion' && state.occasion === it.val) ||
       (it.kind === 'collection' && state.collection === it.val) ||
-      (!it.kind && !state.type && !state.collection);
+      (!it.kind && !state.type && !state.collection && !state.occasion);
     box.innerHTML = items.map((it, i) =>
       `<button type="button" class="chip" data-qf="${i}" aria-pressed="${isActive(it) ? 'true' : 'false'}">${esc(it.label)}</button>`
     ).join('');
@@ -316,11 +342,14 @@
       if (!btn) return;
       const it = items[Number(btn.dataset.qf)];
       if (!it) return;
+      // Chip-urile se exclud reciproc: tip, ocazie și colecție nu se combină.
       state.type = it.kind === 'type' ? it.val : '';
+      state.occasion = it.kind === 'occasion' ? it.val : '';
       state.collection = it.kind === 'collection' ? it.val : '';
       box.querySelectorAll('[data-qf]').forEach((b) =>
         b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
-      buildTypeFilter();   // radio-urile din bara laterală trebuie să urmeze chip-ul
+      buildTypeFilter();      // radio-urile din bara laterală trebuie să urmeze chip-ul
+      buildOccasionFilter();  // idem pentru „Categorii" (ocazii)
       reset();
     };
   }
