@@ -50,11 +50,12 @@ app.use(
         defaultSrc: ["'self'"],
         // `mny.ro` = scriptul oficial NETOPIA pentru siglă (obligatoriu pentru
         // aprobarea punctului de vânzare) + SVG-ul siglei, servit tot de acolo.
-        scriptSrc: ["'self'", 'https://mny.ro'],
+        // googletagmanager/google-analytics = Google Analytics 4 (app.js, doar cu consimțământ).
+        scriptSrc: ["'self'", 'https://mny.ro', 'https://www.googletagmanager.com'],
         styleSrc: ["'self'", "'unsafe-inline'"],
         fontSrc: ["'self'"],
-        imgSrc: ["'self'", 'data:', 'https://mny.ro'],
-        connectSrc: ["'self'"],
+        imgSrc: ["'self'", 'data:', 'https://mny.ro', 'https://www.googletagmanager.com', 'https://*.google-analytics.com'],
+        connectSrc: ["'self'", 'https://*.google-analytics.com', 'https://*.analytics.google.com', 'https://www.googletagmanager.com'],
         formAction: ["'self'"],
       },
     },

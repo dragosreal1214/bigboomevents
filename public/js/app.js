@@ -560,6 +560,42 @@
 
   function cookieBanner() { showConsent(false); }
 
+  // ---------- GOOGLE ANALYTICS (GA4) ----------
+  // Se încarcă DOAR cu consimțământ pentru „Analiză" și doar pe domeniul real
+  // (nu local, nu în previzualizarea din panou). Snippet-ul oficial Google are
+  // un <script> inline, pe care CSP-ul `script-src 'self'` îl blochează — de
+  // aceea inițializarea stă aici, iar gtag.js se adaugă cu createElement (un
+  // script injectat prin innerHTML/outerHTML nu s-ar executa).
+  // googletagmanager.com + *.google-analytics.com trebuie în CSP, în helmet ȘI nginx.
+  const GA_ID = 'G-LNJJVJKMH7';
+  function analytics() {
+    if (!PROD || new URLSearchParams(location.search).has('cms')) return;
+    let loaded = false;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+    const start = () => {
+      if (loaded) { gtag('consent', 'update', { analytics_storage: 'granted' }); return; }
+      loaded = true;
+      gtag('consent', 'default', { analytics_storage: 'granted', ad_storage: 'denied',
+        ad_user_data: 'denied', ad_personalization: 'denied' });
+      const s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+      document.head.appendChild(s);
+      gtag('js', new Date());
+      gtag('config', GA_ID);
+    };
+    if (Consent.allowed('analytics')) start();
+    Consent.onChange((c) => {
+      if (c.analytics) return start();
+      if (!loaded) return;
+      // Retragerea acordului: oprim colectarea și ștergem cookie-urile _ga*.
+      gtag('consent', 'update', { analytics_storage: 'denied' });
+      document.cookie.split(';').map((x) => x.split('=')[0].trim()).filter((n) => /^_ga/.test(n))
+        .forEach((n) => { document.cookie = `${n}=; Max-Age=0; path=/; domain=.thebigboomevents.ro`; });
+    });
+  }
+
   // ---------- EXPOSE ----------
   // ---------- EVIDENȚIERE PENTRU EDITORUL DIN PANOU ----------
   // Panoul deschide pagina cu ?cms=<cheie>. Găsim elementul marcat, îl aducem
@@ -714,5 +750,6 @@
     renderCart();
     updateCount();
     cookieBanner();
+    analytics();
   });
 })();
