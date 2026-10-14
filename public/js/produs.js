@@ -115,6 +115,14 @@
       </div>`;
   }
 
+  // Localizarea în titlu („Florărie Iași”) — căutările locale sunt de forma
+  // „<produs> iași”, iar titlul e semnalul cel mai puternic pentru ele.
+  function seoPlace(p) {
+    return p.category === 'florarie' ? 'Florărie Iași'
+      : p.category === 'baloane' ? 'Baloane Iași'
+      : 'Livrare în Iași';
+  }
+
   // Actualizează meta SEO + date structurate pentru produsul curent (Google
   // randează JS, deci prinde astea → rezultate îmbogățite: preț, disponibilitate).
   function setProductSeo(p) {
@@ -127,7 +135,7 @@
       m.setAttribute('content', val);
     };
     document.querySelector('meta[name="description"]')?.setAttribute('content', desc);
-    setMeta('meta[property="og:title"]', ['property', 'og:title'], `${p.name} — The Big Boom Events`);
+    setMeta('meta[property="og:title"]', ['property', 'og:title'], `${p.name} — ${seoPlace(p)} | The Big Boom Events`);
     setMeta('meta[property="og:description"]', ['property', 'og:description'], desc);
     setMeta('meta[property="og:image"]', ['property', 'og:image'], img);
     setMeta('meta[property="og:url"]', ['property', 'og:url'], url);
@@ -155,7 +163,7 @@
   }
 
   function render(p, addons) {
-    document.title = `${p.name} — The Big Boom Events`;
+    document.title = `${p.name} — ${seoPlace(p)} | The Big Boom Events`;
     setProductSeo(p);
     document.querySelector('[data-crumb]').innerHTML =
       `<a href="${urls.home}">Acasă</a> · <a href="${urls.shop}">Magazin</a> · <a href="${urls.shopCat(p.category)}">${esc(p.categoryName)}</a> · ${esc(p.name)}`;

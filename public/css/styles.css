@@ -998,6 +998,15 @@ a:focus-visible, button:focus-visible, .chip:focus-visible, input:focus-visible,
   0%, 100% { opacity: .8; transform: scale(1) rotate(0deg); }
   50%      { opacity: 1; transform: scale(1.22) rotate(90deg); }
 }
+/* Localizarea în H1 (SEO „florărie iași”): rând mic sub numele firmei. */
+.portal-loc {
+  display: block; margin-top: 12px;
+  /* Resetează ce moștenește din titlu (Fraunces display, nowrap, text transparent). */
+  font-family: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
+  font-variation-settings: normal; font-weight: 600; font-size: clamp(11px, 1.6vw, 15px);
+  line-height: 1.5; letter-spacing: .14em; text-transform: uppercase; white-space: normal;
+  color: var(--ink-soft); -webkit-text-fill-color: var(--ink-soft);
+}
 .portal-sub { color: var(--ink-soft); font-size: clamp(15px, 2.2vw, 19px); margin: 18px auto 0; max-width: 520px; }
 
 /* Grila de alegeri — un singur markup, responsive prin grid-template-columns.

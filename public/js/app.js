@@ -190,12 +190,12 @@
       <div class="foot-grid">
         <div>
           <div class="brand"><span class="dot"></span>The Big Boom Events</div>
-          <p>Flori, baloane și evenimente. Sărbători gândite simplu, livrate cu grijă.</p>
+          <p>Florărie, baloane și decorațiuni evenimente în Iași. Sărbători gândite simplu, livrate cu grijă în Iași și împrejurimi.</p>
         </div>
         <div class="foot-col">
           <h4>Magazin</h4>
-          <a href="${U.florarie}">Florărie</a>
-          <a href="${U.baloane}">Baloane &amp; Accesorii Party</a>
+          <a href="${U.florarie}">Florărie Iași</a>
+          <a href="${U.baloane}">Baloane cu heliu Iași</a>
           <a href="${U.shop}">Toate produsele</a>
         </div>
         <div class="foot-col">
@@ -204,6 +204,7 @@
           <a href="${U.wedding}">Wedding Planner</a>
           <a href="${U.contact}">Contact</a>
           <a href="tel:+40755436904">0755 436 904</a>
+          <a href="https://www.google.com/maps/search/?api=1&amp;query=Strada+Gr%C4%83dinari+14%2C+Ia%C8%99i" target="_blank" rel="noopener">Florăria: Str. Grădinari 14, Iași</a>
           <div class="foot-social">
             <a href="https://www.instagram.com/the_big_boom_events/" target="_blank" rel="noopener" aria-label="Instagram">${IG_ICON}</a>
             <a href="https://www.facebook.com/BIGBOOMEVENTS/" target="_blank" rel="noopener" aria-label="Facebook">${FB_ICON}</a>
